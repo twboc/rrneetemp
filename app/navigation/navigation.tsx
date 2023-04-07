@@ -1,9 +1,9 @@
 import React from 'react'
-// import ReactDOM from 'react-dom/client'
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import Layout from './navigation.layout'
 import Main from './../view/main/main'
 import Login from './../view/login/login'
+import None from './../view/none/none'
 
 const Navigation = () => {
   return (
@@ -13,7 +13,7 @@ const Navigation = () => {
           <Route index element={<Main />} />
           <Route path="Main" element={<Main />} />
           <Route path="Login" element={<Login />} />
-          {/* <Route path="*" element={<NoPage />} /> */}
+          <Route path="*" element={<None />} />
         </Route>
       </Routes>
     </BrowserRouter>
