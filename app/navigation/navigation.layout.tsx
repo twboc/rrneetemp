@@ -5,16 +5,11 @@ const Layout = () => {
   return (
     <>
       <nav>
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/Main">Main</Link>
-          </li>
-          <li>
-            <Link to="/Login">Main</Link>
-          </li>
+        <ul style={{display: 'flex'}}>
+          <Link style={{marginRight: '10px'}} to="/">
+            Home
+          </Link>
+          <Link to="/Login">Login</Link>
         </ul>
       </nav>
 

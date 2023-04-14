@@ -10,7 +10,7 @@ const Navigation = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={<Login />} />
+          <Route index element={<Main />} />
           <Route path="Main" element={<Main />} />
           <Route path="Login" element={<Login />} />
           <Route path="*" element={<None />} />

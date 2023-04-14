@@ -1,219 +1,30 @@
-import React, {useState} from 'react'
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import React, {useState, FC} from 'react'
+import LoginSelect from './login.select'
+import LoginForm from './login.login.form'
+import RegisterForm from './login.register.form'
 
-const Login = () => {
-  const [email, setEmail] = useState('')
-  const [pass, setPass] = useState('')
-  const [remember, setRemember] = useState(false)
+const Login: FC = () => {
   const [pane, setPane] = useState('login')
-
-  const login = () => {
-    console.log(email, pass, remember)
-  }
+  const showActive = (selected: string) => (pane: string) =>
+    pane === selected ? 'show active' : ''
 
   return (
     <div style={{margin: 'auto', maxWidth: '650px'}}>
-      <ul className="nav nav-pills nav-justified mb-3" id="ex1" role="tablist">
-        <li className="nav-item" role="presentation">
-          <a
-            className={`nav-link ${pane === 'login' ? 'active' : ''}`}
-            id="tab-login"
-            data-mdb-toggle="pill"
-            href="#form-login"
-            role="tab"
-            aria-controls="form-login"
-            onClick={() => setPane('login')}
-            aria-selected="true">
-            Login
-          </a>
-        </li>
-        <li className="nav-item" role="presentation">
-          <a
-            className={`nav-link ${pane === 'register' ? 'active' : ''}`}
-            id="tab-register"
-            data-mdb-toggle="pill"
-            href="#form-register"
-            role="tab"
-            aria-controls="form-register"
-            onClick={() => setPane('register')}
-            aria-selected="false">
-            Register
-          </a>
-        </li>
-      </ul>
-
+      <LoginSelect pane={pane} setPane={setPane} />
       <div className="tab-content">
         <div
-          className={`tab-pane fade ${pane === 'login' ? 'show active' : ''}`}
+          className={`tab-pane fade ${showActive('login')(pane)}`}
           id="form-login"
           role="tabpanel"
           aria-labelledby="tab-login">
-          <form>
-            <div className="text-center mb-3">
-              <p>Sign in with:</p>
-              <button type="button" className="btn btn-link btn-floating mx-1">
-                <i className="fa fa-facebook-f"></i>
-              </button>
-
-              <button type="button" className="btn btn-link btn-floating mx-1">
-                <i className="fa fa-google"></i>
-              </button>
-
-              <button type="button" className="btn btn-link btn-floating mx-1">
-                <i className="fa fa-twitter"></i>
-              </button>
-
-              <button type="button" className="btn btn-link btn-floating mx-1">
-                <i className="fa fa-github"></i>
-              </button>
-            </div>
-
-            <p className="text-center">or:</p>
-
-            <div className="form-outline mb-4">
-              <input type="email" id="loginName" className="form-control" />
-              <label className="form-label" htmlFor="loginName">
-                Email or username
-              </label>
-            </div>
-
-            <div className="form-outline mb-4">
-              <input
-                type="password"
-                id="loginPassword"
-                className="form-control"
-              />
-              <label className="form-label" htmlFor="loginPassword">
-                Password
-              </label>
-            </div>
-
-            <div className="row mb-4">
-              <div className="col-md-6 d-flex justify-content-center">
-                <div className="form-check mb-3 mb-md-0">
-                  <input
-                    className="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="loginCheck"
-                    checked
-                  />
-                  <label className="form-check-label" htmlFor="loginCheck">
-                    {' '}
-                    Remember me{' '}
-                  </label>
-                </div>
-              </div>
-
-              <div className="col-md-6 d-flex justify-content-center">
-                <a href="#!">Forgot password?</a>
-              </div>
-            </div>
-
-            <button type="submit" className="btn btn-primary btn-block mb-4">
-              Sign in
-            </button>
-
-            <div className="text-center">
-              <p>
-                Not a member? <a href="#!">Register</a>
-              </p>
-            </div>
-          </form>
+          <LoginForm setPane={setPane} />
         </div>
         <div
-          className={`tab-pane fade ${
-            pane === 'register' ? 'show active' : ''
-          }`}
+          className={`tab-pane fade ${showActive('register')(pane)}`}
           id="form-register"
           role="tabpanel"
           aria-labelledby="tab-register">
-          <form>
-            <div className="text-center mb-3">
-              <p>Sign up with:</p>
-              <button type="button" className="btn btn-link btn-floating mx-1">
-                <i className="fa fa-facebook-f"></i>
-              </button>
-
-              <button type="button" className="btn btn-link btn-floating mx-1">
-                <i className="fa fa-google"></i>
-              </button>
-
-              <button type="button" className="btn btn-link btn-floating mx-1">
-                <i className="fa fa-twitter"></i>
-              </button>
-
-              <button type="button" className="btn btn-link btn-floating mx-1">
-                <i className="fa fa-github"></i>
-              </button>
-            </div>
-
-            <p className="text-center">or:</p>
-
-            <div className="form-outline mb-4">
-              <input type="text" id="registerName" className="form-control" />
-              <label className="form-label" htmlFor="registerName">
-                Name
-              </label>
-            </div>
-
-            <div className="form-outline mb-4">
-              <input
-                type="text"
-                id="registerUsername"
-                className="form-control"
-              />
-              <label className="form-label" htmlFor="registerUsername">
-                Username
-              </label>
-            </div>
-
-            <div className="form-outline mb-4">
-              <input type="email" id="registerEmail" className="form-control" />
-              <label className="form-label" htmlFor="registerEmail">
-                Email
-              </label>
-            </div>
-
-            <div className="form-outline mb-4">
-              <input
-                type="password"
-                id="registerPassword"
-                className="form-control"
-              />
-              <label className="form-label" htmlFor="registerPassword">
-                Password
-              </label>
-            </div>
-
-            <div className="form-outline mb-4">
-              <input
-                type="password"
-                id="registerRepeatPassword"
-                className="form-control"
-              />
-              <label className="form-label" htmlFor="registerRepeatPassword">
-                Repeat password
-              </label>
-            </div>
-            <div className="form-check d-flex justify-content-center mb-4">
-              <input
-                className="form-check-input me-2"
-                type="checkbox"
-                value=""
-                id="registerCheck"
-                checked
-                aria-describedby="registerCheckHelpText"
-              />
-              <label className="form-check-label" htmlFor="registerCheck">
-                I have read and agree to the terms
-              </label>
-            </div>
-
-            <button type="submit" className="btn btn-primary btn-block mb-3">
-              Sign in
-            </button>
-          </form>
+          <RegisterForm />
         </div>
       </div>
     </div>
