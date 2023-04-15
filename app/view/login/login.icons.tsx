@@ -1,12 +1,14 @@
 import React, {FC} from 'react'
-import {googleOauth2URL} from './../../../shared/shared'
+import {googleOauth2URL, facebookOAuth2URL} from './../../../shared/shared'
 
 const LoginIcons: FC = () => {
   return (
     <>
-      <button type="button" className="btn btn-link btn-floating mx-1">
-        <i className="fa fa-facebook-f"></i>
-      </button>
+      <a href={facebookOAuth2URL()}>
+        <button type="button" className="btn btn-link btn-floating mx-1">
+          <i className="fa fa-facebook-f"></i>
+        </button>
+      </a>
       <a href={googleOauth2URL()}>
         <button type="button" className="btn btn-link btn-floating mx-1">
           <i className="fa fa-google"></i>

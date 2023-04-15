@@ -10,40 +10,32 @@ module.exports = {
   output: {
     path: paths.build,
     filename: '[name].bundle.js',
-    publicPath: '/'
+    publicPath: '/',
   },
 
   module: {
     rules: [
       {
         test: /\.(js|jsx)$/,
-        use: ['babel-loader']
+        use: ['babel-loader'],
       },
       {
         test: /\.(ts|tsx)?$/,
         exclude: /node_modules/,
-        loader: 'ts-loader'
+        loader: 'ts-loader',
       },
       {
         test: /\.(?:ico|gif|png|jpg|jpeg)$/i,
-        type: 'asset/resource'
+        type: 'asset/resource',
       },
       {
         test: /\.(woff(2)?|eot|ttf|otf|svg|)$/,
-        type: 'asset/inline'
-      }
-    ]
+        type: 'asset/inline',
+      },
+    ],
   },
   resolve: {
     modules: [paths.app, 'node_modules'],
-    extensions: ['.js', '.jsx', '.ts', '.tsx', '.json']
-  }
-  // plugins: [
-  //   new HtmlWebpackPlugin({
-  //     title: 'React React Native Electron Boilerplate',
-  //     favicon: paths.app + '/images/favicon.png',
-  //     template: paths.public + '/index.html',
-  //     filename: '../dist/index.html'
-  //   })
-  // ]
+    extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
+  },
 }

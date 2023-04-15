@@ -9,5 +9,9 @@
       "allowJs": true,
       "allowSyntheticDefaultImports": true,
       "moduleResolution": "Node"
-    }
+    },
+    "include": ["./**/*", "./../shared/**/*"],
+    "resolve": {
+      "extensions": [".js", ".jsx", ".ts", ".tsx"],
+    },
 }
