@@ -63,5 +63,5 @@ yarn-error.log
 .metro-health-check*
 
 /config/googleOAuth2.json
-config/facebookOAuth2.json
-/dist*
+/config/facebookOAuth2.json
+dist/
