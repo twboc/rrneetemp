@@ -13,6 +13,10 @@ app.get('/', (req: Request, res: Response) =>
   res.sendFile(path.resolve(__dirname + '/../public/index.html')),
 )
 
+app.get('/Login', (req: Request, res: Response) =>
+  res.sendFile(path.resolve(__dirname + '/../public/index.html')),
+)
+
 app.get('/google/ouath2/redirect', googleOauthRedirect)
 
 app.get('/facebook/ouath2/redirect', facebookOauthRedirect)

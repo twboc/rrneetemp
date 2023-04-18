@@ -3,6 +3,7 @@ import facebookOAuth2 from '../config/facebookOAuth2.json'
 
 export const googleOauth2URL = () => {
   const url = 'https://accounts.google.com/o/oauth2/v2/auth'
+
   const options = {
     redirect_uri: googleOAuth2.redirect_uris[2],
     client_id: googleOAuth2.client_id,

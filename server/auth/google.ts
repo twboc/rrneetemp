@@ -2,48 +2,23 @@ import {Request, Response} from 'express'
 import axios from 'axios'
 import qs from 'qs'
 import jwt from 'jsonwebtoken'
-import googleOAuth2 from '../../config/googleOAuth2.json'
+import {v4} from 'uuid'
+import {GoogleIdToken} from './google.type'
+import {getGoogleOAuthParams} from './google.util'
+import {user} from '../model/user'
 
-interface GoogleToken {
-  iss: string
-  azp: string
-  aud: string
-  sub: string
-  email: string
-  email_verified: boolean
-  at_hash: string
-  name: string
-  picture: string
-  given_name: string
-  family_name: string
-  locale: string
-  iat: number
-  exp: number
-}
-
-const googleTokenUrl = 'https://oauth2.googleapis.com/token'
-
-const getGoogleOauthTokens = async ({code, res}: {code: string; res: any}) => {
-  //   res.sendFile(path.resolve(__dirname + '/../public/index.html'))
-  console.log('code: ', code)
-
-  const value = {
-    code: code,
-    client_id: googleOAuth2.client_id,
-    client_secret: googleOAuth2.client_secret,
-    redirect_uri: googleOAuth2.redirect_uris[2],
-    grant_type: 'authorization_code',
-  }
-
-  console.log('VALUE: ', qs.stringify(value))
-
+const getGoogleOAuthTokens = async ({code}: {code: string}) => {
+  const params = getGoogleOAuthParams(code)
   try {
-    const res = await axios.post(googleTokenUrl, qs.stringify(value), {
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
+    const res = await axios.post(
+      'https://oauth2.googleapis.com/token',
+      qs.stringify(params),
+      {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
       },
-    })
-
+    )
     return res.data
   } catch (e) {
     console.log('fail')
@@ -54,7 +29,7 @@ const getGoogleOauthTokens = async ({code, res}: {code: string; res: any}) => {
 
 const getGoogleUser = async (id_token: string, access_token: string) => {
   const res = await axios.get(
-    `https://googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${access_token}`,
+    `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${access_token}`,
     {
       headers: {
         Authorization: `Bearer ${id_token}`,
@@ -62,39 +37,52 @@ const getGoogleUser = async (id_token: string, access_token: string) => {
     },
   )
 
-  return res
+  return res.data
 }
 
 export const googleOauthRedirect = async (req: Request, res: Response) => {
-  //   console.log('req:', req)
-
-  // get the code from qs
-
   // get id and access token with the code
   const code = req.query.code as string
 
-  const {id_token, access_token} = await getGoogleOauthTokens({
+  const tokens = await getGoogleOAuthTokens({
     code,
-    res,
   }).catch(e => {
-    console.log('ERRRRR: ', e)
+    return res.redirect('/Login')
   })
-  // console.log('id_token, access_token: ', id_token, access_token)
 
-  const googleuser = jwt.decode(id_token)
-  // const googleuser = getGoogleUser(id_token, access_token)
+  const google_id = jwt.decode(tokens.id_token) as GoogleIdToken
 
-  console.log('googleuser: ', googleuser)
+  /////////////////////////////////////////////////////////////////////////////
+  // how to get google user with id token and access token
+  // const googleuser = await getGoogleUser(id_token, access_token).catch(e => {
+  //   console.log('googleuser ERRRRR: ', e)
+  // })
+  // console.log('googleuser: ', googleuser)
+  /////////////////////////////////////////////////////////////////////////////
 
-  res.redirect('/')
+  const user_db = await user.findUniqueEmail(google_id.email)
 
-  // get the user with the tokens
-
-  // insert user
+  if (!user_db) {
+    const id = v4()
+    await user
+      .create({
+        id,
+        created_at: new Date(),
+        email: google_id.email,
+        phone: '555555555',
+        name: google_id.name,
+        given_name: google_id.given_name,
+        family_name: google_id.family_name,
+        locale: google_id.locale,
+      })
+      .catch(() => {
+        return res.redirect('/Login?error=UIDB_ERROR')
+      })
+  }
 
   // create session
 
   // set cookies
 
-  // redirect back to client
+  return res.redirect('/')
 }

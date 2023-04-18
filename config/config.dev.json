@@ -1,5 +1,21 @@
 {
     "server": {
         "port": 3000
+    },
+    "app": {
+        "auth": {
+            "google": {
+                "allow": true
+            },
+            "facebook": {
+                "allow": false
+            },
+            "twitter": {
+                "allow": false
+            },
+            "github": {
+                "allow": false
+            }
+        }
     }
 }

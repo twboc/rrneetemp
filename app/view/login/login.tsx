@@ -8,6 +8,10 @@ const Login: FC = () => {
   const showActive = (selected: string) => (pane: string) =>
     pane === selected ? 'show active' : ''
 
+  const params = new URLSearchParams(window.location.pathname)
+
+  console.log('params: ', params)
+
   return (
     <div style={{margin: 'auto', maxWidth: '650px'}}>
       <LoginSelect pane={pane} setPane={setPane} />

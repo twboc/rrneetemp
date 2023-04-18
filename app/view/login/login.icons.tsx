@@ -1,25 +1,37 @@
 import React, {FC} from 'react'
 import {googleOauth2URL, facebookOAuth2URL} from './../../../shared/shared'
+import config from '../../../config/config.dev.json'
 
 const LoginIcons: FC = () => {
   return (
     <>
-      <a href={facebookOAuth2URL()}>
+      {config.app.auth.facebook.allow && (
+        <a href={facebookOAuth2URL()}>
+          <button type="button" className="btn btn-link btn-floating mx-1">
+            <i className="fa fa-facebook-f"></i>
+          </button>
+        </a>
+      )}
+
+      {config.app.auth.google.allow && (
+        <a href={googleOauth2URL()}>
+          <button type="button" className="btn btn-link btn-floating mx-1">
+            <i className="fa fa-google"></i>
+          </button>
+        </a>
+      )}
+
+      {config.app.auth.twitter.allow && (
         <button type="button" className="btn btn-link btn-floating mx-1">
-          <i className="fa fa-facebook-f"></i>
+          <i className="fa fa-twitter"></i>
         </button>
-      </a>
-      <a href={googleOauth2URL()}>
+      )}
+
+      {config.app.auth.github.allow && (
         <button type="button" className="btn btn-link btn-floating mx-1">
-          <i className="fa fa-google"></i>
+          <i className="fa fa-github"></i>
         </button>
-      </a>
-      <button type="button" className="btn btn-link btn-floating mx-1">
-        <i className="fa fa-twitter"></i>
-      </button>
-      <button type="button" className="btn btn-link btn-floating mx-1">
-        <i className="fa fa-github"></i>
-      </button>
+      )}
     </>
   )
 }
