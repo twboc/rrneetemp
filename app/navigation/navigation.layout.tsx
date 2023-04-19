@@ -1,18 +1,11 @@
 import React from 'react'
-import {Outlet, Link} from 'react-router-dom'
+import {Outlet} from 'react-router-dom'
+import Header from '../component/header/header'
 
 const Layout = () => {
   return (
     <>
-      <nav>
-        <ul style={{display: 'flex'}}>
-          <Link style={{marginRight: '10px'}} to="/">
-            Home
-          </Link>
-          <Link to="/Login">Login</Link>
-        </ul>
-      </nav>
-
+      <Header />
       <Outlet />
     </>
   )

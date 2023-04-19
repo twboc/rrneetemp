@@ -15,6 +15,9 @@
             },
             "github": {
                 "allow": false
+            },
+            "dropbox": {
+                "allow": true
             }
         }
     }

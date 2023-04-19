@@ -1,6 +1,7 @@
-import React from 'react'
+import React, {FC} from 'react'
+import withNavigation from '../../template/withNavigation/withNavigation'
 
-const Main = () => {
+const Main: FC = () => {
   return (
     <div style={{margin: 'auto', maxWidth: '650px'}}>
       <h1>React, React Native, Electron and Express boilerplate</h1>
@@ -15,4 +16,6 @@ const Main = () => {
   )
 }
 
-export default Main
+export {Main}
+
+export default withNavigation(Main)

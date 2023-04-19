@@ -1,8 +1,6 @@
 import React from 'react'
 import Root from './view/root/root'
 
-function App(): JSX.Element {
-  return <Root />
-}
+const App = (): JSX.Element => <Root />
 
 export default App

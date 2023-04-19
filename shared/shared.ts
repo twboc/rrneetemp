@@ -1,4 +1,5 @@
 import googleOAuth2 from '../config/googleOAuth2.json'
+import dropboxOauth2 from '../config/dropboxOAuth2.json'
 import facebookOAuth2 from '../config/facebookOAuth2.json'
 
 export const googleOauth2URL = () => {
@@ -14,6 +15,21 @@ export const googleOauth2URL = () => {
       'https://www.googleapis.com/auth/userinfo.profile',
       'https://www.googleapis.com/auth/userinfo.email',
     ].join(' '),
+  }
+
+  const qs = new URLSearchParams(options)
+
+  return `${url}?${qs.toString()}`
+}
+
+export const dropboxOauth2URL = () => {
+  const url = 'https://www.dropbox.com/oauth2/authorize'
+
+  const options = {
+    client_id: dropboxOauth2.client_id,
+    response_type: dropboxOauth2.response_type,
+    redirect_uri: dropboxOauth2.redirect_uri,
+    access_token_type: 'offline',
   }
 
   const qs = new URLSearchParams(options)

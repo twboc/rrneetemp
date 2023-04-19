@@ -5,7 +5,7 @@ const user = {
   create: async (user: User) => {
     return await db.user.create({data: user})
   },
-  findUniqueEmail: async (email: string): Promise<User> => {
+  findUniqueEmail: async (email: string): Promise<User | null> => {
     return await db.user.findUnique({
       where: {
         email: email,

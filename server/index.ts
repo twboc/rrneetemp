@@ -4,6 +4,7 @@ import config from '../config/config.dev.json'
 
 import {googleOauthRedirect} from './auth/google'
 import {facebookOauthRedirect} from './auth/facebook'
+import {dropboxOauthRedirect} from './auth/dropbox'
 
 console.log('__dirname: ', __dirname)
 
@@ -17,8 +18,12 @@ app.get('/Login', (req: Request, res: Response) =>
   res.sendFile(path.resolve(__dirname + '/../public/index.html')),
 )
 
-app.get('/google/ouath2/redirect', googleOauthRedirect)
+app.get('/App', (req: Request, res: Response) =>
+  res.sendFile(path.resolve(__dirname + '/../public/index.html')),
+)
 
+app.get('/google/ouath2/redirect', googleOauthRedirect)
+app.get('/dropbox/ouath2/redirect', dropboxOauthRedirect)
 app.get('/facebook/ouath2/redirect', facebookOauthRedirect)
 
 app.use('/app', express.static(path.resolve(__dirname, '../app')))

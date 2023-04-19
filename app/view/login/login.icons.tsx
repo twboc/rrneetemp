@@ -1,5 +1,9 @@
 import React, {FC} from 'react'
-import {googleOauth2URL, facebookOAuth2URL} from './../../../shared/shared'
+import {
+  googleOauth2URL,
+  facebookOAuth2URL,
+  dropboxOauth2URL,
+} from './../../../shared/shared'
 import config from '../../../config/config.dev.json'
 
 const LoginIcons: FC = () => {
@@ -16,7 +20,15 @@ const LoginIcons: FC = () => {
       {config.app.auth.google.allow && (
         <a href={googleOauth2URL()}>
           <button type="button" className="btn btn-link btn-floating mx-1">
-            <i className="fa fa-google"></i>
+            <i className="fa fa-google"></i> Google
+          </button>
+        </a>
+      )}
+
+      {config.app.auth.dropbox.allow && (
+        <a href={dropboxOauth2URL()}>
+          <button type="button" className="btn btn-link btn-floating mx-1">
+            <i className="fa fa-dropbox"></i> Dropbox
           </button>
         </a>
       )}

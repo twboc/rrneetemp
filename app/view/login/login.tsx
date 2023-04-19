@@ -2,15 +2,12 @@ import React, {useState, FC} from 'react'
 import LoginSelect from './login.select'
 import LoginForm from './login.login.form'
 import RegisterForm from './login.register.form'
+import withNavigation from '../../template/withNavigation/withNavigation'
 
 const Login: FC = () => {
   const [pane, setPane] = useState('login')
   const showActive = (selected: string) => (pane: string) =>
     pane === selected ? 'show active' : ''
-
-  const params = new URLSearchParams(window.location.pathname)
-
-  console.log('params: ', params)
 
   return (
     <div style={{margin: 'auto', maxWidth: '650px'}}>
@@ -35,4 +32,4 @@ const Login: FC = () => {
   )
 }
 
-export default Login
+export default withNavigation(Login)

@@ -1,13 +1,8 @@
 import React from 'react'
-// import {NativeBaseProvider} from 'native-base'
 import Navigation from '../../navigation/navigation'
 
-const Main = () => {
-  return (
-    // <NativeBaseProvider>
-    <Navigation />
-    // </NativeBaseProvider>
-  )
+const Root = () => {
+  return <Navigation />
 }
 
-export default Main
+export default Root

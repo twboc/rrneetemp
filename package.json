@@ -62,7 +62,6 @@
     "font-awesome": "^4.7.0",
     "jsonwebtoken": "^9.0.0",
     "native-base": "^3.4.28",
-    "qs": "^6.11.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-native": "^0.71.5",
