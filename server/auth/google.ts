@@ -30,7 +30,7 @@ export const googleOauthRedirect = async (req: Request, res: Response) => {
         id: v4(),
         created_at: new Date(),
         email: google_id.email,
-        phone: '555555555',
+        phone: '',
         name: google_id.name,
         given_name: google_id.given_name,
         family_name: google_id.family_name,

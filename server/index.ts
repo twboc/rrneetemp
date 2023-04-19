@@ -6,21 +6,16 @@ import {googleOauthRedirect} from './auth/google'
 import {facebookOauthRedirect} from './auth/facebook'
 import {dropboxOauthRedirect} from './auth/dropbox'
 
-console.log('__dirname: ', __dirname)
-
 const app = express()
 
-app.get('/', (req: Request, res: Response) =>
-  res.sendFile(path.resolve(__dirname + '/../public/index.html')),
-)
+const serve = (filePath: string) => (req: Request, res: Response) =>
+  res.sendFile(path.resolve(__dirname + filePath))
 
-app.get('/Login', (req: Request, res: Response) =>
-  res.sendFile(path.resolve(__dirname + '/../public/index.html')),
-)
+const serveIndex = serve('/../public/index.html')
 
-app.get('/App', (req: Request, res: Response) =>
-  res.sendFile(path.resolve(__dirname + '/../public/index.html')),
-)
+app.get('/', serveIndex)
+app.get('/Login', serveIndex)
+app.get('/App', serveIndex)
 
 app.get('/google/ouath2/redirect', googleOauthRedirect)
 app.get('/dropbox/ouath2/redirect', dropboxOauthRedirect)
