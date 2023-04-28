@@ -1,0 +1,6 @@
+{
+    "client_id": "a2usxljss5rgjvs",
+    "client_secret": "ofcxlo2d45vj2vs",
+    "redirect_uri": "http://localhost:3000/dropbox/ouath2/redirect",
+    "response_type": "code"
+}
