@@ -1,10 +1,11 @@
 import React, {FC} from 'react'
 import {Link} from 'react-router-dom'
+import style from './withNavigation.style'
 
 const SiteLinks = () => {
   return (
-    <ul style={{display: 'flex'}}>
-      <Link style={{marginRight: '10px'}} to="/">
+    <ul style={style.links}>
+      <Link to="/">
         Home
       </Link>
       <Link to="/Login">Login</Link>
@@ -17,11 +18,7 @@ const withNavigation = (Content: FC) => (props: any) => {
   return (
     <>
       <nav
-        style={{
-          border: '1px solid black',
-          width: '100%',
-          height: '80px',
-        }}>
+        style={style.nav}>
         <SiteLinks />
       </nav>
       <Content />

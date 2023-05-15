@@ -1,7 +1,7 @@
 import {Request, Response} from 'express'
 import jwt from 'jsonwebtoken'
 import {v4} from 'uuid'
-import {GoogleIdToken} from './google.type'
+import {GoogleIdToken} from '../token/token.type'
 import {user} from '../model/user'
 import google from '../resource/google/google'
 
@@ -14,7 +14,7 @@ export const googleOauthRedirect = async (req: Request, res: Response) => {
     return res.redirect('/Login?error=GAOA_ERROR')
   }
 
-  const google_id = jwt.decode(tokens.data.id_token) as GoogleIdToken
+  const token = jwt.decode(tokens.data.id_token) as GoogleIdToken
 
   /////////////////////////////////////////////////////////////////////////////////
   // how to get google user with id token and access token
@@ -24,17 +24,17 @@ export const googleOauthRedirect = async (req: Request, res: Response) => {
   // console.log('googleuser: ', googleuser)
   /////////////////////////////////////////////////////////////////////////////////
 
-  if (!(await user.findUniqueEmail(google_id.email))) {
+  if (!(await user.findUniqueEmail(token.email))) {
     await user
       .create({
         id: v4(),
         created_at: new Date(),
-        email: google_id.email,
+        email: token.email,
         phone: '',
-        name: google_id.name,
-        given_name: google_id.given_name,
-        family_name: google_id.family_name,
-        locale: google_id.locale,
+        name: token.name,
+        given_name: token.given_name,
+        family_name: token.family_name,
+        locale: token.locale,
       })
       .catch(() => {
         return res.redirect('/Login?error=UIDB_ERROR')

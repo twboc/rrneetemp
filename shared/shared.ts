@@ -1,5 +1,5 @@
-import googleOAuth2 from '../config/googleOAuth2.json'
 import dropboxOauth2 from '../config/dropboxOAuth2.json'
+import googleOAuth2 from '../config/googleOAuth2.json'
 import facebookOAuth2 from '../config/facebookOAuth2.json'
 
 export const googleOauth2URL = () => {
