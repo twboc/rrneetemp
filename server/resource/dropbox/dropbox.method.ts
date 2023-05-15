@@ -1,10 +1,7 @@
-// import OAuth2GoogleApis from './dropbox.network'
+import dropboxOauth2 from '../../../config/dropboxOAuth2.json'
 
-// const POSTFORM = OAuth2GoogleApis.CreateCaller({
-//   method: 'POST',
-//   headers: {
-//     'Content-Type': 'application/x-www-form-urlencoded',
-//   },
-// })
+const getAuth = () => 'Basic ' + Buffer.from(`${dropboxOauth2.client_id}:${dropboxOauth2.client_secret}`).toString('base64')
 
-// export {POSTFORM}
+export {
+    getAuth
+}

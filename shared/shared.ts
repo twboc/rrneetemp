@@ -6,7 +6,7 @@ export const googleOauth2URL = () => {
   const url = 'https://accounts.google.com/o/oauth2/v2/auth'
 
   const options = {
-    redirect_uri: googleOAuth2.redirect_uris[2],
+    redirect_uri: googleOAuth2.redirect_uris[3],
     client_id: googleOAuth2.client_id,
     access_type: 'offline',
     response_type: 'code',
@@ -30,6 +30,7 @@ export const dropboxOauth2URL = () => {
     response_type: dropboxOauth2.response_type,
     redirect_uri: dropboxOauth2.redirect_uri,
     access_token_type: 'offline',
+    scope: [].join(' ')
   }
 
   const qs = new URLSearchParams(options)

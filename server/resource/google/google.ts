@@ -2,10 +2,13 @@ import {getGoogleOAuthParams} from '../../auth/google.util'
 import {POSTFORM} from './google.method'
 import {OAuthGoogleApisResponse, TokenReq, TokenRes} from './google.type'
 
-const token = async (req: TokenReq) =>
-  POSTFORM<{}, OAuthGoogleApisResponse<TokenRes>>('/token', null, {
-    params: getGoogleOAuthParams(req.code),
+const token = async (req: TokenReq) => {
+  const params = getGoogleOAuthParams(req.code)
+  return POSTFORM<{}, OAuthGoogleApisResponse<TokenRes>>('/token', null, {
+    params,
   })
+}
+  
 
 const google = {
   apis: {

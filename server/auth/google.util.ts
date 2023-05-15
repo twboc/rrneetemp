@@ -4,6 +4,6 @@ export const getGoogleOAuthParams = (code: string) => ({
   code: code,
   client_id: googleOAuth2.client_id,
   client_secret: googleOAuth2.client_secret,
-  redirect_uri: googleOAuth2.redirect_uris[2],
+  redirect_uri: googleOAuth2.redirect_uris[3],
   grant_type: 'authorization_code',
 })
