@@ -1,4 +1,4 @@
-import {NetworkResponse} from '../../network/network.type'
+import {NetworkResponse} from '../../../app/component/network/network.type'
 
 export interface OAuthGoogleApisConfig {}
 

@@ -46,6 +46,8 @@ class Network<CustomConfig> extends NetworkBase {
         data,
       )
 
+      console.log("calling resource")
+
       const responseHandler: NetworkResponseHandler =
         this.DefineResponseHandler(config)
 

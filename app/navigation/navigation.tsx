@@ -1,7 +1,7 @@
 import React from 'react'
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import Layout from './navigation.layout'
-import Login from './../../shared/view/login/login'
+import Login from '../view/login/login'
 import App from './../view/app/app'
 
 const Navigation = () => {

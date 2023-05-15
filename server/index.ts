@@ -1,12 +1,12 @@
 import express, {Request, Response} from 'express'
 import path from 'path'
-import config from '../config/config.dev.json'
+import config from '../config/config'
 
 import {googleOauthRedirect} from './auth/google'
 import {facebookOauthRedirect} from './auth/facebook'
 import {dropboxOauthRedirect} from './auth/dropbox'
 
-import { logout } from './action/action'
+import { signup, logout } from './action/action'
 
 const app = express()
 
@@ -25,9 +25,8 @@ app.get('/api/google/ouath2/redirect', googleOauthRedirect)
 app.get('/api/dropbox/ouath2/redirect', dropboxOauthRedirect)
 app.get('/api/facebook/ouath2/redirect', facebookOauthRedirect)
 
+app.get('/api/signup', signup)
 app.get('/api/logout', logout)
-
-
 
 app.use('/public', express.static(path.resolve(__dirname, '../public')))
 app.use('/site', express.static(path.resolve(__dirname, '../site')))

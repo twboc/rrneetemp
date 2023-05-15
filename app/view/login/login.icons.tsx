@@ -3,8 +3,8 @@ import {
   googleOauth2URL,
   facebookOAuth2URL,
   dropboxOauth2URL,
-} from './../../../shared/shared'
-import config from '../../../config/config.dev.json'
+} from '../../auth.url'
+import config from '../../../config/config'
 
 const LoginIcons: FC = () => {
   return (

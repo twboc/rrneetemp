@@ -6,8 +6,8 @@ export const googleOauth2URL = () => {
   const url = 'https://accounts.google.com/o/oauth2/v2/auth'
 
   const options = {
-    redirect_uri: googleOAuth2.redirect_uris[3],
-    client_id: googleOAuth2.client_id,
+    redirect_uri: googleOAuth2.web.redirect_uris[0],
+    client_id: googleOAuth2.web.client_id,
     access_type: 'offline',
     response_type: 'code',
     prompt: 'consent',
@@ -15,6 +15,10 @@ export const googleOauth2URL = () => {
       'https://www.googleapis.com/auth/userinfo.profile',
       'https://www.googleapis.com/auth/userinfo.email',
     ].join(' '),
+  }
+
+  if (!options.redirect_uri) {
+    console.log("Missing redirect URI")
   }
 
   const qs = new URLSearchParams(options)

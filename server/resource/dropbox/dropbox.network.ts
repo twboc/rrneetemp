@@ -1,7 +1,7 @@
-import Network from '../../network/network'
+import Network from '../../../app/component/network/network'
 import {is200} from '../util'
 import {OAuthDropboxApisConfig} from './dropbox.type'
-import {NetworkResponse} from '../../network/network.type'
+import {NetworkResponse} from '../../../app/component/network/network.type'
 
 const response = <R>(res: NetworkResponse<R>) => {
   return {

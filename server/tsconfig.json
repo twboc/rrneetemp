@@ -10,7 +10,7 @@
       "allowSyntheticDefaultImports": true,
       "moduleResolution": "Node"
     },
-    "include": ["./**/*", "./../shared/**/*", "../app/template"],
+    "include": ["./**/*", "../app/template", "../app/component/ErrorLabel", "../app/component/network", "../app/view/login", "../app/auth.url.ts"],
     "resolve": {
       "extensions": [".js", ".jsx", ".ts", ".tsx"],
     },

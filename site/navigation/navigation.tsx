@@ -2,7 +2,7 @@ import React from 'react'
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import Layout from './navigation.layout'
 import Main from './../view/main/main'
-import Login from './../../shared/view/login/login'
+import Login from '../../app/view/login/login'
 
 const Navigation = () => {
   return (
