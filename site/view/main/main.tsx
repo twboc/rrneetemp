@@ -1,5 +1,4 @@
 import React, {FC} from 'react'
-import withNavigation from '../../template/withNavigation/withNavigation'
 
 const Main: FC = () => {
   return (
@@ -18,4 +17,4 @@ const Main: FC = () => {
 
 export {Main}
 
-export default withNavigation(Main)
+export default Main

@@ -2,7 +2,6 @@ import React, {useState, FC} from 'react'
 import LoginSelect from './login.select'
 import LoginForm from './login.login.form'
 import RegisterForm from './login.register.form'
-import withNavigation from '../../template/withNavigation/withNavigation'
 
 const Login: FC = () => {
   const [pane, setPane] = useState('login')
@@ -32,4 +31,4 @@ const Login: FC = () => {
   )
 }
 
-export default withNavigation(Login)
+export default Login

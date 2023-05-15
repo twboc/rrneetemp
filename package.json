@@ -16,15 +16,18 @@
     "start": "react-native start",
     "test": "jest",
     "electron": "electron .",
-    "all": "yarn run buildweb && yarn run dev",
     "dev": "cross-env NODE_ENV=development webpack serve --config webpack/webpack.app.dev.js",
+    "site": "cross-env NODE_ENV=production webpack --config webpack/webpack.site.prod.js",
     "build": "cross-env NODE_ENV=production webpack --config webpack/webpack.app.prod.js",
     "server": "cross-env NODE_ENV=production webpack --config webpack/webpack.server.prod.js",
-    "serve": "yarn run server && node ./dist/server/server.js",
-    "buildweb": "yarn run build && yarn run server",
+    "serve": "yarn run server && yarn run listen",
+    "listen": "node ./dist/server/server.js",
+    "deploy": "yarn run web && yarn run listen",
+    "web": "yarn run site && yarn run build && yarn run server",
     "lint": "eslint 'app/**/*.tsx' || true",
     "prettify": "prettier --write 'app/**/*.tsx'",
-    "dist:linux": "electron-builder --linux"
+    "dist:linux": "electron-builder --linux",
+    "clean": "rm -rf dist"
   },
   "keywords": [
     "webpack",

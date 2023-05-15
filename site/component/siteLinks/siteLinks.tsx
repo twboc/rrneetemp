@@ -8,7 +8,6 @@ const SiteLinks = () => {
         Home
       </Link>
       <Link to="/Login">Login</Link>
-      <Link to="/App">App</Link>
     </ul>
   )
 }

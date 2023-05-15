@@ -10,7 +10,7 @@
       "allowSyntheticDefaultImports": true,
       "moduleResolution": "Node"
     },
-    "include": ["./**/*", "./../shared/**/*"],
+    "include": ["./**/*", "./../shared/**/*", "../app/template"],
     "resolve": {
       "extensions": [".js", ".jsx", ".ts", ".tsx"],
     },

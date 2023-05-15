@@ -4,16 +4,16 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const { merge } = require('webpack-merge')
 
 const paths = require('./paths')
-const common = require('./webpack.app.common')
+const common = require('./webpack.site.common')
 const base = require('./webpack.base')
 
 module.exports = merge(common, base, {
   mode: 'production',
   devtool: false,
   output: {
-    path: paths.build + '/app',
+    path: paths.build + '/site',
     filename: 'js/[name].[contenthash].bundle.js',
-    publicPath: '/app/'
+    publicPath: '/site/'
   },
   module: {
     rules: [
@@ -43,16 +43,16 @@ module.exports = merge(common, base, {
     new HtmlWebpackPlugin({
       title: 'React React Native Electron Boilerplate',
       favicon: paths.app + '/images/favicon.png',
-      template: paths.public + '/app.html',
-      filename: '../public/app.html'
+      template: paths.public + '/index.html',
+      filename: '../public/index.html'
     }),
-    new HtmlWebpackPlugin({
-      title: 'React React Native Electron Boilerplate',
-      favicon: paths.app + '/images/favicon.png',
-      template: paths.public + '/app.html',
-      filename: '../public/electron.html',
-      publicPath: '../app/'
-    })
+    // new HtmlWebpackPlugin({
+    //   title: 'React React Native Electron Boilerplate',
+    //   favicon: paths.app + '/images/favicon.png',
+    //   template: paths.public + '/index.html',
+    //   filename: '../public/electron.html',
+    //   publicPath: '../app/'
+    // })
   ],
   optimization: {
     minimize: true,

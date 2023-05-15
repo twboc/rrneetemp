@@ -1,7 +1,7 @@
 const paths = require('./paths')
 
 module.exports = {
-  entry: [paths.app + '/index.tsx'],
+  entry: [paths.site + '/index.tsx'],
   devtool: 'inline-source-map',
   output: {
     path: paths.build,

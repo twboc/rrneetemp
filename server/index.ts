@@ -6,6 +6,8 @@ import {googleOauthRedirect} from './auth/google'
 import {facebookOauthRedirect} from './auth/facebook'
 import {dropboxOauthRedirect} from './auth/dropbox'
 
+import { logout } from './action/action'
+
 const app = express()
 
 const serve = (filePath: string) => (req: Request, res: Response) =>
@@ -13,16 +15,23 @@ const serve = (filePath: string) => (req: Request, res: Response) =>
 
 const serveIndex = serve('/../public/index.html')
 
+const serveApp = serve('/../public/app.html')
+
 app.get('/', serveIndex)
 app.get('/Login', serveIndex)
-app.get('/App', serveIndex)
+app.get('/App', serveApp)
 
-app.get('/google/ouath2/redirect', googleOauthRedirect)
-app.get('/dropbox/ouath2/redirect', dropboxOauthRedirect)
-app.get('/facebook/ouath2/redirect', facebookOauthRedirect)
+app.get('/api/google/ouath2/redirect', googleOauthRedirect)
+app.get('/api/dropbox/ouath2/redirect', dropboxOauthRedirect)
+app.get('/api/facebook/ouath2/redirect', facebookOauthRedirect)
 
-app.use('/app', express.static(path.resolve(__dirname, '../app')))
+app.get('/api/logout', logout)
+
+
+
 app.use('/public', express.static(path.resolve(__dirname, '../public')))
+app.use('/site', express.static(path.resolve(__dirname, '../site')))
+app.use('/app', express.static(path.resolve(__dirname, '../app')))
 
 app.listen(config.server.port, () =>
   console.log('Example app listening on port ' + config.server.port),

@@ -1,5 +1,5 @@
 import React from 'react'
-import SiteLinks from '../siteLinks/siteLinks'
+import Logout from '../logout/logout'
 
 const Header = () => {
   return (
@@ -9,8 +9,9 @@ const Header = () => {
         height: '100px',
         borderBottom: '1px solid black',
       }}>
-      <SiteLinks />
       App header
+
+      <Logout />
     </div>
   )
 }
