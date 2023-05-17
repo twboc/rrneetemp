@@ -1,4 +1,4 @@
-import {NetworkResponse} from '../../../app/component/network/network.type'
+import {NetworkResponse} from '../../../app/network/network.type'
 
 export interface OAuthDropboxApisConfig {}
 

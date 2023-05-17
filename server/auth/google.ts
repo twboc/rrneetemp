@@ -49,6 +49,8 @@ export const googleOauthRedirect = async (req: Request, res: Response) => {
         given_name: idToken.given_name,
         family_name: idToken.family_name,
         locale: idToken.locale,
+        salt: '',
+        password_hash: ''
       }).then((user_insert) => {
         User = user_insert
       })      

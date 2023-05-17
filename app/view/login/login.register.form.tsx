@@ -1,33 +1,31 @@
-import React, {FC, useState, Dispatch, SetStateAction} from 'react'
+import React, {FC, useState} from 'react'
 import LoginIcons from './login.icons'
-import { validateEmail } from './login.util'
+import { validateEmail, onChange } from '../../util/util'
 import InputLabel from '../../component/InputLabel/InputLabel'
 import ErrorLabel from '../../component/ErrorLabel/ErrorLabel'
-
 import resource from '../../resource/resource'
-
-const onChange = (method: Dispatch<SetStateAction<string>>, callback?: any) => (e: any) => {
-  method(e.target.value);
-  if (callback) { callback(e) }
-}
-
-
+import { ERROR_CODE } from '../../../shared/error/error'
 
 const RegisterForm: FC = () => {
   const [email, setEmail] = useState<string>('')
   const [emailRepeat, setEmailRepeat] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const [passwordRepeat, setPasswordRepeat] = useState<string>('')
+  const [registerCheck, setRegisterCheck] = useState<boolean>(true)
 
   const [hasErrors, setHasErrors] = useState<boolean>(false)
   const [invalidEmail, setInvalidEmail] = useState<boolean>(false)
   const [emailMismatch, setEmailMismatch] = useState<boolean>(false)
   const [passwordMismatch, setPasswordMismatch] = useState<boolean>(false)
 
+  const [userAlreadyRegistered, setUserAlreadyRegistered] = useState<boolean>(false)
+
+  const check = () => {
+    registerCheck ? setRegisterCheck(false) : setRegisterCheck(true)
+    return 
+  }
+
   const checkEmail = () => {
-
-    console.log("email: ", email, emailRepeat)
-
     if (!validateEmail(email)) { 
       setHasErrors(true)
       setInvalidEmail(true)
@@ -36,30 +34,36 @@ const RegisterForm: FC = () => {
       setHasErrors(true)
       setEmailMismatch(true)
     }
-
   }
 
-  
-  const submit = async () => {
-
-    setHasErrors(false)
-
-    checkEmail()
-
+  const checkPassword = () => {
     if (password !== passwordRepeat) {
       setHasErrors(true)
       setPasswordMismatch(true)
     }
+  }
 
+  const submit = async () => {
+    setUserAlreadyRegistered(false)
+    setHasErrors(false)
+    checkEmail()
+    checkPassword()
+    
     if (hasErrors) { return }
 
-    const data = { email, emailRepeat, password, passwordRepeat }
+    const res = await resource.api.signup({ email, emailRepeat, password, passwordRepeat })
 
-    console.log("Data: ", data)
+    if (!res.data.success) {
 
-    const res = await resource.api.signup(data)
+      if (res.data.error.code === ERROR_CODE.USER_REGISTERED) {
+        setUserAlreadyRegistered(true)
+      }
 
-    console.log("res: ", res)
+      return false
+    }
+
+
+    window.location.href = '/App';
 
     
   }
@@ -72,6 +76,7 @@ const RegisterForm: FC = () => {
       </div>
 
       <p className="text-center">or:</p>
+      { userAlreadyRegistered && <ErrorLabel text='User Already Registered' />}
 
       <div className="form-outline mb-4">
         <InputLabel
@@ -117,7 +122,8 @@ const RegisterForm: FC = () => {
           type="checkbox"
           value=""
           id="registerCheck"
-          checked
+          checked={registerCheck}
+          onChange={check}
           aria-describedby="registerCheckHelpText"
         />
         <label className="form-check-label" htmlFor="registerCheck">

@@ -1,7 +1,7 @@
-import Network from '../../../app/component/network/network'
+import Network from '../../../app/network/network'
 import {is200} from '../util'
 import {OAuthGoogleApisConfig, OAuthGoogleApisResponse} from './google.type'
-import {NetworkResponse} from '../../../app/component/network/network.type'
+import {NetworkResponse} from '../../../app/network/network.type'
 
 const response = <R>(res: NetworkResponse<R>): OAuthGoogleApisResponse<R> => {
   return {

@@ -6,9 +6,12 @@ import {googleOauthRedirect} from './auth/google'
 import {facebookOauthRedirect} from './auth/facebook'
 import {dropboxOauthRedirect} from './auth/dropbox'
 
-import { signup, logout } from './action/action'
+import { signup, login, logout } from './action/action'
 
 const app = express()
+
+app.use(express.json())
+app.use(express.urlencoded())
 
 const serve = (filePath: string) => (req: Request, res: Response) =>
   res.sendFile(path.resolve(__dirname + filePath))
@@ -25,7 +28,8 @@ app.get('/api/google/ouath2/redirect', googleOauthRedirect)
 app.get('/api/dropbox/ouath2/redirect', dropboxOauthRedirect)
 app.get('/api/facebook/ouath2/redirect', facebookOauthRedirect)
 
-app.get('/api/signup', signup)
+app.post('/api/signup', signup)
+app.post('/api/login', login)
 app.get('/api/logout', logout)
 
 app.use('/public', express.static(path.resolve(__dirname, '../public')))
