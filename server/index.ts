@@ -6,7 +6,10 @@ import {googleOauthRedirect} from './auth/google'
 import {facebookOauthRedirect} from './auth/facebook'
 import {dropboxOauthRedirect} from './auth/dropbox'
 
+import { auth } from './middleware/auth'
 import { signup, login, logout } from './action/action'
+
+
 
 const app = express()
 
@@ -22,7 +25,7 @@ const serveApp = serve('/../public/app.html')
 
 app.get('/', serveIndex)
 app.get('/Login', serveIndex)
-app.get('/App', serveApp)
+app.get('/App', auth, serveApp)
 
 app.get('/api/google/ouath2/redirect', googleOauthRedirect)
 app.get('/api/dropbox/ouath2/redirect', dropboxOauthRedirect)

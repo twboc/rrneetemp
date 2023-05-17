@@ -3,6 +3,7 @@ import {user} from '../model/user'
 import {v4} from 'uuid'
 import { ERROR_USER_REGISTERED, ERROR_USER_OR_PASSWORD_INVALID } from '../../shared/error/error'
 import crypto from 'crypto'
+import { create } from '../module/auth'
 
 interface IHashPair {
     salt: string
@@ -49,14 +50,37 @@ export const signup = async (req: Request, res: Response) => {
             ...hashed,
         }).then((user_insert) => {
             User = user_insert
-        })      
+        })
         .catch((e) => {
             console.log("Error: ", e)
         })
 
+
+        if (!User) {
+            return res.json({
+                success: false,
+                error: {
+                    code: 'USER_NOT_CREATED',
+                    message: 'user was not created'
+                },
+            })
+        }
+
+    const token = create({
+        //@ts-ignore
+        id: User.id,
+        //@ts-ignore
+        email: User.email
+    })
+
+    console.log("TOKEN: ", token)
+
     return res.json({
         success: true,
         error: null,
+        data: {
+            token
+        }
     })
 }
 
