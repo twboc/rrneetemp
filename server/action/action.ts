@@ -32,11 +32,8 @@ export const signup = async (req: Request, res: Response) => {
     }
 
     const salt = crypto.randomBytes(16).toString('base64')
-
-    console.log("salt: ", salt)
-    console.log("hasher: ", hasher(req.body.password, salt))
-  
     const hashed = hasher(req.body.password, salt)
+
     await user
         .create({
             id: v4(),
@@ -48,38 +45,36 @@ export const signup = async (req: Request, res: Response) => {
             family_name: '',
             locale: '',
             ...hashed,
-        }).then((user_insert) => {
+        })
+        .then((user_insert) => {
             User = user_insert
         })
         .catch((e) => {
             console.log("Error: ", e)
         })
 
+    if (!User) {
+        return res.json({
+            success: false,
+            error: {
+                code: 'USER_NOT_CREATED',
+                message: 'user was not created'
+            },
+        })
+    }
 
-        if (!User) {
-            return res.json({
-                success: false,
-                error: {
-                    code: 'USER_NOT_CREATED',
-                    message: 'user was not created'
-                },
-            })
-        }
-
-    const token = create({
+    const authorization = create({
         //@ts-ignore
         id: User.id,
         //@ts-ignore
         email: User.email
     })
 
-    console.log("TOKEN: ", token)
-
     return res.json({
         success: true,
         error: null,
         data: {
-            token
+            authorization
         }
     })
 }
@@ -104,9 +99,17 @@ export const login = async (req: Request, res: Response) => {
         })
     }
 
+    const authorization = create({
+        id: User.id,
+        email: User.email
+    })
+
     return res.json({
         success: true,
         error: null,
+        data: {
+            authorization
+        }
     })
 }
 

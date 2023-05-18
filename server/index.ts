@@ -9,6 +9,7 @@ import {dropboxOauthRedirect} from './auth/dropbox'
 
 import { auth } from './middleware/auth'
 import { signup, login, logout } from './action/action'
+import { hasAuthorization, validateAuthorisation } from './module/auth'
 
 const app = express()
 
@@ -22,6 +23,24 @@ const serve = (filePath: string) => (req: Request, res: Response) =>
 const serveIndex = serve('/../public/index.html')
 
 const serveApp = serve('/../public/app.html')
+
+// const serveLogin = async (req: Request, res: Response) => {
+//   const authorization = hasAuthorization(req)
+
+//   console.log("LOGIN authorization: ", authorization)
+//   if (!authorization){
+//     return serveIndex(req, res)
+//   }
+
+//   const isValid = await validateAuthorisation(authorization)
+//   console.log("LOGIN isValid: ", isValid)
+//   if (!isValid){
+//     return serveIndex(req, res)
+//   }
+
+//   return serveApp(req, res)
+
+// }
 
 app.get('/', serveIndex)
 app.get('/Login', serveIndex)
