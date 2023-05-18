@@ -9,6 +9,7 @@ const _Cookie = new Cookie({
         const value = cookie.get(key)
         return value
     },
+    remove: (key: string) => cookie.remove(key)
 })
 
 

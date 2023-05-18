@@ -37,15 +37,16 @@ const LoginForm: FC<LoginFormProps> = props => {
       return setGenericError(true)
     }
 
-    await Storage.set(CONST_KEYS.authorization, res.data.data.authorization)
-    Cookie.set(CONST_KEYS.authorization, res.data.data.authorization)
-
-    Url.changePath('/App')
+    if (res.data.success) {
+      await Storage.set(CONST_KEYS.authorization, res.data.data.authorization)
+      Cookie.set(CONST_KEYS.authorization, res.data.data.authorization)
+      Url.changePath('/App')
+    }
 
   }
 
   return (
-    <form>
+    <>
       <div className="text-center mb-3">
         <p>Sign in with:</p>
         <LoginIcons />
@@ -57,7 +58,7 @@ const LoginForm: FC<LoginFormProps> = props => {
 
       <div className="form-outline mb-4">
         <InputLabel
-          id="registerEmail"
+          id="loginEmail"
           name="Email"
           type="email"
           onChange={onChange(setEmail)}
@@ -67,7 +68,7 @@ const LoginForm: FC<LoginFormProps> = props => {
 
       <div className="form-outline mb-4">
         <InputLabel
-          id="registerPassword"
+          id="loginPassword"
           name="Password"
           type="password"
           onChange={onChange(setPassword)}
@@ -108,7 +109,7 @@ const LoginForm: FC<LoginFormProps> = props => {
           </a>
         </p>
       </div>
-    </form>
+    </>
   )
 }
 

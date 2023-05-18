@@ -10,7 +10,9 @@ import Storage from '../../module/storage/storage'
 import { CONST_KEYS } from '../../const/const'
 import Url from '../../module/url/url'
 
+
 const RegisterForm: FC = () => {
+
   const [email, setEmail] = useState<string>('')
   const [emailRepeat, setEmailRepeat] = useState<string>('')
   const [password, setPassword] = useState<string>('')
@@ -21,7 +23,6 @@ const RegisterForm: FC = () => {
   const [invalidEmail, setInvalidEmail] = useState<boolean>(false)
   const [emailMismatch, setEmailMismatch] = useState<boolean>(false)
   const [passwordMismatch, setPasswordMismatch] = useState<boolean>(false)
-
   const [userAlreadyRegistered, setUserAlreadyRegistered] = useState<boolean>(false)
 
   const check = () => {
@@ -29,51 +30,68 @@ const RegisterForm: FC = () => {
     return 
   }
 
+  const identicalEmail = () => email == emailRepeat
+  const identicalPassword = () => password == passwordRepeat
+
+  const resetErrors = async () => {
+    setUserAlreadyRegistered(false)
+    setInvalidEmail(false)
+    setEmailMismatch(false)
+    setPasswordMismatch(false)
+    setHasErrors(false)
+    return false
+  }
+
+
   const checkEmail = () => {
     if (!validateEmail(email)) { 
-      setHasErrors(true)
       setInvalidEmail(true)
-    }
-    if (email != emailRepeat) {
       setHasErrors(true)
+    }
+    if (!identicalEmail()) {
       setEmailMismatch(true)
+      setHasErrors(true)
     }
   }
 
   const checkPassword = () => {
-    if (password !== passwordRepeat) {
-      setHasErrors(true)
+    if (!identicalPassword()) {
       setPasswordMismatch(true)
+      setHasErrors(true)
     }
   }
 
   const submit = async () => {
-    setUserAlreadyRegistered(false)
-    setHasErrors(false)
+    resetErrors()
     checkEmail()
     checkPassword()
-    
-    if (hasErrors) { return }
+
+    if (!validateEmail(email) || !identicalEmail() || !identicalPassword()) {
+      return
+    }
 
     const res = await resource.api.signup({ email, emailRepeat, password, passwordRepeat })
-
+  
     if (!res.data.success) {
-
+  
       if (res.data.error.code === ERROR_CODE.USER_REGISTERED) {
         setUserAlreadyRegistered(true)
       }
-
-      return false
+  
+      return
     }
-    
-    await Storage.set(CONST_KEYS.authorization, res.data.data.authorization)
-    Cookie.set(CONST_KEYS.authorization, res.data.data.authorization)
-    Url.changePath('/App')
+
+    if (res.data.success) {
+      await Storage.set(CONST_KEYS.authorization, res.data.data.authorization)
+      await Cookie.set(CONST_KEYS.authorization, res.data.data.authorization)
+      const cookie = await Cookie.get(CONST_KEYS.authorization)
+      Url.changePath('/App')
+    }
 
   }
 
   return (
-    <form>
+    <>
       <div className="text-center mb-3">
         <p>Sign up with:</p>
         <LoginIcons />
@@ -138,7 +156,7 @@ const RegisterForm: FC = () => {
       <button type="submit" className="btn btn-primary btn-block mb-3" onClick={submit}>
         Sign in
       </button>
-    </form>
+    </>
   )
 }
 

@@ -7,4 +7,5 @@ export default class Cookie {
     }
     set = async (key: string, value: any): Promise<string | undefined> => this.handler.set(key, value)
     get = async (key: string): Promise<string | undefined> => this.handler.get(key)
+    remove = (key: string) => this.handler.remove(key)
 }

@@ -51,9 +51,12 @@ interface SignupReq {
 
 interface SignupRes extends IRes<{ authorization: string }> {}
 
+interface LogoutReq {}
+
 class Api {
-	public login = (req: LoginReq) => API_POST<LoginReq, LoginRes>('/api/login', req)
     public signup = async (req: SignupReq) => await API_POST<SignupReq, SignupRes>('/api/signup', req)
+	public login = (req: LoginReq) => API_POST<LoginReq, LoginRes>('/api/login', req)
+    public logout = () => API_POST<LogoutReq, IRes<{}>>('/api/logout')
 }
 
 export default {
