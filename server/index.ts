@@ -1,5 +1,6 @@
 import express, {Request, Response} from 'express'
 import path from 'path'
+import cookieParser from 'cookie-parser'
 import config from '../config/config'
 
 import {googleOauthRedirect} from './auth/google'
@@ -9,12 +10,11 @@ import {dropboxOauthRedirect} from './auth/dropbox'
 import { auth } from './middleware/auth'
 import { signup, login, logout } from './action/action'
 
-
-
 const app = express()
 
 app.use(express.json())
 app.use(express.urlencoded())
+app.use(cookieParser());
 
 const serve = (filePath: string) => (req: Request, res: Response) =>
   res.sendFile(path.resolve(__dirname + filePath))
