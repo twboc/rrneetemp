@@ -1,10 +1,22 @@
 import Network from "../network/network"
+import { NetworkConfig } from '../network/network.type'
 import config from '../../config/config'
+import Storage from '../module/storage/storage'
+import { CONST_KEYS } from '../const/const'
 
 
+const auth = async (config: NetworkConfig) => {
+    const authorization = await Storage.get(CONST_KEYS.authorization)
+    if (authorization) {
+        config.headers = { ...config.headers }
+        config.headers.Authorization = `Bearer ${authorization}`
+    }
+    return config
+}
 
 const API = new Network({
-    baseURL: `http://${config.server.url}:${config.server.port}`
+    baseURL: `http://${config.server.url}:${config.server.port}`,
+    auth 
 })
 
 const API_POST = API.CreateCaller({
@@ -28,7 +40,7 @@ interface LoginReq {
     password: string
 }
 
-interface LoginRes extends IRes<{}>{}
+interface LoginRes extends IRes<{ authorization: string }>{}
 
 interface SignupReq {
     email: string
@@ -37,7 +49,7 @@ interface SignupReq {
     passwordRepeat: string
 }
 
-interface SignupRes extends IRes<{}> {}
+interface SignupRes extends IRes<{ authorization: string }> {}
 
 class Api {
 	public login = (req: LoginReq) => API_POST<LoginReq, LoginRes>('/api/login', req)

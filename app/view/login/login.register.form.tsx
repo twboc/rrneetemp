@@ -5,6 +5,10 @@ import InputLabel from '../../component/InputLabel/InputLabel'
 import ErrorLabel from '../../component/ErrorLabel/ErrorLabel'
 import resource from '../../resource/resource'
 import { ERROR_CODE } from '../../../shared/error/error'
+import Cookie from '../../module/cookie/cookie'
+import Storage from '../../module/storage/storage'
+import { CONST_KEYS } from '../../const/const'
+import Url from '../../module/url/url'
 
 const RegisterForm: FC = () => {
   const [email, setEmail] = useState<string>('')
@@ -61,11 +65,11 @@ const RegisterForm: FC = () => {
 
       return false
     }
-
-
-    window.location.href = '/App';
-
     
+    await Storage.set(CONST_KEYS.authorization, res.data.data.authorization)
+    Cookie.set(CONST_KEYS.authorization, res.data.data.authorization)
+    Url.changePath('/App')
+
   }
 
   return (
