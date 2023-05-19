@@ -10,10 +10,10 @@ const Navigation = () => {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<App />} />
-          <Route path="Login" element={<Login />} />
           <Route path="App" element={<App />} />
           <Route path="*" element={<App />} />
         </Route>
+        <Route path="Login" element={<Login />} />
       </Routes>
     </BrowserRouter>
   )

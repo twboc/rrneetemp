@@ -14,7 +14,10 @@ const logout = async () => {
 }
 
 const Logout  = () => {
-    return <div onClick={logout}>Logout</div>
+    return <div className='cursor-pointer' onClick={logout}>
+        <i style={{ fontSize: '25px', color: 'grey'}} className="fa fa-sign-out" />
+        Logout
+    </div>
 }
 
 export default Logout

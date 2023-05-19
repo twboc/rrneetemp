@@ -1,0 +1,42 @@
+@import '../../style/variables';
+
+$container-height: 60px;
+
+.header_container {
+    width: 100%;
+    height: $container-height;
+    display: flex;
+    flex-direction: row;
+}
+
+.header_left {
+    width: $left-width;
+    height: 100%;
+}
+
+.header_main {
+    flex-grow: 1
+}
+
+.header_main_search {
+    border: 1px solid blue;
+    height: 100%;
+    width: 60%;
+    margin: auto;
+}
+
+.header_right {
+    width: $right-width;
+    // border: 1px solid red;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+
+.header_right_menu_container {
+    position: absolute;
+    top: $container-height;
+    float: right;
+    width: $right-width;
+}

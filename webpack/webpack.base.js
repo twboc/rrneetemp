@@ -20,10 +20,18 @@ module.exports = {
         test: /\.(woff(2)?|eot|ttf|otf|svg|)$/,
         type: 'asset/inline',
       },
+      { 
+        test: /\.png$/,
+        use: 'url-loader?mimetype=image/png'
+      },
+      { 
+        test: /\.jpg$/,
+        use: 'url-loader?mimetype=image/jpg'
+      },
     ],
   },
   resolve: {
     modules: [paths.app, 'node_modules'],
-    extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
+    extensions: ['.js', '.jsx', '.ts', '.tsx', '.json', '.jpg'],
   },
 }

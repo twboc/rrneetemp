@@ -1,14 +1,9 @@
 import React from 'react'
+import './leftNav.scss'
 
 const LeftNav = () => {
   return (
-    <div
-      style={{
-        width: '290px',
-        height: '100%',
-        minHeight: '100%',
-        borderRight: '1px solid black',
-      }}></div>
+    <div className='leftNav shadow-2' ></div>
   )
 }
 

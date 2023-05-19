@@ -1,5 +1,5 @@
 import React, {FC} from 'react'
-import InputLabelProps from './InputLabel.type'
+import InputLabelProps from './inputLabel.type'
 
 const InputLabel: FC<InputLabelProps> = (props) => {
     return <>

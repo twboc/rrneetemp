@@ -15,6 +15,7 @@
     "moduleResolution": "Node",
     "strictNullChecks": true
   },
+  "include": ["app/index.d.ts"],
   "exclude": [
     "node_modules",
     "dist",
