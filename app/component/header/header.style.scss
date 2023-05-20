@@ -1,10 +1,8 @@
 @import '../../style/variables';
 
-$container-height: 60px;
-
 .header_container {
     width: 100%;
-    height: $container-height;
+    height: $header-height;
     display: flex;
     flex-direction: row;
 }
@@ -27,7 +25,6 @@ $container-height: 60px;
 
 .header_right {
     width: $right-width;
-    // border: 1px solid red;
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
@@ -36,7 +33,7 @@ $container-height: 60px;
 
 .header_right_menu_container {
     position: absolute;
-    top: $container-height;
+    top: $header-height;
     float: right;
     width: $right-width;
 }

@@ -10,13 +10,13 @@ const logout = async () => {
     await Storage.remove(CONST_KEYS.authorization)
     Cookie.remove(CONST_KEYS.authorization)
     Url.changePath('/Login')
-
 }
 
 const Logout  = () => {
-    return <div className='cursor-pointer' onClick={logout}>
+    return <div className='cursor-pointer' style={{lineHeight: '25px', display: 'flex'}} onClick={logout}>
         <i style={{ fontSize: '25px', color: 'grey'}} className="fa fa-sign-out" />
-        Logout
+        <div style={{ marginTop : '-1px', marginLeft: '5px'}}>Logout</div>
+        
     </div>
 }
 

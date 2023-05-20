@@ -2,7 +2,8 @@ import React from 'react'
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import Layout from './navigation.layout'
 import Login from '../view/login/login'
-import App from './../view/app/app'
+import App from '../view/app/app'
+import Client from '../view/client/client'
 
 const Navigation = () => {
   return (
@@ -11,6 +12,7 @@ const Navigation = () => {
         <Route path="/" element={<Layout />}>
           <Route index element={<App />} />
           <Route path="App" element={<App />} />
+          <Route path="Client" element={<Client />} />
           <Route path="*" element={<App />} />
         </Route>
         <Route path="Login" element={<Login />} />

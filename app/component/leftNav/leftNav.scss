@@ -1,7 +1,10 @@
-
+@import '../../style/variables';
 
 .leftNav {
-    width: 290px;
+    width: $left-width;
     height: 100%;
     min-height: 100%;
+    float: left;
+    display: flex;
+    flex-direction: column;
 }
