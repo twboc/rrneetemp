@@ -1,9 +1,6 @@
 import React, { FC } from 'react'
 import './content.scss'
-
-interface ContentProps {
-    children: React.ReactNode
-}
+import ContentProps from './content.type'
 
 const Content: FC<ContentProps> = (props) => {
   return <div className='content'>
