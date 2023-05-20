@@ -1,11 +1,16 @@
-import type {user as User} from '@prisma/client'
+import type {user as IUser} from '@prisma/client'
 import db from '../db/db'
+import { IInsert } from './model.type'
+import { InsertSucess, InsertFail } from './model.util'
 
-const user = {
-  create: async (user: User) => {
-    return await db.user.create({data: user})
-  },
-  findUniqueEmail: async (email: string): Promise<User | null> => {
+const UserModel = {
+  create: async (payload: IUser): Promise<IInsert<'User',IUser, IUser>> =>
+    await db.user
+      .create({data: payload})
+      .then((insert) => InsertSucess('User', payload, insert))
+      .catch((error: Error) => InsertFail('User', payload, error))
+  ,
+  findUniqueEmail: async (email: string): Promise<IUser | null> => {
     return await db.user.findUnique({
       where: {
         email: email,
@@ -14,4 +19,4 @@ const user = {
   },
 }
 
-export {user}
+export default UserModel

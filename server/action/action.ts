@@ -1,116 +1,61 @@
 import {Request, Response} from 'express'
-import {user} from '../model/user'
+import UserModel from '../model/user'
+import type {user as IUser} from '@prisma/client'
 import {v4} from 'uuid'
-import { ERROR_USER_REGISTERED, ERROR_USER_OR_PASSWORD_INVALID } from '../../shared/error/error'
 import crypto from 'crypto'
-import { create } from '../module/auth'
+import Authorization from '../module/authorization'
+import Respond from '../respond/respond'
+import Constroller from '../controller/constroller'
 
-interface IHashPair {
-    salt: string
-    password_hash: string
-}
-
-let hasher = (password: string, salt: string): IHashPair => {
-    let hash = crypto.createHmac('sha512', salt);
-    hash.update(password);
-    let value = hash.digest('hex');
+const requestToUser = async (req: Request) : Promise<IUser> => {
+    const salt = crypto.randomBytes(16).toString('base64')
+    const hashed = Authorization.hashPassword(req.body.password, salt)
     return {
-        salt: salt,
-        password_hash: value
-    };
-};
+        id: v4(),
+        created_at: new Date(),
+        email: req.body.email,
+        phone: '',
+        name: '',
+        given_name: '',
+        family_name: '',
+        locale: '',
+        ...hashed,
+    }
+}
 
 export const signup = async (req: Request, res: Response) => {
 
-    let User = await user.findUniqueEmail(req.body.email)
+    const userInDb = await UserModel.findUniqueEmail(req.body.email)
+    if (userInDb) return Respond.Fail.UserAlreadyRegistered(res)
 
-    if (User) {
-        return res.json({
-            success: false,
-            error: ERROR_USER_REGISTERED,
-        })
-    }
+    const userData = await requestToUser(req)
+    const result = await Constroller.User.CreateWithOrganisation(userData)
 
-    const salt = crypto.randomBytes(16).toString('base64')
-    const hashed = hasher(req.body.password, salt)
-
-    await user
-        .create({
-            id: v4(),
-            created_at: new Date(),
-            email: req.body.email,
-            phone: '',
-            name: '',
-            given_name: '',
-            family_name: '',
-            locale: '',
-            ...hashed,
-        })
-        .then((user_insert) => {
-            User = user_insert
-        })
-        .catch((e) => {
-            console.log("Error: ", e)
-        })
-
-    if (!User) {
-        return res.json({
-            success: false,
-            error: {
-                code: 'USER_NOT_CREATED',
-                message: 'user was not created'
-            },
-        })
-    }
-
-    const authorization = create({
+    if (!result.success) return Respond.Fail.UserNotCreated(res)
+    
+    const authorization = Authorization.create({
         //@ts-ignore
-        id: User.id,
+        id: result.User.id,
         //@ts-ignore
-        email: User.email
+        email: result.User.email
     })
 
-    return res.json({
-        success: true,
-        error: null,
-        data: {
-            authorization
-        }
-    })
+    return Respond.Success.Login(res, authorization)
 }
 
 export const login = async (req: Request, res: Response) => {
 
-    let User = await user.findUniqueEmail(req.body.email)
+    let User = await UserModel.findUniqueEmail(req.body.email)
+    if (!User) return Respond.Fail.UserNotCreated(res)
+    if (User.password_hash != Authorization.hashPassword(req.body.password, User.salt).password_hash) return Respond.Fail.UserNotCreated(res)
 
-    if (!User) {
-        return res.json({
-            success: false,
-            error: ERROR_USER_OR_PASSWORD_INVALID,
-        })
-    }
-
-    const hashed = hasher(req.body.password, User.salt)
-
-    if (User.password_hash != hashed.password_hash) {
-        return res.json({
-            success: false,
-            error: ERROR_USER_OR_PASSWORD_INVALID,
-        })
-    }
-
-    const authorization = create({
+    const authorization = Authorization.create({
         id: User.id,
         email: User.email
     })
 
-    return res.json({
-        success: true,
-        error: null,
-        data: {
-            authorization
-        }
-    })
+    return Respond.Success.Login(res, authorization)
+
 }
 
 

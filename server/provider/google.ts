@@ -2,7 +2,7 @@ import {Request, Response} from 'express'
 import jwt from 'jsonwebtoken'
 import {v4} from 'uuid'
 import {GoogleToken, GoogleIdToken} from '../token/token.type'
-import {user} from '../model/user'
+import Model from '../model/model'
 import {google_token_data} from '../model/google_token_data'
 import {google_id_token} from '../model/google_id_token'
 import google from '../resource/google/google'
@@ -34,12 +34,12 @@ export const googleOauthRedirect = async (req: Request, res: Response) => {
   // })
   // console.log('googleuser: ', googleuser)
   /////////////////////////////////////////////////////////////////////////////////
-  let User = await user.findUniqueEmail(idToken.email)
+  let User = await Model.User.findUniqueEmail(idToken.email)
 
   if (!(User)) {
 
     console.log("CREATE NEW USER")
-    await user
+    await Model.User
       .create({
         id: v4(),
         created_at: new Date(),
@@ -51,12 +51,14 @@ export const googleOauthRedirect = async (req: Request, res: Response) => {
         locale: idToken.locale,
         salt: '',
         password_hash: ''
-      }).then((user_insert) => {
-        User = user_insert
-      })      
-      .catch(() => {
-        return res.redirect('/Login?error=UIDB_ERROR')
       })
+      
+      // .then((user_insert) => {
+      //   User = user_insert
+      // })      
+      // .catch(() => {
+      //   return res.redirect('/Login?error=UIDB_ERROR')
+      // })
   }
 
 

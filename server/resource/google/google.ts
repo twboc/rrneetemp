@@ -1,4 +1,4 @@
-import {getGoogleOAuthParams} from '../../auth/google.util'
+import {getGoogleOAuthParams} from '../../provider/google.util'
 import {POSTFORM} from './google.method'
 import {OAuthGoogleApisResponse, TokenReq, TokenRes} from './google.type'
 

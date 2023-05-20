@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
+import crypto from 'crypto'
 import jwt from 'jsonwebtoken'
 const H24INSEC = 86400 // 24 * 60 * 60
 
@@ -14,11 +15,6 @@ export interface IToken {
     email: string
     iat: number
     exp: number
-}
-  
-
-export const create = (data: ITokenData) => {
-    return jwt.sign(data, TEMP_SECRET, { expiresIn: `${H24INSEC}s` });
 }
 
 export const hasAuthorization = (req: Request): string | null => {
@@ -47,3 +43,29 @@ export const validateAuthorisation = async (authorization: string): Promise<null
     })
   })
 }
+
+interface IHashPair {
+  salt: string
+  password_hash: string
+}
+
+let hashPassword = (password: string, salt: string): IHashPair => {
+  let hash = crypto.createHmac('sha512', salt);
+  hash.update(password);
+  let value = hash.digest('hex');
+  return {
+      salt: salt,
+      password_hash: value
+  };
+};
+
+
+class Authorization {
+  create = (data: ITokenData) => {
+    return jwt.sign(data, TEMP_SECRET, { expiresIn: `${H24INSEC}s` });
+  }
+  hashPassword = hashPassword
+}
+
+
+export default new Authorization()

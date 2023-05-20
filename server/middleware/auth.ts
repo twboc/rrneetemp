@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
-import { hasAuthorization, validateAuthorisation } from '../module/auth'
+import { hasAuthorization, validateAuthorisation } from '../module/authorization'
 
 export const auth = async (req: Request, res: Response, next: NextFunction) => {
   const authorization = hasAuthorization(req)
