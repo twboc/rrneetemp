@@ -4,6 +4,11 @@ const Organisation = () => {
 
     return <>
         Organisation
+        <br/>
+        <input />
+        <br/>
+        <br/>
+        Add Client
         </>
 }
 

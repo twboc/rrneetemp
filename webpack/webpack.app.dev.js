@@ -2,7 +2,9 @@ const {merge} = require('webpack-merge')
 const common = require('./webpack.app.common')
 const base = require('./webpack.base')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 const paths = require('./paths')
+
 
 module.exports = merge(common, base, {
   mode: 'development',
@@ -38,5 +40,13 @@ module.exports = merge(common, base, {
       template: paths.public + '/index.html',
       filename: '../dist/index.html',
     }),
+    // new CopyWebpackPlugin({
+    //   patterns: [
+    //     {from:'./app/asset/image',to:'../dist/app/asset/image'} 
+    //   ],
+    // }),
+    // new CopyWebpackPlugin([
+    //   {from:'../app/asset/image',to:'../dist/app/asset/image'} 
+    // ]), 
   ],
 })

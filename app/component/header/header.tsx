@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
 import Logout from '../logout/logout'
 import './header.style.scss'
+// import KanagawaveLogo from '../../asset/image/kanagawave-124.jpg'
 
 const HeaderLeft = () => {
   return <div className='header_left'>
+    {/* <img src={KanagawaveLogo} /> */}
     Kanagawave
   </div>
 }

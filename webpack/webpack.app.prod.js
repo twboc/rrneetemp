@@ -1,6 +1,7 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { merge } = require('webpack-merge')
 
 const paths = require('./paths')
@@ -52,7 +53,10 @@ module.exports = merge(common, base, {
       template: paths.public + '/app.html',
       filename: '../public/electron.html',
       publicPath: '../app/'
-    })
+    }),
+    // new CopyWebpackPlugin([
+    //   {from:'../app/asset/image', to:'../dist/app/asset/image'} 
+    // ]), 
   ],
   optimization: {
     minimize: true,

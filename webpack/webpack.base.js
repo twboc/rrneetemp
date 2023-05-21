@@ -32,6 +32,6 @@ module.exports = {
   },
   resolve: {
     modules: [paths.app, 'node_modules'],
-    extensions: ['.js', '.jsx', '.ts', '.tsx', '.json', '.jpg'],
+    extensions: ['.js', '.jsx', '.ts', '.tsx', '.json', '.png', '.jpg'],
   },
 }

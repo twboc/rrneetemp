@@ -6,6 +6,7 @@ import crypto from 'crypto'
 import Authorization from '../module/authorization'
 import Respond from '../respond/respond'
 import Constroller from '../controller/constroller'
+import {POSITION} from '../const/const'
 
 const requestToUser = async (req: Request) : Promise<IUser> => {
     const salt = crypto.randomBytes(16).toString('base64')
@@ -29,7 +30,7 @@ export const signup = async (req: Request, res: Response) => {
     if (userInDb) return Respond.Fail.UserAlreadyRegistered(res)
 
     const userData = await requestToUser(req)
-    const result = await Constroller.User.CreateWithOrganisation(userData)
+    const result = await Constroller.User.CreateWithOrganisation(userData, POSITION.OWNER)
 
     if (!result.success) return Respond.Fail.UserNotCreated(res)
     

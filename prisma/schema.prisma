@@ -41,6 +41,8 @@ model user_organisation {
   organisation   organisation @relation(fields: [organisation_id], references: [id])
   organisation_id String @db.Uuid
 
+  position String
+
   @@id([user_id, organisation_id])
 }
 

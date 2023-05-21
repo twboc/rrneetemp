@@ -26,14 +26,14 @@ interface DBError {
     error: Error
 }
 
-const CreateWithOrganisation = async (user: IUser): Promise<IUserCreate | DBError> => {
+const CreateWithOrganisation = async (user: IUser, position: string): Promise<IUserCreate | DBError> => {
     let UserInsert = await Model.User.create(user)
     if (!UserInsert.success) return UserInsert as DBError
 
     let OrganisationInsert = await Model.Organisation
         .create({
             id: v4(),
-            name: 'My Organisation'
+            name: `My Organisation - ${user.email.split('@')[0]}`,
         })
 
     if (!OrganisationInsert.success) return OrganisationInsert as DBError
@@ -45,7 +45,8 @@ const CreateWithOrganisation = async (user: IUser): Promise<IUserCreate | DBErro
     let UserOrganisationInsert = await Model.UserOrganisation
         .create({
             user_id: User.id,
-            organisation_id: Organisation.id
+            organisation_id: Organisation.id,
+            position: position
         })
 
     if (!UserOrganisationInsert.success) return UserOrganisationInsert as DBError
