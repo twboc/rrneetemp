@@ -23,6 +23,10 @@ const API_POST = API.CreateCaller({
     method: 'POST'
 })
 
+const API_GET = API.CreateCaller({
+    method: 'GET'
+})
+
 interface IRes<T> {
     data: {
 
@@ -53,10 +57,27 @@ interface SignupRes extends IRes<{ authorization: string }> {}
 
 interface LogoutReq {}
 
+class Auth {
+    public Signup = async (req: SignupReq) => await API_POST<SignupReq, SignupRes>('/api/auth/signup', req)
+	public Login = (req: LoginReq) => API_POST<LoginReq, LoginRes>('/api/auth/login', req)
+    public Logout = () => API_POST<LogoutReq, IRes<{}>>('/api/auth/logout')
+}
+
+class Organisation {
+    Get = async (req: SignupReq) => await API_GET<SignupReq, SignupRes>('/api/organisation', req)
+    // public Signup = async (req: SignupReq) => await API_POST<SignupReq, SignupRes>('/api/auth/signup', req)
+	// public Login = (req: LoginReq) => API_POST<LoginReq, LoginRes>('/api/auth/login', req)
+    // public Logout = () => API_POST<LogoutReq, IRes<{}>>('/api/auth/logout')
+}
+
+
+
 class Api {
-    public signup = async (req: SignupReq) => await API_POST<SignupReq, SignupRes>('/api/signup', req)
-	public login = (req: LoginReq) => API_POST<LoginReq, LoginRes>('/api/login', req)
-    public logout = () => API_POST<LogoutReq, IRes<{}>>('/api/logout')
+
+    Auth = new Auth()
+    // public signup = async (req: SignupReq) => await API_POST<SignupReq, SignupRes>('/api/auth/signup', req)
+	// public login = (req: LoginReq) => API_POST<LoginReq, LoginRes>('/api/auth/login', req)
+    // public logout = () => API_POST<LogoutReq, IRes<{}>>('/api/auth/logout')
 }
 
 export default {
