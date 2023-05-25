@@ -1,19 +1,20 @@
 import React, {FC} from 'react'
 import InputLabelProps from './inputLabel.type'
 
-const InputLabel: FC<InputLabelProps> = (props) => {
-    return <>
-      <label className="form-label" htmlFor={props.id} >
+const InputLabel: FC<InputLabelProps> = props => {
+  return (
+    <>
+      <label className="form-label" htmlFor={props.id}>
         {props.name}
       </label>
-      <input 
+      <input
         id={props.id}
         type={props.type}
         onChange={props.onChange}
-        className="form-control" 
+        className="form-control"
       />
     </>
+  )
 }
-  
 
-  export default InputLabel
+export default InputLabel

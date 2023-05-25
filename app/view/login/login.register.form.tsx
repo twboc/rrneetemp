@@ -1,18 +1,16 @@
 import React, {FC, useState} from 'react'
 import LoginIcons from './login.icons'
-import { validateEmail, onChange } from '../../util/util'
+import {validateEmail, onChange} from '../../util/util'
 import InputLabel from '../../component/inputLabel/inputLabel'
 import ErrorLabel from '../../component/errorLabel/errorLabel'
 import resource from '../../resource/resource'
-import { ERROR_CODE } from '../../../shared/error/error'
+import {ERROR_CODE} from '../../../shared/error/error'
 import Cookie from '../../module/cookie/cookie'
 import Storage from '../../module/storage/storage'
-import { CONST_KEYS } from '../../const/const'
+import {CONST_KEYS} from '../../const/const'
 import Url from '../../module/url/url'
 
-
 const RegisterForm: FC = () => {
-
   const [email, setEmail] = useState<string>('')
   const [emailRepeat, setEmailRepeat] = useState<string>('')
   const [password, setPassword] = useState<string>('')
@@ -23,11 +21,12 @@ const RegisterForm: FC = () => {
   const [invalidEmail, setInvalidEmail] = useState<boolean>(false)
   const [emailMismatch, setEmailMismatch] = useState<boolean>(false)
   const [passwordMismatch, setPasswordMismatch] = useState<boolean>(false)
-  const [userAlreadyRegistered, setUserAlreadyRegistered] = useState<boolean>(false)
+  const [userAlreadyRegistered, setUserAlreadyRegistered] =
+    useState<boolean>(false)
 
   const check = () => {
     registerCheck ? setRegisterCheck(false) : setRegisterCheck(true)
-    return 
+    return
   }
 
   const identicalEmail = () => email == emailRepeat
@@ -42,9 +41,8 @@ const RegisterForm: FC = () => {
     return false
   }
 
-
   const checkEmail = () => {
-    if (!validateEmail(email)) { 
+    if (!validateEmail(email)) {
       setInvalidEmail(true)
       setHasErrors(true)
     }
@@ -70,14 +68,18 @@ const RegisterForm: FC = () => {
       return
     }
 
-    const res = await resource.Api.Auth.Signup({ email, emailRepeat, password, passwordRepeat })
-  
+    const res = await resource.Api.Auth.Signup({
+      email,
+      emailRepeat,
+      password,
+      passwordRepeat,
+    })
+
     if (!res.data.success) {
-  
       if (res.data.error.code === ERROR_CODE.USER_REGISTERED) {
         setUserAlreadyRegistered(true)
       }
-  
+
       return
     }
 
@@ -87,7 +89,6 @@ const RegisterForm: FC = () => {
       const cookie = await Cookie.get(CONST_KEYS.authorization)
       Url.changePath('/app')
     }
-
   }
 
   return (
@@ -98,7 +99,7 @@ const RegisterForm: FC = () => {
       </div>
 
       <p className="text-center">or:</p>
-      { userAlreadyRegistered && <ErrorLabel text='User Already Registered' />}
+      {userAlreadyRegistered && <ErrorLabel text="User Already Registered" />}
 
       <div className="form-outline mb-4">
         <InputLabel
@@ -107,8 +108,8 @@ const RegisterForm: FC = () => {
           type="email"
           onChange={onChange(setEmail)}
         />
-        { invalidEmail && <ErrorLabel text='Invalid Email' />}
-        { emailMismatch && <ErrorLabel text='Email Mismatch' />}
+        {invalidEmail && <ErrorLabel text="Invalid Email" />}
+        {emailMismatch && <ErrorLabel text="Email Mismatch" />}
       </div>
 
       <div className="form-outline mb-4">
@@ -127,7 +128,7 @@ const RegisterForm: FC = () => {
           type="password"
           onChange={onChange(setPassword)}
         />
-        { passwordMismatch && <ErrorLabel text='Password Mismatch' />}
+        {passwordMismatch && <ErrorLabel text="Password Mismatch" />}
       </div>
 
       <div className="form-outline mb-4">
@@ -153,7 +154,10 @@ const RegisterForm: FC = () => {
         </label>
       </div>
 
-      <button type="submit" className="btn btn-primary btn-block mb-3" onClick={submit}>
+      <button
+        type="submit"
+        className="btn btn-primary btn-block mb-3"
+        onClick={submit}>
         Sign in
       </button>
     </>

@@ -5,9 +5,7 @@ import style from './withNavigation.style'
 const SiteLinks = () => {
   return (
     <ul style={style.links}>
-      <Link to="/">
-        Home
-      </Link>
+      <Link to="/">Home</Link>
       <Link to="/login">Login</Link>
       <Link to="/app">App</Link>
     </ul>

@@ -22,7 +22,10 @@ const serveApp = serve('/../static/app.html')
 app.get('/', serveIndex)
 app.get('/login', serveIndex)
 app.get('/init', auth, serveApp)
+app.get('/home', auth, serveApp)
 app.get('/app', auth, serveApp)
+app.get('/organisation', auth, serveApp)
+app.get('/client', auth, serveApp)
 
 app.use('/static', express.static(path.resolve(__dirname, '../static')))
 

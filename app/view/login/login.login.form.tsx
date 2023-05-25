@@ -4,11 +4,11 @@ import LoginIcons from './login.icons'
 import LoginFormProps from './login.login.form.type'
 import InputLabel from '../../component/inputLabel/inputLabel'
 import ErrorLabel from '../../component/errorLabel/errorLabel'
-import { validateEmail, onChange } from '../../util/util'
-import { ERROR_CODE } from '../../../shared/error/error'
+import {validateEmail, onChange} from '../../util/util'
+import {ERROR_CODE} from '../../../shared/error/error'
 import Cookie from '../../module/cookie/cookie'
 import Storage from '../../module/storage/storage'
-import { CONST_KEYS } from '../../const/const'
+import {CONST_KEYS} from '../../const/const'
 import Url from '../../module/url/url'
 
 const LoginForm: FC<LoginFormProps> = props => {
@@ -23,17 +23,20 @@ const LoginForm: FC<LoginFormProps> = props => {
     setUserPasswordInvalid(false)
     setGenericError(false)
 
-    if (!validateEmail(email)){
+    if (!validateEmail(email)) {
       return setInvalidEmail(true)
     }
 
-    const res = await resource.Api.Auth.Login({ email, password })
+    const res = await resource.Api.Auth.Login({email, password})
 
-    if (!res.data.success && res.data.error.code === ERROR_CODE.USER_OR_PASSWORD_INVALID) {
+    if (
+      !res.data.success &&
+      res.data.error.code === ERROR_CODE.USER_OR_PASSWORD_INVALID
+    ) {
       return setUserPasswordInvalid(true)
     }
 
-    if (!res.data.success){
+    if (!res.data.success) {
       return setGenericError(true)
     }
 
@@ -42,7 +45,6 @@ const LoginForm: FC<LoginFormProps> = props => {
       Cookie.set(CONST_KEYS.authorization, res.data.data.authorization)
       Url.changePath('/app')
     }
-
   }
 
   return (
@@ -53,8 +55,8 @@ const LoginForm: FC<LoginFormProps> = props => {
       </div>
 
       <p className="text-center">or:</p>
-      { userPasswordInvalid && <ErrorLabel text='User or Password invalid' />}
-      { genericError && <ErrorLabel text='Generic Error' />}
+      {userPasswordInvalid && <ErrorLabel text="User or Password invalid" />}
+      {genericError && <ErrorLabel text="Generic Error" />}
 
       <div className="form-outline mb-4">
         <InputLabel
@@ -63,7 +65,7 @@ const LoginForm: FC<LoginFormProps> = props => {
           type="email"
           onChange={onChange(setEmail)}
         />
-        { invalidEmail && <ErrorLabel text='Invalid Email' />}
+        {invalidEmail && <ErrorLabel text="Invalid Email" />}
       </div>
 
       <div className="form-outline mb-4">
@@ -97,7 +99,10 @@ const LoginForm: FC<LoginFormProps> = props => {
         </div> */}
       </div>
 
-      <button type="submit" className="btn btn-primary btn-block mb-4" onClick={submit}>
+      <button
+        type="submit"
+        className="btn btn-primary btn-block mb-4"
+        onClick={submit}>
         Log in
       </button>
 
