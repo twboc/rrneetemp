@@ -33,7 +33,7 @@
 
     "deploy": "yarn run web && yarn run listen",
     
-    "dev": "npm-run-all --parallel web:watch listen:watch",
+    "dev": "yarn run web && npm-run-all --parallel web:watch listen:watch",
 
     "android": "react-native run-android",
     "ios": "react-native run-ios",
