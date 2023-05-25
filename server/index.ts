@@ -9,7 +9,7 @@ import Api from './api/api'
 const app = express()
 
 app.use(express.json())
-app.use(express.urlencoded())
+app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser());
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms'))
 
