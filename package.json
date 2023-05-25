@@ -11,11 +11,6 @@
   },
   "license": "MIT",
   "scripts": {
-    "android": "react-native run-android",
-    "ios": "react-native run-ios",
-    "start": "react-native start",
-    "electron": "electron .",
-
     "app": "cross-env NODE_ENV=development webpack serve --config webpack/webpack.app.dev.js",
 
     "prod": "cross-env NODE_ENV=production webpack --config webpack/webpack.app.prod.js",
@@ -39,6 +34,11 @@
     "deploy": "yarn run web && yarn run listen",
     
     "dev": "npm-run-all --parallel web:watch listen:watch",
+
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
+    "start": "react-native start",
+    "electron": "electron .",
     
     "test": "jest",
     "lint": "eslint 'app/**/*.tsx' || true",
