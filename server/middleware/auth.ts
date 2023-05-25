@@ -12,8 +12,8 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
 export const authApi = async (req: Request, res: Response, next: NextFunction) => {
   const authorization = hasAuthorization(req)
   console.log("API AUTH authorization: ", authorization)
-  if (authorization == null) return Respond.Fail.AuthorisationMissing(res)
+  if (authorization == null) return Respond.API.Auth.Fail.AuthorisationMissing(res)
   const isValid = await validateAuthorisation(authorization)
   console.log("API AUTH isValid: ", isValid)
-  return isValid ? next() : Respond.Fail.AuthorisationInvalid(res)
+  return isValid ? next() : Respond.API.Auth.Fail.AuthorisationInvalid(res)
 }

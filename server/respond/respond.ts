@@ -1,5 +1,12 @@
 import { Response} from 'express'
-import { ERROR_USER_REGISTERED, ERROR_USER_OR_PASSWORD_INVALID, ERROR_AUTHORIZATION_MISSING, ERROR_AUTHORIZATION_INVALID, ERROR_USER_ORGANISATION_FAILED } from '../../shared/error/error'
+import {
+    ERROR_USER_REGISTERED,
+    ERROR_USER_NOT_CREATED,
+    ERROR_USER_OR_PASSWORD_INVALID,
+    ERROR_AUTHORIZATION_MISSING,
+    ERROR_AUTHORIZATION_INVALID,
+    ERROR_USER_ORGANISATION_FAILED
+} from '../../shared/error/error'
 
 interface ISuccessPartial {
     success: true
@@ -21,8 +28,6 @@ const AuthorisationInvalid = (res: Response) => res.json({
     error: ERROR_AUTHORIZATION_INVALID,
 })
 
-
-
 const UserAlreadyRegistered = (res: Response) => res.json({
     success: false,
     error: ERROR_USER_REGISTERED,
@@ -30,10 +35,7 @@ const UserAlreadyRegistered = (res: Response) => res.json({
 
 const UserNotCreated = (res: Response) => res.json({
     success: false,
-    error: {
-        code: 'USER_NOT_CREATED',
-        message: 'user was not created'
-    },
+    error: ERROR_USER_NOT_CREATED,
 })
 
 const UserOrPasswordInvalid = (res: Response) => res.json({
@@ -54,28 +56,46 @@ const UserInitSuccess = (res: Response, data: any) => res.json({
     data
 })
 
-const UserOrganisationQueryFail = (res: Response) => res.json({
+const UserOrganisationQuery = (res: Response) => res.json({
     success: false,
     error: ERROR_USER_ORGANISATION_FAILED
 })
 
 const Respond = {
-    Fail: {
-        UserAlreadyRegistered,
-        UserNotCreated,
-        UserOrPasswordInvalid,
-        AuthorisationMissing,
-        AuthorisationInvalid
-    },
-    Success: {
-        Login
+    Auth: {
+        Login: {
+            Success: Login,
+            Fail: {
+                Default: UserNotCreated,
+                UserAlreadyRegistered,
+                UserOrPasswordInvalid
+            }
+        },
+        Signup: {
+            Success: Login,
+            Fail: {
+                Default: UserNotCreated,
+                UserAlreadyRegistered
+            }
+        }
     },
     User: {
         Init: {
             Success: UserInitSuccess,
-            UserOrganisationQueryFail
+            Fail: {
+                Default: UserNotCreated,
+                UserOrganisationQuery
+            }
         }
-    }
+    },
+    API: {
+        Auth: {
+            Fail: {
+                AuthorisationMissing,
+                AuthorisationInvalid
+            },
+        }
+    }  
 } 
 
 

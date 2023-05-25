@@ -1,4 +1,4 @@
-import AuthAction from './auth'
+import AuthAction from './auth/auth'
 import User from './user'
 import OrganisationAction from './organisation'
 
