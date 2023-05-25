@@ -16,7 +16,7 @@ export const googleOauthRedirect = async (req: Request, res: Response) => {
   })
 
   if (!tokens.success) {
-    return res.redirect('/Login?error=GAOA_ERROR')
+    return res.redirect('/login?error=GAOA_ERROR')
   }
 
   const google_token = tokens.data as GoogleToken
@@ -57,7 +57,7 @@ export const googleOauthRedirect = async (req: Request, res: Response) => {
       //   User = user_insert
       // })      
       // .catch(() => {
-      //   return res.redirect('/Login?error=UIDB_ERROR')
+      //   return res.redirect('/login?error=UIDB_ERROR')
       // })
   }
 
@@ -74,5 +74,5 @@ export const googleOauthRedirect = async (req: Request, res: Response) => {
 
   // set cookies
 
-  return res.redirect('/App')
+  return res.redirect('/app')
 }

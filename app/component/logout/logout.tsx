@@ -9,7 +9,7 @@ const logout = async () => {
     await resource.Api.Auth.Logout()
     await Storage.remove(CONST_KEYS.authorization)
     Cookie.remove(CONST_KEYS.authorization)
-    Url.changePath('/Login')
+    Url.changePath('/login')
 }
 
 const Logout  = () => {

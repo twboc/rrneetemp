@@ -85,7 +85,7 @@ const RegisterForm: FC = () => {
       await Storage.set(CONST_KEYS.authorization, res.data.data.authorization)
       await Cookie.set(CONST_KEYS.authorization, res.data.data.authorization)
       const cookie = await Cookie.get(CONST_KEYS.authorization)
-      Url.changePath('/App')
+      Url.changePath('/app')
     }
 
   }

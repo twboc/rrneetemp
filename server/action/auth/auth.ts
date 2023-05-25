@@ -28,7 +28,7 @@ export const Login = async (req: Request, res: Response) => {
 
 }
 
-export const Logout = async (req: Request, res: Response) => res.redirect('/Login')
+export const Logout = async (req: Request, res: Response) => res.redirect('/login')
 
 class AuthAction {
     Signup = Signup

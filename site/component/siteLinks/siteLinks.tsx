@@ -7,7 +7,7 @@ const SiteLinks = () => {
       <Link style={{marginRight: '10px'}} to="/">
         Home
       </Link>
-      <Link to="/Login">Login</Link>
+      <Link to="/login">Login</Link>
     </ul>
   )
 }

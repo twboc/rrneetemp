@@ -40,7 +40,7 @@ const LoginForm: FC<LoginFormProps> = props => {
     if (res.data.success) {
       await Storage.set(CONST_KEYS.authorization, res.data.data.authorization)
       Cookie.set(CONST_KEYS.authorization, res.data.data.authorization)
-      Url.changePath('/App')
+      Url.changePath('/app')
     }
 
   }
