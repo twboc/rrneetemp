@@ -2,7 +2,7 @@ import { ApiResponseHandler } from '../resource.response.type'
 import DefaultHandler from './resource.api.response.default'
 
 class Response {
-	public response
+	response
 	constructor(handler: ApiResponseHandler) {
 		this.response = handler.Response
 	}

@@ -16,17 +16,15 @@ app.use(morgan(':method :url :status :res[content-length] - :response-time ms'))
 const serve = (filePath: string) => (req: Request, res: Response) =>
   res.sendFile(path.resolve(__dirname + filePath))
 
-const serveIndex = serve('/../public/index.html')
-const serveApp = serve('/../public/app.html')
+const serveIndex = serve('/../static/index.html')
+const serveApp = serve('/../static/app.html')
 
 app.get('/', serveIndex)
 app.get('/login', serveIndex)
 app.get('/init', auth, serveApp)
 app.get('/app', auth, serveApp)
 
-app.use('/public', express.static(path.resolve(__dirname, '../public')))
-app.use('/site', express.static(path.resolve(__dirname, '../site')))
-app.use('/app', express.static(path.resolve(__dirname, '../app')))
+app.use('/static', express.static(path.resolve(__dirname, '../static')))
 
 Api.AddRoutes(app)
 

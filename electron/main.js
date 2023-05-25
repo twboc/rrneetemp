@@ -14,7 +14,7 @@ const createWindow = () => {
   })
 
   // and load the index.html of the app.
-  mainWindow.loadFile('dist/public/electron.html')
+  mainWindow.loadFile('dist/static/electron.html')
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools()

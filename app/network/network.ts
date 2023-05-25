@@ -18,13 +18,13 @@ class Network<CustomConfig> extends NetworkBase {
     this.Native = new NetworkNativeHandler()
   }
 
-  public factory = (
+  factory = (
     config: NetworkInitConfig & CustomConfig,
   ): Network<CustomConfig> => {
     return new Network<CustomConfig>(config)
   }
 
-  public caller = <
+  caller = <
     DefaultCallerData = NetworkPayload,
     DefaultCallerResponse = NetworkResponse<DefaultCallerData>,
   >(

@@ -11,9 +11,9 @@ module.exports = merge(common, base, {
   mode: 'production',
   devtool: false,
   output: {
-    path: paths.build + '/site',
+    path: paths.build + '/static/site',
     filename: 'js/[name].[contenthash].bundle.js',
-    publicPath: '/site/'
+    publicPath: '/static/site/'
   },
   module: {
     rules: [
@@ -43,16 +43,9 @@ module.exports = merge(common, base, {
     new HtmlWebpackPlugin({
       title: 'React React Native Electron Boilerplate',
       favicon: paths.app + '/images/favicon.png',
-      template: paths.public + '/index.html',
-      filename: '../public/index.html'
+      template: paths.static + '/index.html',
+      filename: '../index.html'
     }),
-    // new HtmlWebpackPlugin({
-    //   title: 'React React Native Electron Boilerplate',
-    //   favicon: paths.app + '/images/favicon.png',
-    //   template: paths.public + '/index.html',
-    //   filename: '../public/electron.html',
-    //   publicPath: '../app/'
-    // })
   ],
   optimization: {
     minimize: true,

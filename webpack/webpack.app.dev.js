@@ -2,13 +2,10 @@ const {merge} = require('webpack-merge')
 const common = require('./webpack.app.common')
 const base = require('./webpack.base')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
 const paths = require('./paths')
-
 
 module.exports = merge(common, base, {
   mode: 'development',
-  // devtool: 'inline-source-map',
   devServer: {
     historyApiFallback: true,
     open: true,
@@ -16,7 +13,6 @@ module.exports = merge(common, base, {
     hot: true,
     port: 8080,
   },
-
   module: {
     rules: [
       {
@@ -37,16 +33,8 @@ module.exports = merge(common, base, {
     new HtmlWebpackPlugin({
       title: 'React React Native Electron Boilerplate',
       favicon: paths.app + '/images/favicon.png',
-      template: paths.public + '/index.html',
+      template: paths.static + '/index.html',
       filename: '../dist/index.html',
     }),
-    // new CopyWebpackPlugin({
-    //   patterns: [
-    //     {from:'./app/asset/image',to:'../dist/app/asset/image'} 
-    //   ],
-    // }),
-    // new CopyWebpackPlugin([
-    //   {from:'../app/asset/image',to:'../dist/app/asset/image'} 
-    // ]), 
   ],
 })
