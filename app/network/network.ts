@@ -18,19 +18,19 @@ class Network<CustomConfig> extends NetworkBase {
     this.Native = new NetworkNativeHandler()
   }
 
-  public CreateFactory = (
+  public factory = (
     config: NetworkInitConfig & CustomConfig,
   ): Network<CustomConfig> => {
     return new Network<CustomConfig>(config)
   }
 
-  public CreateCaller = <
+  public caller = <
     DefaultCallerData = NetworkPayload,
     DefaultCallerResponse = NetworkResponse<DefaultCallerData>,
   >(
     configTemplate: NetworkCallerConfig, // | CustomConfig
   ): NetworkCallerCreator<CustomConfig> => {
-    const configBase = this.CreateCallerConfigBase(configTemplate)
+    const configBase = this.callerConfigBase(configTemplate)
     return async <
       T = DefaultCallerData,
       R = DefaultCallerResponse,
@@ -40,14 +40,14 @@ class Network<CustomConfig> extends NetworkBase {
       data?: T,
       customConfig?: NetworkConfig | CustomConfig | C,
     ): Promise<R> => {
-      const config: NetworkConfig = await this.EstablishConfig<T>(
+      const config: NetworkConfig = await this.establishConfig<T>(
         {...configBase, ...customConfig},
         url,
         data,
       )
 
       const responseHandler: NetworkResponseHandler =
-        this.DefineResponseHandler(config)
+        this.defineResponseHandler(config)
 
       return this.Native.Request<R>(config)
         .then<R>(res => responseHandler<R>(res, config) as R)

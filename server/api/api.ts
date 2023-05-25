@@ -6,23 +6,23 @@ import {googleOauthRedirect} from '../provider/google'
 import {facebookOauthRedirect} from '../provider/facebook'
 import {dropboxOauthRedirect} from '../provider/dropbox'
 
-import Action from '../action/action'
+import action from '../action/action'
 
 const AddRoutes = (app: Express) => {
 
-    app.post('/api/auth/signup', Action.Auth.Signup)
-    app.post('/api/auth/login', Action.Auth.Login)
-    app.get('/api/auth/logout', Action.Auth.Logout)
+    app.post('/api/auth/signup', action.Auth.Signup)
+    app.post('/api/auth/login', action.Auth.Login)
+    app.get('/api/auth/logout', action.Auth.Logout)
 
 
-    app.get('/api/user/init', authApi, Action.User.Init)
+    app.get('/api/user/init', authApi, action.User.Init)
 
     //@ts-ignore
-    app.get('/api/organisation/', authApi, Action.Organisation.Get)
+    app.get('/api/organisation/', authApi, action.Organisation.Get)
     //@ts-ignore
-    app.get('/api/organisation/:id', authApi, Action.Organisation.GetById)
+    app.get('/api/organisation/:id', authApi, action.Organisation.GetById)
     //@ts-ignore
-    app.get('/api/organisation/update', authApi, Action.Organisation.Update)
+    app.get('/api/organisation/update/', authApi, action.Organisation.Update)
 
     app.get('/api/google/ouath2/redirect', googleOauthRedirect)
     app.get('/api/dropbox/ouath2/redirect', dropboxOauthRedirect)

@@ -17,8 +17,7 @@ const SiteLinks = () => {
 const withNavigation = (Content: FC) => (props: any) => {
   return (
     <>
-      <nav
-        style={style.nav}>
+      <nav style={style.nav}>
         <SiteLinks />
       </nav>
       <Content />

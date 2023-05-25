@@ -3,7 +3,7 @@ import { NetworkConfig } from '../network/network.type'
 import config from '../../config/config'
 import Storage from '../module/storage/storage'
 import { CONST_KEYS } from '../const/const'
-
+import { response } from './response/resource.api.response'
 
 const auth = async (config: NetworkConfig) => {
     const authorization = await Storage.get(CONST_KEYS.authorization)
@@ -16,20 +16,20 @@ const auth = async (config: NetworkConfig) => {
 
 const API = new Network({
     baseURL: `http://${config.server.url}:${config.server.port}`,
-    auth 
+    auth,
+    // response
 })
 
-const API_POST = API.CreateCaller({
+const API_POST = API.caller({
     method: 'POST'
 })
 
-const API_GET = API.CreateCaller({
+const API_GET = API.caller({
     method: 'GET'
 })
 
 interface IRes<T> {
     data: {
-
         success: boolean
         error: {
             code: string
@@ -55,6 +55,10 @@ interface SignupReq {
 
 interface SignupRes extends IRes<{ authorization: string }> {}
 
+interface UserInitReq {}
+
+interface UserInnitRes extends IRes<{ organisations: any[] }> {}
+
 interface LogoutReq {}
 
 class Auth {
@@ -69,16 +73,14 @@ class Organisation {
 
 
 class User {
-    Init = async () => await API_GET<{}, {}>('/api/user/init')
+    Init = async () => await API_GET<UserInitReq, UserInnitRes>('/api/user/init')
 }
 
 
 class Api {
-
     Auth = new Auth()
     User = new User()
     Organisation = new Organisation()
-
 }
 
 export default {

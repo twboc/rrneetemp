@@ -18,7 +18,8 @@ export const UnhandledResponse: NetworkCustomResponseHandler = <R>(
 ): R => {
 	return {
 		isSuccess: false,
-		content: null,
+		//@ts-ignore
+		data: null,
 		error: [res?.statusText]
 	} as unknown as R
 }
@@ -28,7 +29,8 @@ export const NetworkFail: NetworkCustomResponseHandler = <R>(
 ): R => {
 	const resFailed = {
 		isSuccess: false,
-		content: null,
+		//@ts-ignore
+		data: null,
 		error: [res?.statusText]
 	}
 	return resFailed as unknown as R
@@ -39,7 +41,8 @@ export const ResponseFail: NetworkCustomResponseHandler = <R>(
 ): R => {
 	const resFailed = {
 		isSuccess: false,
-		content: null,
+		//@ts-ignore
+		data: null,
 		error: [res?.statusText]
 	}
 	return resFailed as unknown as R
@@ -79,8 +82,8 @@ export const Response: NetworkCustomResponseHandler = <R>(
 				? config.ResponseIsSuccess<R>(res, config)
 				: ResponseIsSuccess<R>(res, config)
 			: config.ResponseIsNotSuccess
-			? config.ResponseIsNotSuccess<R>(res, config)
-			: ResponseIsNotSuccess<R>(res, config)
+				? config.ResponseIsNotSuccess<R>(res, config)
+				: ResponseIsNotSuccess<R>(res, config)
 	}
 
 	return config.UnhandledResponse

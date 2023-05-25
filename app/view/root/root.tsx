@@ -1,8 +1,6 @@
 import React from 'react'
 import Navigation from '../../navigation/navigation'
 
-const Root = () => {
-  return <Navigation />
-}
+const Root = () => <Navigation />
 
 export default Root

@@ -8,15 +8,14 @@ import Content from '../component/content/content'
 const Layout = () => {
   return (
     <>
-    <Header />
-    <div style={{ display: 'flex', flexDirection: 'row'}}>
-      <LeftNav />
-      <Content>
-        <Outlet />
-      </Content>
-    </div>
+      <Header />
+      <div style={{ display: 'flex', flexDirection: 'row'}}>
+        <LeftNav />
+        <Content>
+          <Outlet />
+        </Content>
+      </div>
     </>
-    
   )
 }
 
@@ -24,7 +23,7 @@ const Layout = () => {
 const init = async (setIsInitialised: Dispatch<SetStateAction<boolean>>) => {
 
     
-    const result = await Resource.Api.User.Init()
+  const result = await Resource.Api.User.Init()
 
 	console.log("result: ", result)
 
@@ -39,9 +38,7 @@ const init = async (setIsInitialised: Dispatch<SetStateAction<boolean>>) => {
 
 const Init = () => {
 
-    const [isInitialised, setIsInitialised] = useState<boolean>(false)
-
-	// const language = useSelector(LanguageSelect.GetCurrent)
+  const [isInitialised, setIsInitialised] = useState<boolean>(false)
 
 	useEffect(() => {
 		console.log("Init app...")
@@ -50,12 +47,8 @@ const Init = () => {
 
 
     return isInitialised
-    ?  <Layout/>
-    : <>
-        Init
-        <br/>
-        Is initialised: {isInitialised ? 'YES' : 'NO'}
-        </>
+    ? <Layout/>
+    : <> Init </>
 }
 
 export default Init

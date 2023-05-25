@@ -19,22 +19,22 @@ abstract class NetworkBase {
       this.auth = config.auth
     }
     if (config.response) {
-      this.DefaultResponse = config.response?.bind(this)
+      this.defaultResponse = config.response?.bind(this)
     }
   }
 
-  protected NetworkDefaultAuth = async (
+  protected networkDefaultAuth = async (
     config: NetworkConfig,
   ): Promise<NetworkConfig> => {
     return await mock(config)
   }
 
-  protected DefaultResponse = <R>(
+  protected defaultResponse = <R>(
     res: NetworkResponse<R>,
     config: NetworkConfig,
   ): NetworkResponse<R> => res
 
-  protected CreateCallerConfigBase = (config: NetworkConfig): NetworkConfig => {
+  protected callerConfigBase = (config: NetworkConfig): NetworkConfig => {
     if (!config.baseURL) {
       config.baseURL = this.baseURL
     }
@@ -44,23 +44,23 @@ abstract class NetworkBase {
     }
 
     if (!config.response) {
-      config.response = this.DefaultResponse
+      config.response = this.defaultResponse
     }
 
     return {...config}
   }
 
-  protected EstablishConfig = async <T>(
+  protected establishConfig = async <T>(
     config: NetworkConfig,
     url: NetworkUrl,
     data?: T,
   ): Promise<NetworkConfig> => {
-    config = this.SetUrlAndData(config, url, data)
-    config = await this.UseAuthDecorator(config)
+    config = this.setUrlAndData(config, url, data)
+    config = await this.useAuthDecorator(config)
     return config
   }
 
-  protected SetUrlAndData = <T>(
+  protected setUrlAndData = <T>(
     config: NetworkConfig,
     url: NetworkUrl,
     data?: T,
@@ -72,7 +72,7 @@ abstract class NetworkBase {
     return config
   }
 
-  protected UseAuthDecorator = async (
+  protected useAuthDecorator = async (
     config: NetworkConfig,
   ): Promise<NetworkConfig> => {
     if (this.auth != undefined) {
@@ -81,10 +81,10 @@ abstract class NetworkBase {
     return config
   }
 
-  protected DefineResponseHandler = (
+  protected defineResponseHandler = (
     config: NetworkConfig,
   ): NetworkResponseHandler => {
-    return config?.response ? config.response : this.DefaultResponse
+    return config?.response ? config.response : this.defaultResponse
   }
 }
 
