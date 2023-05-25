@@ -12,34 +12,24 @@
   "license": "MIT",
   "scripts": {
     "app": "cross-env NODE_ENV=development webpack serve --config webpack/webpack.app.dev.js",
-
     "prod": "cross-env NODE_ENV=production webpack --config webpack/webpack.app.prod.js",
     "prod:watch": "cross-env NODE_ENV=production webpack watch --config webpack/webpack.app.prod.js",
-
     "site": "cross-env NODE_ENV=production webpack --config webpack/webpack.site.prod.js",
     "site:watch": "cross-env NODE_ENV=production webpack watch --config webpack/webpack.site.prod.js",
-
     "server": "cross-env NODE_ENV=production webpack --config webpack/webpack.server.prod.js",
     "server:watch": "cross-env NODE_ENV=production webpack watch --config webpack/webpack.server.prod.js",
-
     "front": "npm-run-all --parallel site prod",
     "front:watch": "npm-run-all --parallel site:watch prod:watch",
-
     "web": "npm-run-all --parallel site prod server",
     "web:watch": "npm-run-all --parallel site:watch prod:watch server:watch",
-
     "listen": "nodemon ./dist/server/server.js",
     "listen:watch": "nodemon ./dist/server/server.js --watch ./dist/server",
-
     "deploy": "yarn run web && yarn run listen",
-    
-    "dev": "yarn run web && npm-run-all --parallel web:watch listen:watch",
-
+    "dev": "[ -d './dist/server/' ] && npm-run-all --parallel web:watch listen:watch || yarn run web && npm-run-all --parallel web:watch listen:watch",
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
     "electron": "electron .",
-    
     "test": "jest",
     "lint": "eslint 'app/**/*.tsx' || true",
     "prettify": "prettier --write 'app/**/*.tsx'",
@@ -146,6 +136,7 @@
     "morgan": "^1.10.0",
     "nodemon": "^2.0.22",
     "npm-run-all": "^4.1.5",
+    "path-exists": "^5.0.0",
     "postcss-loader": "^7.0.2",
     "postcss-preset-env": "^7.8.3",
     "prettier": "^2.8.8",
