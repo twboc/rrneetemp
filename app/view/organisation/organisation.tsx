@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
-import {onChange} from '../../util/util'
-import Resource from '../../resource/resource'
+// import {onChange} from '../../util/util'
+// import Resource from '../../resource/resource'
 
 const Organisation = () => {
     const [name, setName] = useState()
@@ -10,7 +10,7 @@ const Organisation = () => {
 
         console.log("GET ORGANISATION: ")
 
-        Resource.api
+        // Resource.api
 
     }
 

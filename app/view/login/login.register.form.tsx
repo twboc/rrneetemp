@@ -70,7 +70,7 @@ const RegisterForm: FC = () => {
       return
     }
 
-    const res = await resource.api.Auth.Signup({ email, emailRepeat, password, passwordRepeat })
+    const res = await resource.Api.Auth.Signup({ email, emailRepeat, password, passwordRepeat })
   
     if (!res.data.success) {
   

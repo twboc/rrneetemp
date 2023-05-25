@@ -1,6 +1,7 @@
 import React from 'react'
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import Layout from './navigation.layout'
+// import Init from '../view/init/init'
 import Login from '../view/login/login'
 import App from '../view/app/app'
 import Client from '../view/client/client'
@@ -17,6 +18,7 @@ const Navigation = () => {
           <Route path="Organisation" element={<Organisation />} />
           <Route path="*" element={<App />} />
         </Route>
+        {/* <Route path="Init" element={<Init />} /> */}
         <Route path="Login" element={<Login />} />
       </Routes>
     </BrowserRouter>

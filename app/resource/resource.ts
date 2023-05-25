@@ -58,28 +58,29 @@ interface SignupRes extends IRes<{ authorization: string }> {}
 interface LogoutReq {}
 
 class Auth {
-    public Signup = async (req: SignupReq) => await API_POST<SignupReq, SignupRes>('/api/auth/signup', req)
-	public Login = (req: LoginReq) => API_POST<LoginReq, LoginRes>('/api/auth/login', req)
-    public Logout = () => API_POST<LogoutReq, IRes<{}>>('/api/auth/logout')
+    Signup = async (req: SignupReq) => await API_POST<SignupReq, SignupRes>('/api/auth/signup', req)
+	Login = (req: LoginReq) => API_POST<LoginReq, LoginRes>('/api/auth/login', req)
+    Logout = () => API_POST<LogoutReq, IRes<{}>>('/api/auth/logout')
 }
 
 class Organisation {
     Get = async (req: SignupReq) => await API_GET<SignupReq, SignupRes>('/api/organisation', req)
-    // public Signup = async (req: SignupReq) => await API_POST<SignupReq, SignupRes>('/api/auth/signup', req)
-	// public Login = (req: LoginReq) => API_POST<LoginReq, LoginRes>('/api/auth/login', req)
-    // public Logout = () => API_POST<LogoutReq, IRes<{}>>('/api/auth/logout')
 }
 
+
+class User {
+    Init = async () => await API_GET<{}, {}>('/api/user/init')
+}
 
 
 class Api {
 
     Auth = new Auth()
-    // public signup = async (req: SignupReq) => await API_POST<SignupReq, SignupRes>('/api/auth/signup', req)
-	// public login = (req: LoginReq) => API_POST<LoginReq, LoginRes>('/api/auth/login', req)
-    // public logout = () => API_POST<LogoutReq, IRes<{}>>('/api/auth/logout')
+    User = new User()
+    Organisation = new Organisation()
+
 }
 
 export default {
-    api: new Api()
+    Api: new Api()
 }

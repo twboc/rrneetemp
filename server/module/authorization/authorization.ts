@@ -1,21 +1,8 @@
-import { Request, Response, NextFunction } from 'express'
+import { Request } from 'express'
 import crypto from 'crypto'
 import jwt from 'jsonwebtoken'
-const H24INSEC = 86400 // 24 * 60 * 60
-
-export const TEMP_SECRET = '09f26e402586e2faa8da4c98a35f1b20d6b033c6097befa8be3486a829587fe2f90a832bd3ff9d42710a4da095a2ce285b009f0c3730cd9b8e1af3eb84df6611'
-
-export interface ITokenData {
-    id: string
-    email: string
-}
-
-export interface IToken {
-    id: string
-    email: string
-    iat: number
-    exp: number
-}
+import { ITokenData, IToken, IHashPair} from './authorization.type'
+import {H24INSEC, TEMP_SECRET} from './authorization.const'
 
 export const hasAuthorization = (req: Request): string | null => {
 
@@ -44,27 +31,24 @@ export const validateAuthorisation = async (authorization: string): Promise<null
   })
 }
 
-interface IHashPair {
-  salt: string
-  password_hash: string
-}
-
-let hashPassword = (password: string, salt: string): IHashPair => {
+export const hashPassword = (password: string, salt: string): IHashPair => {
   let hash = crypto.createHmac('sha512', salt);
   hash.update(password);
   let value = hash.digest('hex');
   return {
       salt: salt,
       password_hash: value
-  };
-};
+  }
+}
+
+export const create = (data: ITokenData) => jwt.sign(data, TEMP_SECRET, { expiresIn: `${H24INSEC}s` })
 
 
 class Authorization {
-  create = (data: ITokenData) => {
-    return jwt.sign(data, TEMP_SECRET, { expiresIn: `${H24INSEC}s` });
-  }
+  hasAuthorization = hasAuthorization
+  validateAuthorisation = validateAuthorisation
   hashPassword = hashPassword
+  create = create
 }
 
 

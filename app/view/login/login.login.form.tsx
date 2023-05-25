@@ -27,7 +27,7 @@ const LoginForm: FC<LoginFormProps> = props => {
       return setInvalidEmail(true)
     }
 
-    const res = await resource.api.Auth.Login({ email, password })
+    const res = await resource.Api.Auth.Login({ email, password })
 
     if (!res.data.success && res.data.error.code === ERROR_CODE.USER_OR_PASSWORD_INVALID) {
       return setUserPasswordInvalid(true)

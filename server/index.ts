@@ -21,6 +21,7 @@ const serveApp = serve('/../public/app.html')
 
 app.get('/', serveIndex)
 app.get('/Login', serveIndex)
+app.get('/Init', auth, serveApp)
 app.get('/App', auth, serveApp)
 
 app.use('/public', express.static(path.resolve(__dirname, '../public')))

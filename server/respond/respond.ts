@@ -1,5 +1,15 @@
 import { Response} from 'express'
-import { ERROR_USER_REGISTERED, ERROR_USER_OR_PASSWORD_INVALID, ERROR_AUTHORIZATION_MISSING, ERROR_AUTHORIZATION_INVALID } from '../../shared/error/error'
+import { ERROR_USER_REGISTERED, ERROR_USER_OR_PASSWORD_INVALID, ERROR_AUTHORIZATION_MISSING, ERROR_AUTHORIZATION_INVALID, ERROR_USER_ORGANISATION_FAILED } from '../../shared/error/error'
+
+interface ISuccessPartial {
+    success: true
+    error: null
+}
+
+const SUCCESS: ISuccessPartial = {
+    success: true,
+    error: null
+}
 
 const AuthorisationMissing = (res: Response) => res.json({
     success: false,
@@ -32,11 +42,21 @@ const UserOrPasswordInvalid = (res: Response) => res.json({
 })
 
 const Login = (res: Response, authorization: string) => res.json({
-    success: true,
-    error: null,
+    ...SUCCESS,
     data: {
         authorization
     }
+})
+
+
+const UserInitSuccess = (res: Response, data: any) => res.json({
+    ...SUCCESS,
+    data
+})
+
+const UserOrganisationQueryFail = (res: Response) => res.json({
+    success: false,
+    error: ERROR_USER_ORGANISATION_FAILED
 })
 
 const Respond = {
@@ -49,6 +69,12 @@ const Respond = {
     },
     Success: {
         Login
+    },
+    User: {
+        Init: {
+            Success: UserInitSuccess,
+            UserOrganisationQueryFail
+        }
     }
 } 
 
