@@ -1,9 +1,5 @@
-// import { hookFunction } from '../../Util/Util'
-// import { Hook, ChainHook } from '../../Type/Type'
 import { SliceActions } from './store.type'
-
 import { useEffect, useRef } from 'react'
-// import { ANY, Hook, ChainHook } from '../Type/Type'
 
 export const usePrevious = <T extends unknown>(value: T): T | undefined => {
 	const ref = useRef<T>()
@@ -21,9 +17,6 @@ export const hookFunction = <R>(
 ): R => {
 	return ((originalFunction) => {
 		return function (...args: any[]) {
-			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-			//@ts-ignore
-			// eslint-disable-next-line @typescript-eslint/no-this-alias
 			const self = this
 			const preArgs = pre ? pre.apply(self, args) : args
 			const returnArgs = originalFunction.apply(self, preArgs)
@@ -34,7 +27,6 @@ export const hookFunction = <R>(
 		} as unknown as R
 	})(source)
 }
-
 
 export type Hook = ((...args: any[]) => any[]) | null
 export type ChainHook<T = void> =

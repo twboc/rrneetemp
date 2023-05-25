@@ -1,6 +1,6 @@
 import { IInsertSuccess, IInsertFail } from './model.type'
 
-export const InsertSucess = <K extends string | number | symbol, Payload, Result>(key: K, payload: Payload, insert: Result) => ({
+export const Success = <K extends string | number | symbol, Payload, Result>(key: K, payload: Payload, insert: Result) => ({
   success: true,
   payload: {
     [key]: payload
@@ -11,7 +11,7 @@ export const InsertSucess = <K extends string | number | symbol, Payload, Result
 } as IInsertSuccess<K, Payload, Result>)
 
 
-export const InsertFail = <K extends string | number | symbol, Payload, Result>(key: K, payload: Payload, error: Error) => ({
+export const Fail = <K extends string | number | symbol, Payload, Result>(key: K, payload: Payload, error: Error) => ({
   success: false,
   payload: {
     [key]: payload

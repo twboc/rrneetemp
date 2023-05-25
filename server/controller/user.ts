@@ -1,32 +1,11 @@
-import type {
-    user as IUser,
-    organisation as IOrganisation,
-    user_organisation as IUserOrganisation
-} from '@prisma/client'
+import type { user as IUser } from '@prisma/client'
 import Model from '../model/model'
 import {v4} from 'uuid'
-
-interface IUserCreateSuccess {
-    success: true
-    User: IUser
-    Organisation: IOrganisation
-    UserOrganisation: IUserOrganisation
-}
-
-interface IUserCreateError {
-    success: false
-    e: Error
-}
-
-type IUserCreate = IUserCreateSuccess | IUserCreateError
+import { POSITION } from '../const/const'
+import { IUserCreate, DBError } from './user.type'
 
 
-interface DBError {
-    success: false
-    error: Error
-}
-
-const CreateWithOrganisation = async (user: IUser, position: string): Promise<IUserCreate | DBError> => {
+const CreateWithOrganisation = async (user: IUser, position: POSITION): Promise<IUserCreate | DBError> => {
     let UserInsert = await Model.User.create(user)
     if (!UserInsert.success) return UserInsert as DBError
 

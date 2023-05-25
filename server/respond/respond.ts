@@ -1,5 +1,17 @@
 import { Response} from 'express'
-import { ERROR_USER_REGISTERED, ERROR_USER_OR_PASSWORD_INVALID } from '../../shared/error/error'
+import { ERROR_USER_REGISTERED, ERROR_USER_OR_PASSWORD_INVALID, ERROR_AUTHORIZATION_MISSING, ERROR_AUTHORIZATION_INVALID } from '../../shared/error/error'
+
+const AuthorisationMissing = (res: Response) => res.json({
+    success: false,
+    error: ERROR_AUTHORIZATION_MISSING,
+})
+
+const AuthorisationInvalid = (res: Response) => res.json({
+    success: false,
+    error: ERROR_AUTHORIZATION_INVALID,
+})
+
+
 
 const UserAlreadyRegistered = (res: Response) => res.json({
     success: false,
@@ -31,7 +43,9 @@ const Respond = {
     Fail: {
         UserAlreadyRegistered,
         UserNotCreated,
-        UserOrPasswordInvalid
+        UserOrPasswordInvalid,
+        AuthorisationMissing,
+        AuthorisationInvalid
     },
     Success: {
         Login
