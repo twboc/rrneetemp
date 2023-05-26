@@ -25,7 +25,7 @@ const init = async (setIsInitialised: Dispatch<SetStateAction<boolean>>) => {
   console.log('result: ', result)
 
   //@ts-ignore
-  if (result.data.success) {
+  if (result.success) {
     setIsInitialised(true)
   }
 }

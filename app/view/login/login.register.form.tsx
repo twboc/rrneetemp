@@ -75,17 +75,17 @@ const RegisterForm: FC = () => {
       passwordRepeat,
     })
 
-    if (!res.data.success) {
-      if (res.data.error.code === ERROR_CODE.USER_REGISTERED) {
+    if (!res.success) {
+      if (res.error.code === ERROR_CODE.USER_REGISTERED) {
         setUserAlreadyRegistered(true)
       }
 
       return
     }
 
-    if (res.data.success) {
-      await storage.set(CONST_KEYS.authorization, res.data.data.authorization)
-      await cookie.set(CONST_KEYS.authorization, res.data.data.authorization)
+    if (res.success) {
+      await storage.set(CONST_KEYS.authorization, res.data.authorization)
+      await cookie.set(CONST_KEYS.authorization, res.data.authorization)
       await cookie.get(CONST_KEYS.authorization)
       url.changePath('/app')
     }

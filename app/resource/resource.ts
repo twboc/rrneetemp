@@ -1,5 +1,5 @@
 import Network from "../network/network"
-import { NetworkConfig } from '../network/network.type'
+import { NetworkConfig, NetworkResponse } from '../network/network.type'
 import config from '../../config/config'
 import Storage from '../module/storage/storage'
 import { CONST_KEYS } from '../const/const'
@@ -17,7 +17,8 @@ const auth = async (config: NetworkConfig) => {
 const API = new Network({
     baseURL: `http://${config.server.url}:${config.server.port}`,
     auth,
-    // response
+    //@ts-ignore
+    response
 })
 
 const API_POST = API.caller({
@@ -29,14 +30,13 @@ const API_GET = API.caller({
 })
 
 interface IRes<T> {
-    data: {
-        success: boolean
-        error: {
-            code: string
-            message: string
-        }
-        data: T
+    meta: NetworkResponse<T>
+    success: boolean
+    error: {
+        code: string
+        message: string
     }
+    data: T
 }
 
 interface LoginReq {

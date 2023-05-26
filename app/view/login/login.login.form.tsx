@@ -30,19 +30,19 @@ const LoginForm: FC<LoginFormProps> = props => {
     const res = await resource.api.auth.login({email, password})
 
     if (
-      !res.data.success &&
-      res.data.error.code === ERROR_CODE.USER_OR_PASSWORD_INVALID
+      !res.success &&
+      res.error.code === ERROR_CODE.USER_OR_PASSWORD_INVALID
     ) {
       return setUserPasswordInvalid(true)
     }
 
-    if (!res.data.success) {
+    if (!res.success) {
       return setGenericError(true)
     }
 
-    if (res.data.success) {
-      await Storage.set(CONST_KEYS.authorization, res.data.data.authorization)
-      Cookie.set(CONST_KEYS.authorization, res.data.data.authorization)
+    if (res.success) {
+      await Storage.set(CONST_KEYS.authorization, res.data.authorization)
+      Cookie.set(CONST_KEYS.authorization, res.data.authorization)
       Url.changePath('/app')
     }
   }
