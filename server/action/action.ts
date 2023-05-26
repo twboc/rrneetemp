@@ -1,5 +1,5 @@
 import AuthAction from './auth/auth'
-import User from './user'
+import User from './user/user'
 import OrganisationAction from './organisation'
 
 class Action {

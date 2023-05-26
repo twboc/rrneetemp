@@ -4,8 +4,18 @@ import initialState from './organisation.init'
 import IOrganisationState, { IOrganisationPayloads } from './organisation.type'
 import { IStoreState, storeStateSlice } from '../state.type'
 import { Reducers, HookedActions } from '../state.type'
+import { IUserOrganisationByUser } from '../../../shared/type/type'
+
 
 const reducers: Reducers<IOrganisationState, IOrganisationPayloads> = {
+	set: (state: IOrganisationState, action: PayloadAction<IUserOrganisationByUser[]>) => {
+
+
+		console.log("action: ", action)
+
+		state.organisations = action.payload
+
+	},
 	Get: (state: IOrganisationState, action: PayloadAction<{}>) => {
 
 	}
@@ -24,7 +34,7 @@ const organisationActions = organisation.actions
 export { organisationActions, OrganisationActionsT }
 
 export const organisationSelect = {
-	Name: (state: IStoreState): string => state.organisation.name,
+	organisations: (state: IStoreState): IUserOrganisationByUser[] => state.organisation.organisations,
 }
 
 export default organisation.reducer

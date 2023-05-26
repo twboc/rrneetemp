@@ -30,7 +30,8 @@ export const NetworkFail: NetworkCustomResponseHandler = <R>(
 	const resFailed = {
 		meta: res,
 		success: false,
-		data: null as unknown as null,
+		//@ts-ignore
+		data: null as null,
 		error: [res?.statusText]
 	}
 	return resFailed as unknown as R

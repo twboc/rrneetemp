@@ -4,6 +4,7 @@ import config from '../../config/config'
 import Storage from '../module/storage/storage'
 import { CONST_KEYS } from '../const/const'
 import { response } from './response/resource.api.response'
+import { IUserOrganisationByUser } from '../../shared/type/type'
 
 const auth = async (config: NetworkConfig) => {
     const authorization = await Storage.get(CONST_KEYS.authorization)
@@ -57,7 +58,7 @@ interface SignupRes extends IRes<{ authorization: string }> {}
 
 interface UserInitReq {}
 
-interface UserInnitRes extends IRes<{ organisations: any[] }> {}
+interface UserInnitRes extends IRes<{ organisations: IUserOrganisationByUser[] }> {}
 
 interface LogoutReq {}
 

@@ -1,9 +1,11 @@
 import React, {useState, useEffect, Dispatch, SetStateAction} from 'react'
-import Resource from '../resource/resource'
+import resource from '../resource/resource'
 import {Outlet} from 'react-router-dom'
 import Header from '../component/header/header'
 import LeftNav from '../component/leftNav/leftNav'
 import Content from '../component/content/content'
+import action from '../action/action'
+import {organisation} from '../state/state.actions'
 
 const Layout = () => {
   return (
@@ -20,14 +22,10 @@ const Layout = () => {
 }
 
 const init = async (setIsInitialised: Dispatch<SetStateAction<boolean>>) => {
-  const result = await Resource.api.user.init()
-
-  console.log('result: ', result)
-
-  //@ts-ignore
-  if (result.success) {
-    setIsInitialised(true)
-  }
+  const result = await resource.api.user.init()
+  if (!result.success) return action.auth.logout()
+  organisation.set(result.data.organisations)
+  setIsInitialised(true)
 }
 
 const Init = () => {
