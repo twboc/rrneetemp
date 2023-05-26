@@ -62,27 +62,27 @@ interface UserInnitRes extends IRes<{ organisations: any[] }> {}
 interface LogoutReq {}
 
 class Auth {
-    Signup = async (req: SignupReq) => await API_POST<SignupReq, SignupRes>('/api/auth/signup', req)
-	Login = (req: LoginReq) => API_POST<LoginReq, LoginRes>('/api/auth/login', req)
-    Logout = () => API_POST<LogoutReq, IRes<{}>>('/api/auth/logout')
+    signup = async (req: SignupReq) => await API_POST<SignupReq, SignupRes>('/api/auth/signup', req)
+	login = (req: LoginReq) => API_POST<LoginReq, LoginRes>('/api/auth/login', req)
+    logout = () => API_POST<LogoutReq, IRes<{}>>('/api/auth/logout')
 }
 
 class Organisation {
-    Get = async (req: SignupReq) => await API_GET<SignupReq, SignupRes>('/api/organisation', req)
+    get = async (req: SignupReq) => await API_GET<SignupReq, SignupRes>('/api/organisation', req)
 }
 
 
 class User {
-    Init = async () => await API_GET<UserInitReq, UserInnitRes>('/api/user/init')
+    init = async () => await API_GET<UserInitReq, UserInnitRes>('/api/user/init')
 }
 
 
 class Api {
-    Auth = new Auth()
-    User = new User()
-    Organisation = new Organisation()
+    auth = new Auth()
+    user = new User()
+    organisation = new Organisation()
 }
 
 export default {
-    Api: new Api()
+    api: new Api()
 }

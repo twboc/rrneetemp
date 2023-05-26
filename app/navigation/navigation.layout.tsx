@@ -20,7 +20,7 @@ const Layout = () => {
 }
 
 const init = async (setIsInitialised: Dispatch<SetStateAction<boolean>>) => {
-  const result = await Resource.Api.User.Init()
+  const result = await Resource.api.user.init()
 
   console.log('result: ', result)
 

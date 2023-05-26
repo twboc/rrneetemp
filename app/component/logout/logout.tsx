@@ -1,15 +1,15 @@
 import React from 'react'
-import Url from '../../module/url/url'
+import url from '../../module/url/url'
 import resource from '../../resource/resource'
-import Cookie from '../../module/cookie/cookie'
-import Storage from '../../module/storage/storage'
+import cookie from '../../module/cookie/cookie'
+import storage from '../../module/storage/storage'
 import {CONST_KEYS} from '../../const/const'
 
 const logout = async () => {
-  await resource.Api.Auth.Logout()
-  await Storage.remove(CONST_KEYS.authorization)
-  Cookie.remove(CONST_KEYS.authorization)
-  Url.changePath('/login')
+  await resource.api.auth.logout()
+  await storage.remove(CONST_KEYS.authorization)
+  cookie.remove(CONST_KEYS.authorization)
+  url.changePath('/login')
 }
 
 const Logout = () => {
