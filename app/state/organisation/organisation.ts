@@ -6,19 +6,10 @@ import { IStoreState, storeStateSlice } from '../state.type'
 import { Reducers, HookedActions } from '../state.type'
 import { IUserOrganisationByUser } from '../../../shared/type/type'
 
-
 const reducers: Reducers<IOrganisationState, IOrganisationPayloads> = {
 	set: (state: IOrganisationState, action: PayloadAction<IUserOrganisationByUser[]>) => {
-
-
-		console.log("action: ", action)
-
 		state.organisations = action.payload
-
 	},
-	Get: (state: IOrganisationState, action: PayloadAction<{}>) => {
-
-	}
 }
 
 export const organisation: Slice<IOrganisationState> = createSlice({
