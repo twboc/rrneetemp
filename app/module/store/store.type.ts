@@ -8,16 +8,16 @@ import {
 	PayloadAction as PayloadActionRTK,
 	Slice as SliceRTK,
 	SliceCaseReducers as SliceCaseReducersRTK,
-	CaseReducerActions as CaseReducerActionsRTK,
-	CaseReducers as CaseReducersRTK,
 	ActionCreatorWithPayload as ActionCreatorWithPayloadRTK,
-	ActionCreatorWithoutPayload as ActionCreatorWithoutPayloadRTK
+	ActionCreatorWithoutPayload as ActionCreatorWithoutPayloadRTK,
+	// CaseReducerActions as CaseReducerActionsRTK,
+	// CaseReducers as CaseReducersRTK,
 } from '@reduxjs/toolkit'
 import { CurriedGetDefaultMiddleware as CurriedGetDefaultMiddlewareRTK } from '@reduxjs/toolkit/dist/getDefaultMiddleware'
 
 import { MapStateToPropsParam, MapDispatchToPropsParam } from 'react-redux'
 import { PersistState as PersistStateRP } from 'redux-persist'
-import { ANY, Hook, ChainHook } from '../../Type/Type'
+import { ANY, Hook, ChainHook } from '../../type/type'
 
 //SOURCE: redux
 export type Action<T = ANY> = ActionRDX<T>
@@ -27,10 +27,10 @@ export type Dispatch = DispatchRDX
 
 //SOURCE: @reduxjs/toolkit
 export type SliceCaseReducers<State> = SliceCaseReducersRTK<State>
-export type CaseReducerActions<CaseReducers extends SliceCaseReducers<ANY>> =
-	CaseReducerActionsRTK<CaseReducers>
 export type Actions<T extends keyof ANY = string> = Record<T, Action>
-export type CaseReducers<S, AS extends Actions> = CaseReducersRTK<S, AS>
+// export type CaseReducerActions<CaseReducers extends SliceCaseReducers<ANY>> =
+// 	CaseReducerActionsRTK<CaseReducers>
+// export type CaseReducers<S, AS extends Actions> = CaseReducersRTK<S, AS>
 
 export type Slice<
 	State = ANY,

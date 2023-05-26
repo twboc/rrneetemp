@@ -5,10 +5,10 @@ import InputLabel from '../../component/inputLabel/inputLabel'
 import ErrorLabel from '../../component/errorLabel/errorLabel'
 import resource from '../../resource/resource'
 import {ERROR_CODE} from '../../../shared/error/error'
-import Cookie from '../../module/cookie/cookie'
-import Storage from '../../module/storage/storage'
+import cookie from '../../module/cookie/cookie'
+import storage from '../../module/storage/storage'
 import {CONST_KEYS} from '../../const/const'
-import Url from '../../module/url/url'
+import url from '../../module/url/url'
 
 const RegisterForm: FC = () => {
   const [email, setEmail] = useState<string>('')
@@ -84,10 +84,10 @@ const RegisterForm: FC = () => {
     }
 
     if (res.data.success) {
-      await Storage.set(CONST_KEYS.authorization, res.data.data.authorization)
-      await Cookie.set(CONST_KEYS.authorization, res.data.data.authorization)
-      const cookie = await Cookie.get(CONST_KEYS.authorization)
-      Url.changePath('/app')
+      await storage.set(CONST_KEYS.authorization, res.data.data.authorization)
+      await cookie.set(CONST_KEYS.authorization, res.data.data.authorization)
+      await cookie.get(CONST_KEYS.authorization)
+      url.changePath('/app')
     }
   }
 

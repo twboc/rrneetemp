@@ -1,12 +1,12 @@
 import {
 	bindActionCreators as bindActionCreatorsRDX,
-	createStore as createStoreRDX
+	// createStore as createStoreRDX // deprecated
 } from 'redux'
 import {
 	createSlice as createSliceRTK,
 	createSelector as createSelectorRTK,
 	combineReducers as combineReducersRTK,
-	configureStore as configureStoreRTK
+	configureStore as configureStoreRTK,
 } from '@reduxjs/toolkit'
 
 import {
@@ -18,10 +18,11 @@ import {
 	persistStore as persistStoreRP,
 	persistReducer as persistReducerRP
 } from 'redux-persist'
-import { PersistGate as PersistGateRP } from 'redux-persist/integration/react'
+import  persistStorageRP from 'redux-persist/lib/storage';
+import { PersistGate as persistGateRP } from 'redux-persist/integration/react'
 
 //SOURCE: redux
-export const createStore = createStoreRDX
+// export const createStore = createStoreRDX //deprecated
 export const StoreProvider = ProviderRDX
 export const bindActionCreators = bindActionCreatorsRDX
 
@@ -38,4 +39,5 @@ export const useSelector = useSelectorRDX
 //SOURCE: redux-persist
 export const persistStore = persistStoreRP
 export const persistReducer = persistReducerRP
-export const PersistGate = PersistGateRP
+export const PersistGate = persistGateRP
+export const persistStorage = persistStorageRP

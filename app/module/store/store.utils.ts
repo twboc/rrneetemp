@@ -1,5 +1,6 @@
 import { SliceActions } from './store.type'
 import { useEffect, useRef } from 'react'
+import { Hook, ChainHook } from '../../type/type'
 
 export const usePrevious = <T extends unknown>(value: T): T | undefined => {
 	const ref = useRef<T>()
@@ -28,13 +29,9 @@ export const hookFunction = <R>(
 	})(source)
 }
 
-export type Hook = ((...args: any[]) => any[]) | null
-export type ChainHook<T = void> =
-	| ((preArgs: any[], returnArgs: any[], postArgs: any[]) => T)
-	| null
 
 
-export const HookActions =
+export const hookActions =
 	<T>(pre: Hook = null, post: Hook = null, chain: ChainHook = null) =>
 	(actions: SliceActions): T => {
 		const hookedActions: T = {} as T

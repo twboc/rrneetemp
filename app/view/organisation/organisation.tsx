@@ -1,15 +1,18 @@
-import React, {useState} from 'react'
-// import {onChange} from '../../util/util'
-// import Resource from '../../resource/resource'
+import React, {useState, useEffect} from 'react'
+
+import state from '../../state/state.state'
 
 const Organisation = () => {
   const [name, setName] = useState()
 
   const getOrganisation = () => {
     console.log('GET ORGANISATION: ')
-
-    // Resource.api
   }
+
+  useEffect(() => {
+    const _state = state.store.getState()
+    console.log('_state: ', _state)
+  }, [])
 
   return (
     <>
