@@ -1,4 +1,4 @@
-import { ApiResponseHandler } from '../resource.response.type'
+import { ApiResponseHandler } from '../response/resource.response.type'
 import DefaultHandler from './resource.api.response.default'
 
 class Response {

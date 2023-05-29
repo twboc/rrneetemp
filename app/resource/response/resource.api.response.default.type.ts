@@ -1,5 +1,5 @@
 import { NetworkCustomResponseHandler } from '../../network/network.type'
-import { ApiResponseHandler } from '../resource.response.type'
+import { ApiResponseHandler } from '../response/resource.response.type'
 
 interface ApiDefaultResponseHandler extends ApiResponseHandler {
 	NetworkFail: NetworkCustomResponseHandler

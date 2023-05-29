@@ -1,7 +1,6 @@
-import Respond from '../respond/respond'
+import Respond from '../../respond/respond'
 import {Request, Response} from 'express'
-import model from '../model/model'
-import {sleep } from '../util/execution'
+import model from '../../model/model'
 
 interface Req<T extends ReadableStream<Uint8Array>> extends Request {
     body: T
@@ -15,6 +14,18 @@ interface IChangeName {
     name: string
 }
 
+const ChangeName = async (req: Request, res: Response) => {
+    const result = await model.Organisation.updateName({ id: req.body.organisation_id, name: req.body.name})
+    if (!result.success) return  Respond.Organisation.ChangeName.Fail(res)
+    return Respond.Organisation.ChangeName.Success(res, req.body.name )
+}
+
+const AddUser = async (req: Request, res: Response) => {
+    // const result = await model.Organisation.updateName({ id: req.body.organisation_id, name: req.body.name})
+    // if (!result.success) return  Respond.Organisation.ChangeName.Fail(res)
+    // return Respond.Organisation.ChangeName.Success(res, req.body.name )
+}
+
 const Get = async (req: Request, res: Response) => {
     // console.log("PARAMS ID: ", req.params.id)
     // const id = req.params.id
@@ -22,11 +33,7 @@ const Get = async (req: Request, res: Response) => {
     // if (!result.success) return 
 }
 
-const ChangeName = async (req: Request, res: Response) => {
-    const result = await model.Organisation.updateName({ id: req.body.organisation_id, name: req.body.name})
-    if (!result.success) return  Respond.Organisation.ChangeName.Fail(res)
-    return Respond.Organisation.ChangeName.Success(res, req.body.name )
-}
+
 
 const GetById = async (req: Request, res: Response) => {
     console.log("PARAMS ID: ", req.params.id)
@@ -42,8 +49,10 @@ const Update = async (req: Request, res: Response) => {
 
 
 class OrganisationAction {
-    Get = Get
     ChangeName = ChangeName
+    AddUser = AddUser
+    // not implemented
+    Get = Get
     GetById = GetById
     Update = Update
 }

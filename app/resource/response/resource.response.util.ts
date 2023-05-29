@@ -1,4 +1,4 @@
-import { NetworkResponse } from '../network/network.type'
+import { NetworkResponse } from '../../network/network.type'
 import { NetworkResponseData } from './resource.response.type'
 
 export const IsSuccess = <R>(res: NetworkResponse<R>): boolean =>

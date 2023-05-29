@@ -20,7 +20,6 @@ export const Signup = async (req: Request, res: Response) => {
 
 export const Login = async (req: Request, res: Response) => {
     let User = await UserModel.findUniqueEmail(req.body.email)
-    console.log("User: ", User)
     if (!User) return Respond.Auth.Login.Fail.Default(res)
     if (!checkPassword(req.body.password, User.salt, User.password_hash)) return Respond.Auth.Login.Fail.Default(res)
     return Respond.Auth.Login.Success(res, getAuthorization(User))

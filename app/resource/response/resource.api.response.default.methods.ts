@@ -3,7 +3,7 @@ import {
 	NetworkCustomResponseHandler,
 	NetworkConfig
 } from '../../network/network.type'
-import { Is200, HasData, IsSuccess } from '../resource.response.util'
+import { Is200, HasData, IsSuccess } from '../response/resource.response.util'
 
 export interface ApiCustomConfig {
 	UnhandledResponse?: NetworkCustomResponseHandler
@@ -72,7 +72,6 @@ export const Response: NetworkCustomResponseHandler = <R>(
 	res: NetworkResponse<R>,
 	config: NetworkConfig & ApiCustomConfig
 ): R => {
-
 	console.log("Response: ", res)
 	if (!Is200(res)) {
 		return config.NetworkFail

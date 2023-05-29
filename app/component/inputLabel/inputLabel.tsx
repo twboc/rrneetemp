@@ -10,7 +10,7 @@ const InputLabel: FC<InputLabelProps> = props => {
       <input
         id={props.id}
         type={props.type}
-        value={props.value || ''}
+        value={props.value}
         onChange={props.onChange}
         className="form-control"
       />

@@ -1,4 +1,4 @@
-import { NetworkCustomResponseHandler } from '../network/network.type'
+import { NetworkCustomResponseHandler } from '../../network/network.type'
 
 export interface ApiResponseHandler {
 	Response: NetworkCustomResponseHandler
@@ -10,8 +10,8 @@ export interface NetworkResponseError {
 	field: string
 }
 
-export interface NetworkResponseData<C = null> {
+export interface NetworkResponseData<D = null> {
 	isSuccess: boolean
-	content: C
+	data: D
 	error: NetworkResponseError[] | null
 }

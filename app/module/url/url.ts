@@ -7,7 +7,6 @@ class Url {
         if (params) {
             path = path + `?${paramsString}`
         }
-        console.log("path: ", path)
         window.location.href = path
     }
     changePathWithAuth = async (path: string, params?: any) => {
