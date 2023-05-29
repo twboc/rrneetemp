@@ -8,23 +8,16 @@ import {dropboxOauthRedirect} from '../provider/dropbox'
 
 import action from '../action/action'
 
-const AddRoutes = (app: Express) => {
+const addRoutes = (app: Express) => {
 
-    app.post('/api/auth/signup', action.Auth.Signup)
-    app.post('/api/auth/login', action.Auth.Login)
-    app.get('/api/auth/logout', action.Auth.Logout)
+    app.post('/api/auth/signup', action.auth.signup)
+    app.post('/api/auth/login', action.auth.login)
+    app.get('/api/auth/logout', action.auth.logout)
 
+    app.get('/api/user/init', authApi, action.user.init)
 
-    app.get('/api/user/init', authApi, action.User.Init)
-
-    //@ts-ignore
-    app.get('/api/organisation/', authApi, action.Organisation.Get)
-    //@ts-ignore
-    app.post('/api/organisation/name', action.Organisation.ChangeName)
-    //@ts-ignore
-    app.get('/api/organisation/:id', authApi, action.Organisation.GetById)
-    //@ts-ignore
-    app.get('/api/organisation/update/', authApi, action.Organisation.Update)
+    app.post('/api/organisation/name', action.organisation.name.update)
+    app.post('/api/organisation/user/add', action.organisation.user.add)
 
     app.get('/api/google/ouath2/redirect', googleOauthRedirect)
     app.get('/api/dropbox/ouath2/redirect', dropboxOauthRedirect)
@@ -34,7 +27,7 @@ const AddRoutes = (app: Express) => {
 
 class Api {
 
-    AddRoutes = AddRoutes
+    addRoutes = addRoutes
 
 }
 

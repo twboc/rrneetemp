@@ -4,11 +4,14 @@ import initialState from './organisation.init'
 import IOrganisationState, { IOrganisationPayloads } from './organisation.type'
 import { IStoreState, storeStateSlice } from '../state.type'
 import { Reducers, HookedActions } from '../state.type'
-import { IUserOrganisationByUser } from '../../../shared/type/type'
+import { IUserOrganisationByUser, IUserOrganisationWithUser } from '../../../shared/type/type'
 
 const reducers: Reducers<IOrganisationState, IOrganisationPayloads> = {
 	set: (state: IOrganisationState, action: PayloadAction<IUserOrganisationByUser[]>) => {
 		state.organisations = action.payload
+	},
+	setUserOrganisation: (state: IOrganisationState, action: PayloadAction<IUserOrganisationWithUser[]>) => {
+		state.user_organisation = [...state.user_organisation, ...action.payload]
 	},
 	setName: (state: IOrganisationState, action: PayloadAction<IUserOrganisationByUser>) => {
 		state.organisations.forEach((organisation) => {
@@ -33,6 +36,7 @@ export { organisationActions, OrganisationActionsT }
 
 export const organisationSelect = {
 	organisations: (state: IStoreState): IUserOrganisationByUser[] => state.organisation.organisations,
+	userOrganisation: (state: IStoreState): IUserOrganisationWithUser[] => state.organisation.user_organisation,
 }
 
 export default organisation.reducer

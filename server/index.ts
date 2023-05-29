@@ -4,7 +4,7 @@ import cookieParser from 'cookie-parser'
 import morgan from 'morgan'
 import config from '../config/config'
 import { auth } from './middleware/auth'
-import Api from './api/api'
+import api from './api/api'
 
 const app = express()
 
@@ -24,12 +24,12 @@ app.get('/login', serveIndex)
 app.get('/init', auth, serveApp)
 app.get('/home', auth, serveApp)
 app.get('/app', auth, serveApp)
-app.get('/organisation', auth, serveApp)
+app.get('/organisations', auth, serveApp)
 app.get('/client', auth, serveApp)
 
 app.use('/static', express.static(path.resolve(__dirname, '../static')))
 
-Api.AddRoutes(app)
+api.addRoutes(app)
 
 app.listen(config.server.port, () =>
   console.log('Example app listening on port ' + config.server.port),

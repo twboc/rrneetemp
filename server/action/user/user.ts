@@ -4,7 +4,7 @@ import Respond from '../../respond/respond'
 import Model from '../../model/model'
 import { userOrganisationFlatten } from './user.util'
 
-export const Init = async (req: Request, res: Response) => {
+export const init = async (req: Request, res: Response) => {
     const authorization = hasAuthorization(req)
     const token = await validateAuthorisation(authorization)
     const result = await Model.UserOrganisation.readByUser({ id: token.id })
@@ -14,7 +14,7 @@ export const Init = async (req: Request, res: Response) => {
 }
 
 class User {
-    Init = Init
+    init = init
 }
 
 export default new User()

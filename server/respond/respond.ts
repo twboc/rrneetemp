@@ -6,8 +6,11 @@ import {
     ERROR_AUTHORIZATION_MISSING,
     ERROR_AUTHORIZATION_INVALID,
     ERROR_USER_ORGANISATION_FAILED,
-    ERROR_ORGANISATION_UPDATE_NAME_FAILED
+    ERROR_ORGANISATION_UPDATE_NAME_FAILED,
+    ERROR_ALREADY_OWNER_OR_MEMBER
 } from '../../shared/error/error'
+
+import type {user as IUser, user_organisation as IUserOrganisation} from '@prisma/client'
 
 interface ISuccessPartial {
     success: true
@@ -74,6 +77,15 @@ const OrganisationChangeNameFail = (res: Response) => res.json({
     error: ERROR_ORGANISATION_UPDATE_NAME_FAILED
 })
 
+const AuthUserAddSuccess = (res: Response, data: { user: Omit<IUser, 'salt' | 'password_hash'>, user_organisation: IUserOrganisation}) => res.json({
+    ...SUCCESS,
+    data
+})
+
+const AlreadyAOwnerOrMember = (res: Response) => res.json({
+    success: false,
+    error: ERROR_ALREADY_OWNER_OR_MEMBER
+})
 
 
 const Respond = {
@@ -91,6 +103,13 @@ const Respond = {
             Fail: {
                 Default: UserNotCreated,
                 UserAlreadyRegistered
+            }
+        },
+        UserAdd: {
+            Success: AuthUserAddSuccess,
+            Fail: {
+                Default: UserNotCreated,
+                AlreadyAOwnerOrMember
             }
         }
     },

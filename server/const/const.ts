@@ -1,5 +1,6 @@
 
 
 export enum POSITION {
-    OWNER = 'OWNER'
+    OWNER = 'OWNER',
+    MEMBER = 'MEMBER',
 }

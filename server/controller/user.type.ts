@@ -6,9 +6,11 @@ import type {
 
 export interface IUserCreateSuccess {
     success: true
-    User: IUser
-    Organisation: IOrganisation
-    UserOrganisation: IUserOrganisation
+    data: {
+        User: IUser
+        Organisation: IOrganisation
+        UserOrganisation: IUserOrganisation
+    }
 }
 
 export interface IUserCreateError {

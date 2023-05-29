@@ -25,6 +25,16 @@ const UserOrganisationModel = {
           .then((read) => Success('UserOrganisation', payload, read))
           .catch((error: Error) => Fail('UserOrganisation', payload, error))
       },
+  readByOrganisationAndUser: async (payload: { user_id: string, organisation_id: string}) => {
+    return await db.user_organisation.findMany({
+      where: {
+        user_id: payload.user_id,
+        organisation_id: payload.organisation_id
+      }
+    })
+      .then((read) => Success('UserOrganisation', payload, read))
+      .catch((error: Error) => Fail('UserOrganisation', payload, error))
+  }
 }
 
 export default UserOrganisationModel

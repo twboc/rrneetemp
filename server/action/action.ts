@@ -1,12 +1,11 @@
-import AuthAction from './auth/auth'
-import User from './user/user'
-import OrganisationAction from './organisation/organisation'
+import auth from './auth/auth'
+import user from './user/user'
+import organisation from './organisation/organisation'
 
 class Action {
-    
-    Auth = AuthAction
-    User = User
-    Organisation = OrganisationAction
+    auth = auth
+    user = user
+    organisation = organisation
 }
 
 export default new Action()

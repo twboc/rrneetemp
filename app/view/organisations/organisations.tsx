@@ -4,7 +4,7 @@ import {useSelector} from '../../module/store/store'
 import {IUserOrganisationByUser} from '../../../shared/type/type'
 import OrganisationEditor from '../../container/organisationEditor/organisationEditor'
 
-const Organisation = () => {
+const Organisations = () => {
   const organisations: IUserOrganisationByUser[] = useSelector(
     organisationSelect.organisations,
   )
@@ -26,4 +26,4 @@ const Organisation = () => {
   )
 }
 
-export default Organisation
+export default Organisations

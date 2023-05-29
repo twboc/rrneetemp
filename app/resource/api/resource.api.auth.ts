@@ -15,6 +15,10 @@ interface SignupReq {
     passwordRepeat: string
 }
 
+interface AddUserReq extends SignupReq {
+    organisation_id: string
+}
+
 interface SignupRes extends IRes<{ authorization: string }> {}
 
 interface LogoutReq {}
