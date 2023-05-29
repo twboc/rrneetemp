@@ -15,7 +15,7 @@ const OrganisationModel = {
       .then((read) => Success('Organisation', payload, read))
       .catch((error: Error) => Fail('Organisation', payload, error))
   },
-  update: async (payload: IOrganisation) =>
+  updateName: async (payload: IOrganisation) =>
     await db.organisation
       .update({ where: { id: payload.id}, data: { name: payload.name}})
       .then((update) => Success('Organisation', payload, update))

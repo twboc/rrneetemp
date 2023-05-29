@@ -28,30 +28,31 @@ model user {
 }
 
 model organisation {
-  id            String   @id @default(uuid()) @db.Uuid
-  name          String
+  id   String @id @default(uuid()) @db.Uuid
+  name String
 
   user_organisation user_organisation[]
 }
 
 model user_organisation {
-  user   user @relation(fields: [user_id], references: [id])
+  user    user   @relation(fields: [user_id], references: [id])
   user_id String @db.Uuid
 
-  organisation   organisation @relation(fields: [organisation_id], references: [id])
-  organisation_id String @db.Uuid
+  organisation    organisation @relation(fields: [organisation_id], references: [id])
+  organisation_id String       @db.Uuid
 
   position String
 
+  confirmed Boolean
+
   @@id([user_id, organisation_id])
 }
-
 
 model google_token_data {
   id            String   @id @default(uuid()) @db.Uuid
   user_id       String   @db.Uuid
   created_at    DateTime @default(now())
-  access_token  String 
+  access_token  String
   expires_in    Int
   refresh_token String
   scope         String
@@ -60,20 +61,20 @@ model google_token_data {
 }
 
 model google_id_token {
-  id              String   @id @default(uuid()) @db.Uuid
-  user_id         String   @db.Uuid
-  iss             String
-  azp             String
-  aud             String
-  sub             String
-  email           String
-  email_verified  Boolean
-  at_hash         String
-  name            String
-  picture         String
-  given_name      String
-  family_name     String
-  locale          String
-  iat             Int
-  exp             Int
+  id             String  @id @default(uuid()) @db.Uuid
+  user_id        String  @db.Uuid
+  iss            String
+  azp            String
+  aud            String
+  sub            String
+  email          String
+  email_verified Boolean
+  at_hash        String
+  name           String
+  picture        String
+  given_name     String
+  family_name    String
+  locale         String
+  iat            Int
+  exp            Int
 }

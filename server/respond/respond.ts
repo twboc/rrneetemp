@@ -5,7 +5,8 @@ import {
     ERROR_USER_OR_PASSWORD_INVALID,
     ERROR_AUTHORIZATION_MISSING,
     ERROR_AUTHORIZATION_INVALID,
-    ERROR_USER_ORGANISATION_FAILED
+    ERROR_USER_ORGANISATION_FAILED,
+    ERROR_ORGANISATION_UPDATE_NAME_FAILED
 } from '../../shared/error/error'
 
 interface ISuccessPartial {
@@ -61,6 +62,20 @@ const UserOrganisationQuery = (res: Response) => res.json({
     error: ERROR_USER_ORGANISATION_FAILED
 })
 
+const OrganisationChangeNameSuccess = (res: Response, name: string) => res.json({
+    ...SUCCESS,
+    data: {
+        name
+    }
+})
+
+const OrganisationChangeNameFail = (res: Response) => res.json({
+    success: false,
+    error: ERROR_ORGANISATION_UPDATE_NAME_FAILED
+})
+
+
+
 const Respond = {
     Auth: {
         Login: {
@@ -86,6 +101,12 @@ const Respond = {
                 Default: UserNotCreated,
                 UserOrganisationQuery
             }
+        }
+    },
+    Organisation: {
+        ChangeName: {
+            Success: OrganisationChangeNameSuccess,
+            Fail: OrganisationChangeNameFail
         }
     },
     API: {

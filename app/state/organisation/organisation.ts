@@ -10,6 +10,14 @@ const reducers: Reducers<IOrganisationState, IOrganisationPayloads> = {
 	set: (state: IOrganisationState, action: PayloadAction<IUserOrganisationByUser[]>) => {
 		state.organisations = action.payload
 	},
+	setName: (state: IOrganisationState, action: PayloadAction<IUserOrganisationByUser>) => {
+		state.organisations.forEach((organisation) => {
+			console.log("org: ", organisation.organisation_id, action.payload.organisation_id, organisation)
+			if (organisation.organisation_id == action.payload.organisation_id) {
+				organisation.name = action.payload.name
+			}
+		})
+	}
 }
 
 export const organisation: Slice<IOrganisationState> = createSlice({

@@ -68,8 +68,17 @@ class Auth {
     logout = () => API_POST<LogoutReq, IRes<{}>>('/api/auth/logout')
 }
 
+interface WithName {
+    name: string
+}
+
+interface ChangeNameReq extends WithName {
+    organisation_id: string
+ }
+
 class Organisation {
     get = async (req: SignupReq) => await API_GET<SignupReq, SignupRes>('/api/organisation', req)
+    changeName = async (req: ChangeNameReq) => await API_POST<ChangeNameReq, IRes<WithName> >('/api/organisation/name', req)
 }
 
 

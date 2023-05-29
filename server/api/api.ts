@@ -20,6 +20,8 @@ const AddRoutes = (app: Express) => {
     //@ts-ignore
     app.get('/api/organisation/', authApi, action.Organisation.Get)
     //@ts-ignore
+    app.post('/api/organisation/name', action.Organisation.ChangeName)
+    //@ts-ignore
     app.get('/api/organisation/:id', authApi, action.Organisation.GetById)
     //@ts-ignore
     app.get('/api/organisation/update/', authApi, action.Organisation.Update)

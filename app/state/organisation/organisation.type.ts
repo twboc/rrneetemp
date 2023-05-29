@@ -5,5 +5,6 @@ export default interface IOrganisationState {
 }
 
 export type IOrganisationPayloads = {
-	set: IUserOrganisationByUser[]
+	set: IUserOrganisationByUser[],
+	setName: IUserOrganisationByUser
 }
