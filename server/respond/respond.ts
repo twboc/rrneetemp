@@ -23,32 +23,32 @@ const SUCCESS: ISuccessPartial = {
     error: null
 }
 
-const AuthorisationMissing = (res: Response) => res.json({
+const authorisationMissing = (res: Response) => res.json({
     success: false,
     error: ERROR_AUTHORIZATION_MISSING,
 })
 
-const AuthorisationInvalid = (res: Response) => res.json({
+const authorisationInvalid = (res: Response) => res.json({
     success: false,
     error: ERROR_AUTHORIZATION_INVALID,
 })
 
-const UserAlreadyRegistered = (res: Response) => res.json({
+const userAlreadyRegistered = (res: Response) => res.json({
     success: false,
     error: ERROR_USER_REGISTERED,
 })
 
-const UserNotCreated = (res: Response) => res.json({
+const userNotCreated = (res: Response) => res.json({
     success: false,
     error: ERROR_USER_NOT_CREATED,
 })
 
-const UserOrPasswordInvalid = (res: Response) => res.json({
+const userOrPasswordInvalid = (res: Response) => res.json({
     success: false,
     error: ERROR_USER_OR_PASSWORD_INVALID,
 })
 
-const Login = (res: Response, authorization: string) => res.json({
+const login = (res: Response, authorization: string) => res.json({
     ...SUCCESS,
     data: {
         authorization
@@ -56,34 +56,34 @@ const Login = (res: Response, authorization: string) => res.json({
 })
 
 
-const UserInitSuccess = (res: Response, data: any) => res.json({
+const userInitSuccess = (res: Response, data: any) => res.json({
     ...SUCCESS,
     data
 })
 
-const UserOrganisationQuery = (res: Response) => res.json({
+const userOrganisationQuery = (res: Response) => res.json({
     success: false,
     error: ERROR_USER_ORGANISATION_FAILED
 })
 
-const OrganisationChangeNameSuccess = (res: Response, name: string) => res.json({
+const organisationChangeNameSuccess = (res: Response, name: string) => res.json({
     ...SUCCESS,
     data: {
         name
     }
 })
 
-const OrganisationChangeNameFail = (res: Response) => res.json({
+const organisationChangeNameFail = (res: Response) => res.json({
     success: false,
     error: ERROR_ORGANISATION_UPDATE_NAME_FAILED
 })
 
-const AuthUserAddSuccess = (res: Response, data: { user: Omit<IUser, 'salt' | 'password_hash'>, user_organisation: IUserOrganisation}) => res.json({
+const authUserAddSuccess = (res: Response, data: { user: Omit<IUser, 'salt' | 'password_hash'>, user_organisation: IUserOrganisation}) => res.json({
     ...SUCCESS,
     data
 })
 
-const AlreadyAOwnerOrMember = (res: Response) => res.json({
+const alreadyAOwnerOrMember = (res: Response) => res.json({
     success: false,
     error: ERROR_ALREADY_OWNER_OR_MEMBER
 })
@@ -111,46 +111,48 @@ const userGetSuccess = (res: Response, user_organisation: any) => res.json({
 })
 
 const Respond = {
-    Auth: {
-        Login: {
-            Success: Login,
-            Fail: {
-                Default: UserNotCreated,
-                UserAlreadyRegistered,
-                UserOrPasswordInvalid
+    auth: {
+        login: {
+            success: login,
+            fail: {
+                default: userNotCreated,
+                userAlreadyRegistered,
+                userOrPasswordInvalid
             }
         },
-        Signup: {
-            Success: Login,
-            Fail: {
-                Default: UserNotCreated,
-                UserAlreadyRegistered
+        signup: {
+            success: login,
+            fail: {
+                default: userNotCreated,
+                userAlreadyRegistered
             }
         },
         
     },
-    User: {
-        Init: {
-            Success: UserInitSuccess,
-            Fail: {
-                Default: UserNotCreated,
-                UserOrganisationQuery
+    user: {
+        init: {
+            success: userInitSuccess,
+            fail: {
+                default: userNotCreated,
+                userOrganisationQuery
             }
         }
     },
-    Organisation: {
-        ChangeName: {
-            Success: OrganisationChangeNameSuccess,
-            Fail: OrganisationChangeNameFail
-        },
-        UserAdd: {
-            Success: AuthUserAddSuccess,
-            Fail: {
-                Default: UserNotCreated,
-                AlreadyAOwnerOrMember
+    organisation: {
+        name: {
+            update: {
+                success: organisationChangeNameSuccess,
+                fail: organisationChangeNameFail
             }
         },
         user: {
+            add: {
+                success: authUserAddSuccess,
+                fail: {
+                    Default: userNotCreated,
+                    alreadyAOwnerOrMember
+                }
+            },
             get: {
                 success: userGetSuccess
             },
@@ -163,11 +165,11 @@ const Respond = {
             }
         }
     },
-    API: {
-        Auth: {
-            Fail: {
-                AuthorisationMissing,
-                AuthorisationInvalid
+    api: {
+        auth: {
+            fail: {
+                authorisationMissing,
+                authorisationInvalid
             },
         }
     }  

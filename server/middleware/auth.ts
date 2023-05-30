@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 import { hasAuthorization, validateAuthorisation } from '../module/authorization/authorization'
-import Respond from '../respond/respond'
+import respond from '../respond/respond'
 
 export const auth = async (req: Request, res: Response, next: NextFunction) => {
   const authorization = hasAuthorization(req)
@@ -12,8 +12,8 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
 export const authApi = async (req: Request, res: Response, next: NextFunction) => {
   const authorization = hasAuthorization(req)
   // console.log("authorization: ", authorization)
-  if (authorization == null) return Respond.API.Auth.Fail.AuthorisationMissing(res)
+  if (authorization == null) return respond.api.auth.fail.authorisationMissing(res)
   const isValid = await validateAuthorisation(authorization)
   // console.log("isValid: ", isValid)
-  return isValid ? next() : Respond.API.Auth.Fail.AuthorisationInvalid(res)
+  return isValid ? next() : respond.api.auth.fail.authorisationInvalid(res)
 }
