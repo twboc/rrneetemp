@@ -4,22 +4,29 @@ import {v4} from 'uuid'
 import { POSITION } from '../const/const'
 import { IUserCreate, DBError } from './user.type'
 
+const organisationStruct = (email: string) => ({
+    id: v4(),
+    name: `My Organisation - ${email.split('@')[0]}`,
+})
+
+const userOrganisationStruct = (user_id: string, organisation_id: string, position: string) => ({
+    user_id,
+    organisation_id,
+    position
+})
+
 class UserController {
-    CreateWithOrganisation = async (user: IUser, position: POSITION): Promise<IUserCreate | DBError> => {
+    create = async (user: IUser, position: POSITION = POSITION.OWNER): Promise<IUserCreate | DBError> => {
         let UserInsert = await model.user.create(user)
         if (!UserInsert.success) return UserInsert as DBError
     
-        let organisation = await model.organisation
-            .create({
-                id: v4(),
-                name: `My Organisation - ${user.email.split('@')[0]}`,
-            })
+        let organisation = await model.organisation.create(organisationStruct(user.email))
     
         if (!organisation.success) return organisation as DBError
     
         let User = UserInsert.data.User
         let Organisation = organisation.data.Organisation
-        let UserOrganisationInsert = await this.AddToOrganisation(User, Organisation, position)
+        let UserOrganisationInsert = await this.addToOrganisation(User, Organisation, position)
         if (!UserOrganisationInsert.success) return UserOrganisationInsert as DBError
         let UserOrganisation = UserOrganisationInsert.data.UserOrganisation
         
@@ -34,19 +41,10 @@ class UserController {
         }
     }
 
-    AddToOrganisation = async (User: IUser, Organisation: { id: string }, position: POSITION) => {
-
-        let insert = await model.userOrganisation
-            .create({
-                user_id: User.id,
-                organisation_id: Organisation.id,
-                position: position
-            })
-    
+    addToOrganisation = async (User: IUser, Organisation: { id: string }, position: POSITION) => {
+        let insert = await model.userOrganisation.create(userOrganisationStruct(User.id, Organisation.id, position))
         if (!insert.success) return insert as DBError
-        
-        let UserOrganisation = insert.data.UserOrganisation
-        
+        let UserOrganisation = insert.data.user_organisation
         return {
             success: true,
             data: {

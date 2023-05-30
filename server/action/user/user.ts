@@ -7,7 +7,7 @@ import { userOrganisationFlatten } from './user.util'
 export const init = async (req: Request, res: Response) => {
     const token = await auth.token(req)
     if (!token.success) return respond.user.init.fail.default(res)
-    const result = await model.userOrganisation.readByUser({ id: token.data.token.id })
+    const result = await model.userOrganisation.readByUser({ user_id: token.data.token.id })
     if (!result.success) { return respond.user.init.fail.userOrganisationQuery(res) }
     const organisations = result.data.UserOrganisation.map(userOrganisationFlatten)
     return respond.user.init.success(res, { organisations })

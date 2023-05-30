@@ -13,12 +13,11 @@ const nameUpdate = async (req: Request, res: Response) => {
     return respond.organisation.name.update.success(res, req.body.name )
 }
 
-
 const userAdd = async (req: Request, res: Response) => {
     let user = await model.user.findUniqueEmail(req.body.email)
 
     if (!user) {
-        const result = await controller.user.CreateWithOrganisation(requestToUser(req), POSITION.OWNER)
+        const result = await controller.user.create(requestToUser(req))
         if (!result.success) return respond.organisation.user.add.fail.default(res)
         user = result.data.User
     }
@@ -31,7 +30,7 @@ const userAdd = async (req: Request, res: Response) => {
     if (!relation.success) return respond.organisation.user.add.fail.default(res)
     if (isOwnerOrMember(relation.data.UserOrganisation)) return respond.organisation.user.add.fail.alreadyAOwnerOrMember(res)
 
-    const result = await controller.user.AddToOrganisation(user, {id: req.body.organisation_id}, POSITION.MEMBER)
+    const result = await controller.user.addToOrganisation(user, {id: req.body.organisation_id}, POSITION.MEMBER)
     if (!result.success) return respond.organisation.user.add.fail.default(res)
 
     return respond.organisation.user.add.success(res, {

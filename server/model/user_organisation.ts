@@ -1,15 +1,15 @@
 import type {IUserOrganisation} from '../../shared/type/type'
 import db from '../db/db'
 import { IWithId, IInsert } from './model.type'
-import { Success, Fail } from './model.util'
+import { success, fail } from './model.util'
 import { POSITION } from '../const/const'
 
 const UserOrganisationModel = {
-  create: async (payload: IUserOrganisation): Promise<IInsert<'UserOrganisation', IUserOrganisation, IUserOrganisation>> =>
+  create: async (payload: IUserOrganisation): Promise<IInsert<'user_organisation', IUserOrganisation, IUserOrganisation>> =>
     await db.user_organisation
       .create({data: payload})
-      .then((insert) => Success('UserOrganisation', payload, insert))
-      .catch((error: Error) => Fail('UserOrganisation', payload, error)),
+      .then((insert) => success('user_organisation', payload, insert))
+      .catch((error: Error) => fail('user_organisation', payload, error)),
 
   getUsers: async (payload: { organisation_id: string}) => {
         return await db.user_organisation.findMany({
@@ -35,11 +35,11 @@ const UserOrganisationModel = {
             organisation_id: payload.organisation_id
           }
         })
-          .then((read) => Success('UserOrganisation', payload, read))
-          .catch((error: Error) => Fail('UserOrganisation', payload, error))
+          .then((read) => success('UserOrganisation', payload, read))
+          .catch((error: Error) => fail('UserOrganisation', payload, error))
       }, 
 
-  readByUser: async (payload: IWithId) => {
+  readByUser: async (payload: { user_id : string}) => {
         return await db.user_organisation.findMany({
           include: {
             organisation: {
@@ -49,11 +49,11 @@ const UserOrganisationModel = {
             }
           },
           where: {
-            user_id: payload.id
+            user_id: payload.user_id
           }
         })
-          .then((read) => Success('UserOrganisation', payload, read))
-          .catch((error: Error) => Fail('UserOrganisation', payload, error))
+          .then((read) => success('UserOrganisation', payload, read))
+          .catch((error: Error) => fail('UserOrganisation', payload, error))
       },
   readByOrganisationAndUser: async (payload: { user_id: string, organisation_id: string}) => {
     return await db.user_organisation.findMany({
@@ -62,8 +62,8 @@ const UserOrganisationModel = {
         organisation_id: payload.organisation_id
       }
     })
-      .then((read) => Success('UserOrganisation', payload, read))
-      .catch((error: Error) => Fail('UserOrganisation', payload, error))
+      .then((read) => success('UserOrganisation', payload, read))
+      .catch((error: Error) => fail('UserOrganisation', payload, error))
   },
   delete: async (payload: { user_id: string, organisation_id: string, position: POSITION}) => {
     return await db.user_organisation.deleteMany({
@@ -73,8 +73,8 @@ const UserOrganisationModel = {
           position: payload.position
         }
       })
-      .then((read) => Success('UserOrganisation', payload, read))
-      .catch((error: Error) => Fail('UserOrganisation', payload, error))
+      .then((read) => success('UserOrganisation', payload, read))
+      .catch((error: Error) => fail('UserOrganisation', payload, error))
   },
 }
 

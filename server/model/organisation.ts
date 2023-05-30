@@ -1,26 +1,26 @@
 import type {IOrganisation} from '../../shared/type/type'
 import db from '../db/db'
 import { IWithId, IInsert} from './model.type'
-import { Success, Fail } from './model.util'
+import { success, fail } from './model.util'
 
 const OrganisationModel = {
   create: async (payload: IOrganisation): Promise<IInsert<'Organisation', IOrganisation, IOrganisation>> =>
     await db.organisation
       .create({data: payload})
-      .then((insert) => Success('Organisation', payload, insert))
-      .catch((error: Error) => Fail('Organisation', payload, error)),
+      .then((insert) => success('Organisation', payload, insert))
+      .catch((error: Error) => fail('Organisation', payload, error)),
 
   read: async (payload: IWithId) => {
     return db.organisation.findUnique({ where: { id: payload.id }})
-      .then((read) => Success('Organisation', payload, read))
-      .catch((error: Error) => Fail('Organisation', payload, error))
+      .then((read) => success('Organisation', payload, read))
+      .catch((error: Error) => fail('Organisation', payload, error))
   },
   name: {
     update: async (payload: IOrganisation) =>
       await db.organisation
         .update({ where: { id: payload.id}, data: { name: payload.name}})
-        .then((update) => Success('Organisation', payload, update))
-        .catch((error: Error) => Fail('Organisation', payload, error))
+        .then((update) => success('Organisation', payload, update))
+        .catch((error: Error) => fail('Organisation', payload, error))
   }
   
 }

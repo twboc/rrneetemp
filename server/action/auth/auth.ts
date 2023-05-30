@@ -2,14 +2,13 @@ import {Request, Response} from 'express'
 import model from '../../model/model'
 import respond from '../../respond/respond'
 import constroller from '../../controller/constroller'
-import {POSITION} from '../../const/const'
 import { checkPassword, getAuthorization } from './auth.util'
 import { requestToUser } from '../action.util'
 
 export const signup = async (req: Request, res: Response) => {
     const user = await model.user.findUniqueEmail(req.body.email)
     if (user) return respond.auth.signup.fail.userAlreadyRegistered(res)
-    const result = await constroller.user.CreateWithOrganisation(requestToUser(req), POSITION.OWNER)
+    const result = await constroller.user.create(requestToUser(req))
     if (!result.success) return respond.auth.signup.fail.default(res)
     return respond.auth.signup.success(res, getAuthorization(result.data.User))
 }
