@@ -2,7 +2,7 @@ import {Request, Response} from 'express'
 import jwt from 'jsonwebtoken'
 import {v4} from 'uuid'
 import {GoogleToken, GoogleIdToken} from '../token/token.type'
-import Model from '../model/model'
+import model from '../model/model'
 import {google_token_data} from '../model/google_token_data'
 import {google_id_token} from '../model/google_id_token'
 import google from '../resource/google/google'
@@ -34,12 +34,12 @@ export const googleOauthRedirect = async (req: Request, res: Response) => {
   // })
   // console.log('googleuser: ', googleuser)
   /////////////////////////////////////////////////////////////////////////////////
-  let User = await Model.User.findUniqueEmail(idToken.email)
+  let User = await model.user.findUniqueEmail(idToken.email)
 
   if (!(User)) {
 
     console.log("CREATE NEW USER")
-    await Model.User
+    await model.user
       .create({
         id: v4(),
         created_at: new Date(),

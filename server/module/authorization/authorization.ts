@@ -4,13 +4,17 @@ import jwt from 'jsonwebtoken'
 import { ITokenData, IToken, IHashPair} from './authorization.type'
 import {H24INSEC, TEMP_SECRET} from './authorization.const'
 
-export const hasAuthorization = (req: Request): string | null => {
-
-  const authorization = (
+export const getAuthorization = (req: Request): string => {
+  return (
     req.cookies['authorization'] ||
     req.query['authorization'] || 
     req.headers['authorization'] && req.headers['authorization'].split(' ')[1]
   ) as string
+}
+
+export const hasAuthorization = (req: Request): string | null => {
+
+  const authorization = getAuthorization(req)
 
   if (!authorization) {
     return null

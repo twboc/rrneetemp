@@ -2,11 +2,11 @@ import {Request} from 'express'
 import type {user as IUser} from '@prisma/client'
 import {v4} from 'uuid'
 import crypto from 'crypto'
-import Authorization from '../module/authorization/authorization'
+import authorization from '../module/authorization/authorization'
 
 export const requestToUser = (req: Request) : IUser => {
     const salt = crypto.randomBytes(16).toString('base64')
-    const hashed = Authorization.hashPassword(req.body.password, salt)
+    const hashed = authorization.hashPassword(req.body.password, salt)
     return {
         id: v4(),
         created_at: new Date(),

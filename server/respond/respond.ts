@@ -149,7 +149,7 @@ const Respond = {
             add: {
                 success: authUserAddSuccess,
                 fail: {
-                    Default: userNotCreated,
+                    default: userNotCreated,
                     alreadyAOwnerOrMember
                 }
             },

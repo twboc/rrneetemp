@@ -1,9 +1,9 @@
 import type {user as IUser} from '@prisma/client'
-import Authorization from '../../module/authorization/authorization'
+import authorization from '../../module/authorization/authorization'
 
-export const checkPassword = (password: string, salt: string, password_hash: string) => Authorization.hashPassword(password, salt).password_hash == password_hash
+export const checkPassword = (password: string, salt: string, password_hash: string) => authorization.hashPassword(password, salt).password_hash == password_hash
 
-export const getAuthorization = (user: IUser) => Authorization.create({
+export const getAuthorization = (user: IUser) => authorization.create({
     id: user.id,
     email: user.email
 })

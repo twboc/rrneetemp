@@ -1,8 +1,8 @@
 
-import UserController from './user'
+import user from './user'
 
 class Controller {
-    User = UserController
+    user = user
 }
 
 export default new Controller()

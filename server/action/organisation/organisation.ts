@@ -1,40 +1,38 @@
 import respond from '../../respond/respond'
 import {Request, Response} from 'express'
 import model from '../../model/model'
-import UserModel from '../../model/user'
-import Constroller from '../../controller/constroller'
+import controller from '../../controller/constroller'
 import {POSITION} from '../../const/const'
 import { isOwnerOrMember } from './organisation.util'
 import { requestToUser } from '../action.util'
 import { hasAuthorization, validateAuthorisation } from '../../module/authorization/authorization'
 
 const nameUpdate = async (req: Request, res: Response) => {
-    const result = await model.Organisation.updateName({ id: req.body.organisation_id, name: req.body.name})
+    const result = await model.organisation.name.update({ id: req.body.organisation_id, name: req.body.name})
     if (!result.success) return  respond.organisation.name.update.fail(res)
     return respond.organisation.name.update.success(res, req.body.name )
 }
 
 
 const userAdd = async (req: Request, res: Response) => {
-
-    let user = await UserModel.findUniqueEmail(req.body.email)
+    let user = await model.user.findUniqueEmail(req.body.email)
 
     if (!user) {
-        const result = await Constroller.User.CreateWithOrganisation(requestToUser(req), POSITION.OWNER)
-        if (!result.success) return respond.organisation.user.add.fail.Default(res)
+        const result = await controller.user.CreateWithOrganisation(requestToUser(req), POSITION.OWNER)
+        if (!result.success) return respond.organisation.user.add.fail.default(res)
         user = result.data.User
     }
 
-    const relation = await model.UserOrganisation.readByOrganisationAndUser({
+    const relation = await model.userOrganisation.readByOrganisationAndUser({
         user_id: user.id,
         organisation_id: req.body.organisation_id
     })
 
-    if (!relation.success) return respond.organisation.user.add.fail.Default(res)
+    if (!relation.success) return respond.organisation.user.add.fail.default(res)
     if (isOwnerOrMember(relation.data.UserOrganisation)) return respond.organisation.user.add.fail.alreadyAOwnerOrMember(res)
 
-    const result = await Constroller.User.AddToOrganisation(user, {id: req.body.organisation_id}, POSITION.MEMBER)
-    if (!result.success) return respond.organisation.user.add.fail.Default(res)
+    const result = await controller.user.AddToOrganisation(user, {id: req.body.organisation_id}, POSITION.MEMBER)
+    if (!result.success) return respond.organisation.user.add.fail.default(res)
 
     return respond.organisation.user.add.success(res, {
         user,
@@ -48,7 +46,7 @@ const userDelete = async (req: Request<{}, {}, UserDeleteBody>, res: Response) =
     const authorization = hasAuthorization(req)
     const token = await validateAuthorisation(authorization)
 
-    const relation = await model.UserOrganisation.readByOrganisationAndUser({
+    const relation = await model.userOrganisation.readByOrganisationAndUser({
         user_id: token.id,
         organisation_id: req.body.organisation_id
     })
@@ -59,7 +57,7 @@ const userDelete = async (req: Request<{}, {}, UserDeleteBody>, res: Response) =
     const userOrg = relation.data.UserOrganisation[0]
     if (!(userOrg.position == POSITION.OWNER)) return respond.organisation.user.delete.fail.userDeleteNoPermissions(res)
 
-    const result = await model.UserOrganisation.delete({
+    const result = await model.userOrganisation.delete({
         user_id: req.body.user_id,
         organisation_id: req.body.organisation_id,
         position: POSITION.MEMBER
@@ -70,7 +68,7 @@ const userDelete = async (req: Request<{}, {}, UserDeleteBody>, res: Response) =
 }
 
 const userGet = async (req: Request<{}, {}, { organisation_id: string}>, res: Response) => {
-    const result = await model.UserOrganisation.getUsers({ organisation_id: req.body.organisation_id})
+    const result = await model.userOrganisation.getUsers({ organisation_id: req.body.organisation_id})
 
     if (!result.success) return  
 

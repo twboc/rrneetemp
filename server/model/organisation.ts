@@ -15,11 +15,14 @@ const OrganisationModel = {
       .then((read) => Success('Organisation', payload, read))
       .catch((error: Error) => Fail('Organisation', payload, error))
   },
-  updateName: async (payload: IOrganisation) =>
-    await db.organisation
-      .update({ where: { id: payload.id}, data: { name: payload.name}})
-      .then((update) => Success('Organisation', payload, update))
-      .catch((error: Error) => Fail('Organisation', payload, error))
+  name: {
+    update: async (payload: IOrganisation) =>
+      await db.organisation
+        .update({ where: { id: payload.id}, data: { name: payload.name}})
+        .then((update) => Success('Organisation', payload, update))
+        .catch((error: Error) => Fail('Organisation', payload, error))
+  }
+  
 }
 
 export default OrganisationModel
