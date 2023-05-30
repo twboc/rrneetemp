@@ -43,8 +43,6 @@ model user_organisation {
 
   position String
 
-  confirmed Boolean
-
   @@id([user_id, organisation_id])
 }
 

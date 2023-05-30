@@ -7,7 +7,8 @@ import {
     ERROR_AUTHORIZATION_INVALID,
     ERROR_USER_ORGANISATION_FAILED,
     ERROR_ORGANISATION_UPDATE_NAME_FAILED,
-    ERROR_ALREADY_OWNER_OR_MEMBER
+    ERROR_ALREADY_OWNER_OR_MEMBER,
+    ERROR_USER_NOT_REMOVED_FROM_ORGANISATION
 } from '../../shared/error/error'
 
 import type {user as IUser, user_organisation as IUserOrganisation} from '@prisma/client'
@@ -87,6 +88,27 @@ const AlreadyAOwnerOrMember = (res: Response) => res.json({
     error: ERROR_ALREADY_OWNER_OR_MEMBER
 })
 
+const userDeleteSuccess = (res: Response) => res.json({
+    ...SUCCESS,
+    data: {}
+})
+
+const userDeleteFail = (res: Response) => res.json({
+    success: false,
+    error: ERROR_USER_NOT_REMOVED_FROM_ORGANISATION
+})
+
+const userDeleteNoPermissions = (res: Response) => res.json({
+    success: false,
+    error: ERROR_USER_NOT_REMOVED_FROM_ORGANISATION
+})
+
+const userGetSuccess = (res: Response, user_organisation: any) => res.json({
+    ...SUCCESS,
+    data: {
+        user_organisation
+    }
+})
 
 const Respond = {
     Auth: {
@@ -105,13 +127,7 @@ const Respond = {
                 UserAlreadyRegistered
             }
         },
-        UserAdd: {
-            Success: AuthUserAddSuccess,
-            Fail: {
-                Default: UserNotCreated,
-                AlreadyAOwnerOrMember
-            }
-        }
+        
     },
     User: {
         Init: {
@@ -126,6 +142,25 @@ const Respond = {
         ChangeName: {
             Success: OrganisationChangeNameSuccess,
             Fail: OrganisationChangeNameFail
+        },
+        UserAdd: {
+            Success: AuthUserAddSuccess,
+            Fail: {
+                Default: UserNotCreated,
+                AlreadyAOwnerOrMember
+            }
+        },
+        user: {
+            get: {
+                success: userGetSuccess
+            },
+            delete: {
+                success: userDeleteSuccess,
+                fail: {
+                    default: userDeleteFail,
+                    userDeleteNoPermissions
+                }
+            }
         }
     },
     API: {

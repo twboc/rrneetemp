@@ -6,12 +6,26 @@ import { IStoreState, storeStateSlice } from '../state.type'
 import { Reducers, HookedActions } from '../state.type'
 import { IUserOrganisationByUser, IUserOrganisationWithUser } from '../../../shared/type/type'
 
+const matchOrganisationUser = (user_id: string, organisation_id: string) => (userOrg: IUserOrganisationByUser) => {
+	return userOrg.user_id == user_id && userOrg.organisation_id == organisation_id
+} 
+
 const reducers: Reducers<IOrganisationState, IOrganisationPayloads> = {
 	set: (state: IOrganisationState, action: PayloadAction<IUserOrganisationByUser[]>) => {
+		// console.log("Set action payload: ", action.payload)
 		state.organisations = action.payload
 	},
 	setUserOrganisation: (state: IOrganisationState, action: PayloadAction<IUserOrganisationWithUser[]>) => {
+		// console.log("setUserOrganisation action payload: ", action.payload)
+		state.user_organisation = [...action.payload]
+	},
+	addUserOrganisation: (state: IOrganisationState, action: PayloadAction<IUserOrganisationWithUser[]>) => {
+		// console.log("setUserOrganisation action payload: ", action.payload)
 		state.user_organisation = [...state.user_organisation, ...action.payload]
+	},
+	removeUserOrganisation: (state: IOrganisationState, action: PayloadAction<{user_id: string, organisation_id: string}>) => {
+		const match = matchOrganisationUser(action.payload.user_id, action.payload.organisation_id)
+		state.user_organisation = state.user_organisation.filter((userOrg) => { return !match(userOrg) })
 	},
 	setName: (state: IOrganisationState, action: PayloadAction<IUserOrganisationByUser>) => {
 		state.organisations.forEach((organisation) => {

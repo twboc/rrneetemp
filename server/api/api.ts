@@ -17,7 +17,12 @@ const addRoutes = (app: Express) => {
     app.get('/api/user/init', authApi, action.user.init)
 
     app.post('/api/organisation/name', action.organisation.name.update)
+
+
+    app.post('/api/organisation/user/', action.organisation.user.get)
+
     app.post('/api/organisation/user/add', action.organisation.user.add)
+    app.post('/api/organisation/user/delete', action.organisation.user.delete)
 
     app.get('/api/google/ouath2/redirect', googleOauthRedirect)
     app.get('/api/dropbox/ouath2/redirect', dropboxOauthRedirect)

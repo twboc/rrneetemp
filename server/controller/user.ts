@@ -20,6 +20,7 @@ class UserController {
         let User = UserInsert.data.User
         let Organisation = OrganisationInsert.data.Organisation
         let UserOrganisationInsert = await this.AddToOrganisation(User, Organisation, position)
+        console.log("UserOrganisationInsert: ", UserOrganisationInsert)
         if (!UserOrganisationInsert.success) return UserOrganisationInsert as DBError
         let UserOrganisation = UserOrganisationInsert.data.UserOrganisation
         

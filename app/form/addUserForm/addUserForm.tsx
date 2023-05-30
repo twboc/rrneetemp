@@ -116,14 +116,12 @@ const AddUserForm: FC<AddUserFormProps> = props => {
 
       if (!res.success) return
 
-      console.log('res: ', res.data)
-
       const userOrganisationWithUser = {
         ...res.data.user_organisation,
         ...res.data.user,
       }
 
-      organisation.setUserOrganisation([userOrganisationWithUser])
+      organisation.addUserOrganisation([userOrganisationWithUser])
     }
   }
 
