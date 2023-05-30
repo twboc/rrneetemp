@@ -5,7 +5,7 @@ import controller from '../../controller/constroller'
 import {POSITION} from '../../const/const'
 import { isOwnerOrMember } from './organisation.util'
 import { requestToUser } from '../action.util'
-import { hasAuthorization, validateAuthorisation } from '../../module/authorization/authorization'
+import auth from '../../module/authorization/authorization'
 
 const nameUpdate = async (req: Request, res: Response) => {
     const result = await model.organisation.name.update({ id: req.body.organisation_id, name: req.body.name})
@@ -43,11 +43,10 @@ const userAdd = async (req: Request, res: Response) => {
 interface UserDeleteBody {user_id: string, organisation_id: string }
 
 const userDelete = async (req: Request<{}, {}, UserDeleteBody>, res: Response) => {
-    const authorization = hasAuthorization(req)
-    const token = await validateAuthorisation(authorization)
+    const token = await auth.token(req)
 
     const relation = await model.userOrganisation.readByOrganisationAndUser({
-        user_id: token.id,
+        user_id: token.data.token.id,
         organisation_id: req.body.organisation_id
     })
 

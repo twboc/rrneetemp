@@ -12,47 +12,65 @@ export const getAuthorization = (req: Request): string => {
   ) as string
 }
 
-export const hasAuthorization = (req: Request): string | null => {
-
+export const exists = (req: Request): string | null => {
   const authorization = getAuthorization(req)
-
-  if (!authorization) {
-    return null
-  }
-
   return authorization
+    ? authorization
+    : null
 }
 
+interface AuthorisationSuccess {
+  success: true,
+  data: {
+    token: IToken
+  }
+  error: null
+}
 
-export const validateAuthorisation = async (authorization: string): Promise<null|IToken> => {
+interface AuthorisationFail {
+  success: false,
+  data: null,
+  error: Error
+}
+
+export const validate = async (authorization: string): Promise<AuthorisationSuccess|AuthorisationFail> => {
   return new Promise(function(resolve,reject) {
     jwt.verify(authorization, TEMP_SECRET as string, (err: any, jwt: IToken) => {
       if (err != null) {
-        return reject(err)
+        return reject({
+          success: false,
+          data: null,
+          error: err,
+        })
       }
-      return resolve(jwt)
+      return resolve({
+        success: true,
+        data: {
+          token: jwt
+        },
+        error: null
+      })
     })
   })
 }
 
 export const hashPassword = (password: string, salt: string): IHashPair => {
-  let hash = crypto.createHmac('sha512', salt);
-  hash.update(password);
-  let value = hash.digest('hex');
   return {
       salt: salt,
-      password_hash: value
+      password_hash: crypto.createHmac('sha512', salt).update(password).digest('hex')
   }
 }
 
 export const create = (data: ITokenData) => jwt.sign(data, TEMP_SECRET, { expiresIn: `${H24INSEC}s` })
 
+export const token = async (req: Request) => await validate(exists(req))
 
 class Authorization {
-  hasAuthorization = hasAuthorization
-  validateAuthorisation = validateAuthorisation
+  exists = exists
+  validate = validate
   hashPassword = hashPassword
   create = create
+  token = token
 }
 
 

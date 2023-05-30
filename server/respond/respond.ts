@@ -132,7 +132,7 @@ const Respond = {
         init: {
             success: userInitSuccess,
             fail: {
-                default: userNotCreated,
+                default: authorisationInvalid,
                 userOrganisationQuery
             }
         }
