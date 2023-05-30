@@ -1,8 +1,7 @@
-import { API_POST, API_GET } from './resource.api.method'
+import { API_POST } from './resource.api.method'
 import { IRes } from './resource.api.type'
 import { WithName } from '../../type/interface'
-import type {user as IUser, user_organisation as IUserOrganisation} from '@prisma/client'
-import {IUserOrganisationWithUser} from '../../../shared/type/type'
+import type {IUser, IUserOrganisation, IUserOrganisationWithUser} from '../../../shared/type/type'
 
 interface SignupReq {
     email: string

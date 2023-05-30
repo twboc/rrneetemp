@@ -1,4 +1,4 @@
-import type {user as IUser} from '@prisma/client'
+import type {IUser} from '../../shared/type/type'
 import db from '../db/db'
 import { IInsert } from './model.type'
 import { Success, Fail } from './model.util'

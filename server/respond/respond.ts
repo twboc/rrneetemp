@@ -10,8 +10,7 @@ import {
     ERROR_ALREADY_OWNER_OR_MEMBER,
     ERROR_USER_NOT_REMOVED_FROM_ORGANISATION
 } from '../../shared/error/error'
-
-import type {user as IUser, user_organisation as IUserOrganisation} from '@prisma/client'
+import type { IUser,  IUserOrganisation} from '../../shared/type/type'
 
 interface ISuccessPartial {
     success: true

@@ -1,5 +1,5 @@
 import {Request} from 'express'
-import type {user as IUser} from '@prisma/client'
+import type {IUser} from '../../shared/type/type'
 import {v4} from 'uuid'
 import crypto from 'crypto'
 import authorization from '../module/authorization/authorization'

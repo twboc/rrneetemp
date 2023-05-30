@@ -2,7 +2,7 @@ import type {user_organisation as IUserOrganisation} from '@prisma/client'
 import type {organisation as IOrganisation} from '@prisma/client'
 import type {user as IUser} from '@prisma/client'
 
-export { IUserOrganisation, IUser }
+export { IUserOrganisation, IOrganisation, IUser }
 
 export type IUserOrganisationWithUser = Omit<IUser, 'salt' | 'password_hash'> & IUserOrganisation
 

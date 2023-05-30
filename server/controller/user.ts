@@ -1,4 +1,4 @@
-import type { user as IUser } from '@prisma/client'
+import type { IUser } from '../../shared/type/type'
 import model from '../model/model'
 import {v4} from 'uuid'
 import { POSITION } from '../const/const'

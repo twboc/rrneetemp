@@ -1,8 +1,4 @@
-import type {
-    user as IUser,
-    organisation as IOrganisation,
-    user_organisation as IUserOrganisation
-} from '@prisma/client'
+import type { IUser, IOrganisation, IUserOrganisation } from '../../shared/type/type'
 
 export interface IUserCreateSuccess {
     success: true

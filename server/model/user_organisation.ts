@@ -1,4 +1,4 @@
-import type {user_organisation as IUserOrganisation} from '@prisma/client'
+import type {IUserOrganisation} from '../../shared/type/type'
 import db from '../db/db'
 import { IWithId, IInsert } from './model.type'
 import { Success, Fail } from './model.util'
