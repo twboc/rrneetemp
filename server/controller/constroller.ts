@@ -1,5 +1,5 @@
 
-import user from './user'
+import user from './user/user'
 
 class Controller {
     user = user

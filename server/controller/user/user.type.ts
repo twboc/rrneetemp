@@ -1,4 +1,4 @@
-import type { IUser, IOrganisation, IUserOrganisation } from '../../shared/type/type'
+import type { IUser, IOrganisation, IUserOrganisation } from '../../../shared/type/type'
 
 export interface IUserCreateSuccess {
     success: true
