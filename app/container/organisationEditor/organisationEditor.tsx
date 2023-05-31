@@ -5,7 +5,7 @@ import {useSelector} from '../../module/store/store'
 import {organisationSelect} from '../../state/organisation/organisation'
 import resource from '../../resource/resource'
 import {organisation} from '../../state/state.actions'
-import OrganisationUser from '../../component/organisationUser/organisationUser'
+import OrganisationUser from '../organisationUser/organisationUser'
 import OrganisationName from '../organisationName/organisationName'
 
 const getUsers = async (organisation_id: string) => {
