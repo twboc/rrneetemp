@@ -5,6 +5,8 @@ import morgan from 'morgan'
 import config from '../config/config'
 import { auth } from './middleware/auth'
 import api from './api/api'
+import https from 'https'
+import fs from 'fs'
 
 const app = express()
 
@@ -31,6 +33,18 @@ app.use('/static', express.static(path.resolve(__dirname, '../static')))
 
 api.addRoutes(app)
 
-app.listen(config.server.port, () =>
-  console.log('Example app listening on port ' + config.server.port),
-)
+const message = () => console.log('Example app listening on port ' + config.server.port)
+
+if (config.server.https){
+  https
+  .createServer(
+    {
+      key: fs.readFileSync(config.server.cert.key),
+      cert: fs.readFileSync(config.server.cert.cert),
+    },
+    app
+  )
+  .listen(config.server.port, message)
+}else{
+  app.listen(config.server.port, message)
+}

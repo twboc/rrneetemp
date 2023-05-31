@@ -15,7 +15,7 @@ const auth = async (config: NetworkConfig) => {
 }
 
 const API = new Network({
-    baseURL: `http://${config.server.url}:${config.server.port}`,
+    baseURL: `${config.server.https ? 'https' : 'http'}://${config.server.url}:${config.server.port}`,
     auth,
     //@ts-ignore
     response
