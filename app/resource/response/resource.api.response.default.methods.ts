@@ -72,7 +72,6 @@ export const Response: NetworkCustomResponseHandler = <R>(
 	res: NetworkResponse<R>,
 	config: NetworkConfig & ApiCustomConfig
 ): R => {
-	console.log("Response: ", res)
 	if (!Is200(res)) {
 		return config.NetworkFail
 			? config.NetworkFail<R>(res, config)
