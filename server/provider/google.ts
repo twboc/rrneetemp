@@ -8,6 +8,7 @@ import {google_id_token} from '../model/google_id_token'
 import google from '../resource/google/google'
 import {CONST_KEYS} from '../../app/const/const'
 import { getAuthorization } from '../action/auth/auth.util'
+import constroller from '../controller/constroller'
 
 export const googleOauthRedirect = async (req: Request, res: Response) => {
   
@@ -39,28 +40,21 @@ export const googleOauthRedirect = async (req: Request, res: Response) => {
   let User = await model.user.findUniqueEmail(idToken.email)
 
   if (!(User)) {
+    const result = await constroller.user.create({
+      id: v4(),
+      created_at: new Date(),
+      email: idToken.email,
+      phone: '',
+      name: idToken.name,
+      given_name: idToken.given_name,
+      family_name: idToken.family_name,
+      locale: idToken.locale,
+      salt: '',
+      password_hash: '',
+    })
 
-    console.log("CREATE NEW USER")
-    await model.user
-      .create({
-        id: v4(),
-        created_at: new Date(),
-        email: idToken.email,
-        phone: '',
-        name: idToken.name,
-        given_name: idToken.given_name,
-        family_name: idToken.family_name,
-        locale: idToken.locale,
-        salt: '',
-        password_hash: ''
-      })
-      
-      // .then((user_insert) => {
-      //   User = user_insert
-      // })      
-      // .catch(() => {
-      //   return res.redirect('/login?error=UIDB_ERROR')
-      // })
+    if (!result.success) return res.redirect('/login?error=UIDB_ERROR')
+    User = result.data.User
   }
 
   if (User){
