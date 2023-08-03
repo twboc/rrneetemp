@@ -65,8 +65,6 @@ const LoginForm: FC<LoginFormProps> = props => {
 
     const res = await resource.api.auth.login({email, password})
 
-    console.log('res: ', res)
-
     if (
       !res.success &&
       res.error.code === ERROR_CODE.USER_OR_PASSWORD_INVALID
@@ -79,7 +77,6 @@ const LoginForm: FC<LoginFormProps> = props => {
     }
 
     if (res.success) {
-      console.log('HERE: ', res.data.authorization)
       await Storage.set(CONST_KEYS.authorization, res.data.authorization)
       Cookie.set(CONST_KEYS.authorization, res.data.authorization)
       Url.changePath('/app')

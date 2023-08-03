@@ -32,7 +32,6 @@ const Init = () => {
   const [isInitialised, setIsInitialised] = useState<boolean>(false)
 
   useEffect(() => {
-    console.log('Init app...')
     init(setIsInitialised)
   }, [])
 

@@ -12,15 +12,12 @@ const matchOrganisationUser = (user_id: string, organisation_id: string) => (use
 
 const reducers: Reducers<IOrganisationState, IOrganisationPayloads> = {
 	set: (state: IOrganisationState, action: PayloadAction<IUserOrganisationByUser[]>) => {
-		// console.log("Set action payload: ", action.payload)
 		state.organisations = action.payload
 	},
 	setUserOrganisation: (state: IOrganisationState, action: PayloadAction<IUserOrganisationWithUser[]>) => {
-		// console.log("setUserOrganisation action payload: ", action.payload)
 		state.user_organisation = [...action.payload]
 	},
 	addUserOrganisation: (state: IOrganisationState, action: PayloadAction<IUserOrganisationWithUser[]>) => {
-		// console.log("setUserOrganisation action payload: ", action.payload)
 		state.user_organisation = [...state.user_organisation, ...action.payload]
 	},
 	removeUserOrganisation: (state: IOrganisationState, action: PayloadAction<{user_id: string, organisation_id: string}>) => {
