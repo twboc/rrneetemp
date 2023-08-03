@@ -1,4 +1,4 @@
-import React, {FC, useState} from 'react'
+import React, {FC, useState, useEffect} from 'react'
 import resource from '../../resource/resource'
 import LoginIcons from './login.icons'
 import LoginFormProps from './login.login.form.type'
@@ -11,6 +11,35 @@ import Storage from '../../module/storage/storage'
 import {CONST_KEYS} from '../../const/const'
 import Url from '../../module/url/url'
 
+function removeParam(key: string, sourceURL: string) {
+  var rtn = sourceURL.split('?')[0],
+    param,
+    params_arr = [],
+    queryString = sourceURL.indexOf('?') !== -1 ? sourceURL.split('?')[1] : ''
+  if (queryString !== '') {
+    params_arr = queryString.split('&')
+    for (var i = params_arr.length - 1; i >= 0; i -= 1) {
+      param = params_arr[i].split('=')[0]
+      if (param === key) {
+        params_arr.splice(i, 1)
+      }
+    }
+    if (params_arr.length) rtn = rtn + '?' + params_arr.join('&')
+  }
+  return rtn
+}
+
+const onGoogleSuccess = async () => {
+  const authorization = Cookie.get(CONST_KEYS.authorization)
+
+  if (!authorization) {
+    return (window.location.href = removeParam('google', window.location.href))
+  }
+
+  await Storage.set(CONST_KEYS.authorization, authorization)
+  Url.changePath('/app')
+}
+
 const LoginForm: FC<LoginFormProps> = props => {
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
@@ -18,6 +47,13 @@ const LoginForm: FC<LoginFormProps> = props => {
   const [invalidEmail, setInvalidEmail] = useState<boolean>(false)
   const [userPasswordInvalid, setUserPasswordInvalid] = useState<boolean>(false)
   const [genericError, setGenericError] = useState<boolean>(false)
+
+  useEffect(() => {
+    const isGoogleSuccess = window.location.href.includes('google=success')
+    if (isGoogleSuccess) {
+      onGoogleSuccess()
+    }
+  })
 
   const submit = async () => {
     setUserPasswordInvalid(false)
@@ -28,6 +64,8 @@ const LoginForm: FC<LoginFormProps> = props => {
     }
 
     const res = await resource.api.auth.login({email, password})
+
+    console.log('res: ', res)
 
     if (
       !res.success &&
@@ -41,6 +79,7 @@ const LoginForm: FC<LoginFormProps> = props => {
     }
 
     if (res.success) {
+      console.log('HERE: ', res.data.authorization)
       await Storage.set(CONST_KEYS.authorization, res.data.authorization)
       Cookie.set(CONST_KEYS.authorization, res.data.authorization)
       Url.changePath('/app')

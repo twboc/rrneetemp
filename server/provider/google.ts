@@ -6,6 +6,8 @@ import model from '../model/model'
 import {google_token_data} from '../model/google_token_data'
 import {google_id_token} from '../model/google_id_token'
 import google from '../resource/google/google'
+import {CONST_KEYS} from '../../app/const/const'
+import { getAuthorization } from '../action/auth/auth.util'
 
 export const googleOauthRedirect = async (req: Request, res: Response) => {
   
@@ -61,18 +63,14 @@ export const googleOauthRedirect = async (req: Request, res: Response) => {
       // })
   }
 
-
-  console.log("user: ", User)
-
   if (User){
     await google_token_data.create({...google_token, user_id: User.id })
     await google_id_token.create({ ...idToken, user_id: User.id })
   }
   
-
-  // create session
-
   // set cookies
+  const authorization = getAuthorization(User)
+  res.cookie(CONST_KEYS.authorization, authorization)
 
-  return res.redirect('/app')
+  return res.redirect('/login?google=success')
 }

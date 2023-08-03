@@ -22,7 +22,7 @@ export const googleOauth2URL = () => {
   }
 
   const qs = new URLSearchParams(options)
-
+  
   return `${url}?${qs.toString()}`
 }
 

@@ -19,7 +19,7 @@ const Navigation = () => {
           <Route path="Organisations" element={<Organisations />} />
           <Route path="*" element={<App />} />
         </Route>
-        <Route path="Login" element={<Login />} />
+        <Route path="login" element={<Login />} />
       </Routes>
     </BrowserRouter>
   )

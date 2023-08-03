@@ -2,7 +2,7 @@
     "server": {
         "url": "localhost",
         "port": 3000,
-        "https": true,
+        "https": false,
         "cert": {
             "key": "/home/hubert/certs/kanagawave/server.key",
             "cert": "/home/hubert/certs/kanagawave/server.cert"
