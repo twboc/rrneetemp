@@ -1,5 +1,5 @@
 import {IUserOrganisationByUser} from '../../../shared/type/type'
 
-export default interface OrganisationEditorProps {
+export default interface ClientEditorProps {
   organisation: IUserOrganisationByUser
 }

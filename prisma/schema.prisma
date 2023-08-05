@@ -31,7 +31,8 @@ model organisation {
   id   String @id @default(uuid()) @db.Uuid
   name String
 
-  user_organisation user_organisation[]
+  user_organisation   user_organisation[]
+  client_organisation client_organisation[]
 }
 
 model user_organisation {
@@ -44,6 +45,25 @@ model user_organisation {
   position String
 
   @@id([user_id, organisation_id])
+}
+
+model client {
+  id   String @id @default(uuid()) @db.Uuid
+  name String
+
+  client_organisation client_organisation[]
+}
+
+model client_organisation {
+  client    client @relation(fields: [client_id], references: [id])
+  client_id String @db.Uuid
+
+  organisation    organisation @relation(fields: [organisation_id], references: [id])
+  organisation_id String       @db.Uuid
+
+  position String
+
+  @@id([client_id, organisation_id])
 }
 
 model google_token_data {
