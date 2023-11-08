@@ -7,6 +7,7 @@ const LeftNav = () => {
     <div className="leftNav shadow-2">
       <Link to={'/home'}>Home</Link>
       <Link to={'/organisations'}>Organisations</Link>
+      <Link to={'/search'}>Search</Link>
     </div>
   )
 }

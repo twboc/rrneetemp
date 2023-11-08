@@ -12,3 +12,23 @@ export const onChange = (method: Dispatch<SetStateAction<string>>, callback?: an
   method(e.target.value);
   if (callback) { callback(e) }
 }
+
+
+const removeTrailingSlash = (url: string): string => url.endsWith('/') ? url.slice(0, -1) : url
+const removeHttps = (url: string): string => url.replace('https://', '')
+const removeHttp = (url: string): string => url.replace('http://', '')
+const prependHttp = (url: string): string => 'https://' + url
+
+const decodeHTMLEntities = (text: string): string => {
+  const textArea = document.createElement('textarea')
+  textArea.innerHTML = text
+  return textArea.value
+}
+
+export {
+  removeTrailingSlash,
+  removeHttps,
+  removeHttp,
+  prependHttp,
+  decodeHTMLEntities
+}

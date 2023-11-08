@@ -5,6 +5,7 @@ import Home from '../view/home/home'
 import App from '../view/app/app'
 import Client from '../view/client/client'
 import Organisations from '../view/organisations/organisations'
+import Search from '../view/search/search'
 import Login from '../view/login/login'
 
 const Navigation = () => {
@@ -17,6 +18,7 @@ const Navigation = () => {
           <Route path="app" element={<App />} />
           <Route path="client" element={<Client />} />
           <Route path="organisations" element={<Organisations />} />
+          <Route path="search" element={<Search />} />
           <Route path="*" element={<App />} />
         </Route>
         <Route path="login" element={<Login />} />
