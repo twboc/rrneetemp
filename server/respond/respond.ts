@@ -114,6 +114,11 @@ const trackerDomainCreateSuccess = (res: Response, data: ITrackerDomain) => res.
     data
 })
 
+const trackerDomainGetAllSuccess = (res: Response, data: ITrackerDomain) => res.json({
+    ...SUCCESS,
+    data
+})
+
 const Respond = {
     auth: {
         login: {
@@ -182,6 +187,11 @@ const Respond = {
             create: {
                 success: trackerDomainCreateSuccess,
                 fail: {}
+            },
+            get: {
+                all: {
+                    success: trackerDomainGetAllSuccess
+                }
             }
         }
     }
