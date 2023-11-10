@@ -6,6 +6,7 @@ import URL from '../../../shared/url/url'
 
 interface CreateDomainReq {
     domain: string
+    organisation_id: string
 }
 
 interface SignupReq {

@@ -22,7 +22,7 @@ const ORGANISATION = {
 
 const TRACKER = {
     DOMAIN: {
-        CREATE: 'api/tracker/domain/create'
+        CREATE: '/api/tracker/domain/create'
     }
 }
 

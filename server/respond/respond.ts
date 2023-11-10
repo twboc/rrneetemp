@@ -10,7 +10,7 @@ import {
     ERROR_ALREADY_OWNER_OR_MEMBER,
     ERROR_USER_NOT_REMOVED_FROM_ORGANISATION
 } from '../../shared/error/error'
-import type { IUser,  IUserOrganisation} from '../../shared/type/type'
+import type { IUser, IUserOrganisation, ITrackerDomain } from '../../shared/type/type'
 
 interface ISuccessPartial {
     success: true
@@ -109,6 +109,11 @@ const userGetSuccess = (res: Response, user_organisation: any) => res.json({
     }
 })
 
+const trackerDomainCreateSuccess = (res: Response, data: ITrackerDomain) => res.json({
+    ...SUCCESS,
+    data
+})
+
 const Respond = {
     auth: {
         login: {
@@ -171,7 +176,15 @@ const Respond = {
                 authorisationInvalid
             },
         }
-    }  
+    },
+    tracker: {
+        domain: {
+            create: {
+                success: trackerDomainCreateSuccess,
+                fail: {}
+            }
+        }
+    }
 } 
 
 

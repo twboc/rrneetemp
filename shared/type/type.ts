@@ -17,3 +17,17 @@ export interface IUserOrganisationWithOrganisation extends IUserOrganisation {
 export interface IUserOrganisationByUser extends IUserOrganisation {
     name: string
 }
+
+export interface ItrackerDomainPermission {
+    id: string
+    domain_id: string
+    user_id: string
+    organisation_id: string
+    access: string
+}
+
+export interface ITrackerDomain {
+    id: string
+    domain: string
+    permissions: ItrackerDomainPermission[]
+}
