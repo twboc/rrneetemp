@@ -11,8 +11,6 @@ import { getAuthorization } from '../action/auth/auth.util'
 import constroller from '../controller/constroller'
 
 export const googleOauthRedirect = async (req: Request, res: Response) => {
-  
-  console.log("here we are!!!")
 
   const tokens = await google.apis.oauth.token({
     code: req.query.code as string,

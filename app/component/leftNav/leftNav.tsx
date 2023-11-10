@@ -8,6 +8,7 @@ const LeftNav = () => {
       <Link to={'/home'}>Home</Link>
       <Link to={'/organisations'}>Organisations</Link>
       <Link to={'/search'}>Search</Link>
+      <Link to={'/tracker'}>Tracker</Link>
     </div>
   )
 }

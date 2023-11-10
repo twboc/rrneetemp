@@ -11,7 +11,7 @@ const Layout = () => {
   return (
     <>
       <Header />
-      <div style={{display: 'flex', flexDirection: 'row'}}>
+      <div className="content-container" style={{display: 'flex', flexDirection: 'row', border: '1px solid red', paddingTop: '60px'}}>
         <LeftNav />
         <Content>
           <Outlet />

@@ -1,8 +1,12 @@
-import type {user_organisation as IUserOrganisation} from '@prisma/client'
-import type {organisation as IOrganisation} from '@prisma/client'
-import type {user as IUser} from '@prisma/client'
+import type {
+    user_organisation as IUserOrganisation,
+    organisation as IOrganisation,
+    user as IUser,
+    domain as IDomain,
+    domain_permission as IDomainPermission
+} from '@prisma/client'
 
-export { IUserOrganisation, IOrganisation, IUser }
+export { IUserOrganisation, IOrganisation, IUser, IDomain, IDomainPermission }
 
 export type IUserOrganisationWithUser = Omit<IUser, 'salt' | 'password_hash'> & IUserOrganisation
 

@@ -4,6 +4,9 @@ import { WithName } from '../../type/interface'
 import type {IUser, IUserOrganisation, IUserOrganisationWithUser} from '../../../shared/type/type'
 import URL from '../../../shared/url/url'
 
+interface CreateDomainReq {
+    domain: string
+}
 
 interface SignupReq {
     email: string
@@ -42,13 +45,10 @@ interface GetUserRes extends IRes<{
     user_organisation: IUserOrganisationWithUser[]
 }> { }
 
-class Organisation {
-    changeName = async (req: ChangeNameReq) => await API_POST<ChangeNameReq, IRes<WithName> >(URL.ORGANISATION.NAME.GET, req)
-    user = {
-        get: async (req: GetUserReq) => (await API_POST<GetUserReq, GetUserRes>(URL.ORGANISATION.USER.GET, req)),
-        add: async (req: AddUserReq) => (await API_POST<AddUserReq, UserAddRes>(URL.ORGANISATION.USER.ADD, req)),
-        delete: async (req: DeleteUserReq) => (await API_POST<DeleteUserReq, IRes<{}>>(URL.ORGANISATION.USER.DELETE, req)),
-    }
+class Tracker {
+    
+    create = async (req: CreateDomainReq) => (await API_POST<CreateDomainReq, GetUserRes>(URL.TRACKER.DOMAIN.CREATE, req))
+    
 }
 
-export default new Organisation()
+export default new Tracker()

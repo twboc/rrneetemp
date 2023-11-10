@@ -28,3 +28,9 @@ h1 {
   min-height: 100vh;
   position: relative;
 }
+
+
+.content-container {
+  display: 'flex';
+  flex-direction: 'row';
+}

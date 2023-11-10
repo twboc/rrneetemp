@@ -25,14 +25,16 @@ model user {
   password_hash String   @default("")
 
   user_organisation user_organisation[]
+  domain_permissions domain_permission[]
 }
 
 model organisation {
   id   String @id @default(uuid()) @db.Uuid
   name String
 
-  user_organisation   user_organisation[]
+  user_organisation user_organisation[]
   client_organisation client_organisation[]
+  domain_permissions domain_permission[]
 }
 
 model user_organisation {
@@ -96,3 +98,74 @@ model google_id_token {
   iat            Int
   exp            Int
 }
+
+///////////////////////////////////////////////////////////////////////////
+// POSITION TRACKER START                                                //
+///////////////////////////////////////////////////////////////////////////
+
+model domain {
+  id   String @id @default(uuid()) @db.Uuid
+  domain String
+
+  query query[]
+  domain_permission domain_permission[]
+}
+
+model domain_permission {
+  id   String @id @default(uuid()) @db.Uuid
+
+  domain domain @relation(fields: [domain_id], references: [id])
+  domain_id String @db.Uuid
+
+  organisation    organisation @relation(fields: [organisation_id], references: [id])
+  organisation_id String       @db.Uuid
+
+  user    user   @relation(fields: [user_id], references: [id])
+  user_id String @db.Uuid
+
+  access String
+
+}
+
+model query {
+  id   String @id @default(uuid()) @db.Uuid
+
+  domain domain @relation(fields: [domain_id], references: [id])
+  domain_id String @db.Uuid
+
+  query String
+  created_at DateTime @default(now())
+
+  query_variant query_variant[]
+}
+
+
+model query_variant {
+  id   String @id @default(uuid()) @db.Uuid
+
+  query query @relation(fields: [query_id], references: [id])
+  query_id String @db.Uuid
+
+  search_engine String
+  device String
+
+  query_variant_result query_variant_result[]
+}
+
+model query_variant_result {
+  id String @id @default(uuid()) @db.Uuid
+
+  query_variant query_variant @relation(fields: [query_variant_id], references: [id])
+  query_variant_id String @db.Uuid
+
+  status String
+  created_at DateTime @default(now())
+  position Int
+  domain String
+  url String
+
+}
+
+///////////////////////////////////////////////////////////////////////////
+// POSITION TRACKER END                                                  //
+///////////////////////////////////////////////////////////////////////////

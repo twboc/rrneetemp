@@ -6,15 +6,13 @@ import {
   prependHttp
 } from '../../util/util'
 
-// import './Main.css'
+import './search.css'
 import domains from '../../asset/Domains'
 import { assignError } from '../../module/Error/Error'
 import DomainResults from '../../component/DomainResults/DomainResults'
 import { Result } from '../../type/type'
 
 const perPage = 100
-
-// https://www.googleapis.com/blogger/v3/blogs/7438700582880111704/posts/search?key=AIzaSyDCOtjlx8CukLpYJXcvVdc1rDBo6LzN6uk&q=implanty&fetchBodies=false
 
 const Search: FC = () => {
   const [query, setQuery] = useState('')
@@ -74,9 +72,8 @@ const Search: FC = () => {
     <div>
         <div className='header'>
             <input className='headerInput' onChange={e => { setQueryRef(e.target.value) }} />
-            {/*  */}
         </div>
-        <div className='content'>
+        <div className='search-content'>
             {Object.entries(results).map((entry) => {
               return (entry[1] as Result[]).length > 0
                 ? <>
@@ -91,3 +88,7 @@ const Search: FC = () => {
 }
 
 export default Search
+
+
+// Blogger Query
+// https://www.googleapis.com/blogger/v3/blogs/7438700582880111704/posts/search?key=AIzaSyDCOtjlx8CukLpYJXcvVdc1rDBo6LzN6uk&q=implanty&fetchBodies=false

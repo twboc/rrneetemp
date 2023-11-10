@@ -1,5 +1,7 @@
 import { Express } from 'express'
 
+import URL from '../../shared/url/url'
+
 import { authApi } from '../middleware/auth'
 
 import {googleOauthRedirect} from '../provider/google'
@@ -10,23 +12,22 @@ import action from '../action/action'
 
 const addRoutes = (app: Express) => {
 
-    app.post('/api/auth/signup', action.auth.signup)
-    app.post('/api/auth/login', action.auth.login)
-    app.get('/api/auth/logout', action.auth.logout)
+    app.post(URL.AUTH.SIGNUP, action.auth.signup)
+    app.post(URL.AUTH.LOGIN, action.auth.login)
+    app.get(URL.AUTH.LOGOUT, action.auth.logout)
 
-    app.get('/api/user/init', authApi, action.user.init)
+    app.get(URL.USER.INIT, authApi, action.user.init)
 
-    app.post('/api/organisation/name', action.organisation.name.update)
+    app.post(URL.ORGANISATION.NAME.GET, action.organisation.name.update)
+    app.post(URL.ORGANISATION.USER.GET, action.organisation.user.get)
+    app.post(URL.ORGANISATION.USER.ADD, action.organisation.user.add)
+    app.post(URL.ORGANISATION.USER.DELETE, action.organisation.user.delete)
 
+    app.post(URL.TRACKER.DOMAIN.CREATE, action.tracker.domain.create)
 
-    app.post('/api/organisation/user/', action.organisation.user.get)
-
-    app.post('/api/organisation/user/add', action.organisation.user.add)
-    app.post('/api/organisation/user/delete', action.organisation.user.delete)
-
-    app.get('/api/google/ouath2/redirect', googleOauthRedirect)
-    app.get('/api/dropbox/ouath2/redirect', dropboxOauthRedirect)
-    app.get('/api/facebook/ouath2/redirect', facebookOauthRedirect)
+    app.get(URL.GOOGLE.OAUTH2.REDIRECT, googleOauthRedirect)
+    app.get(URL.DROPBOX.OAUTH2.REDIRECT, dropboxOauthRedirect)
+    app.get(URL.FACEBOOK.OAUTH2.REDIRECT, facebookOauthRedirect)
     
 }
 

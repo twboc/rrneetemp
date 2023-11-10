@@ -27,6 +27,8 @@ app.get('/init', auth, serveApp)
 app.get('/home', auth, serveApp)
 app.get('/app', auth, serveApp)
 app.get('/organisations', auth, serveApp)
+app.get('/search', auth, serveApp)
+app.get('/tracker', auth, serveApp)
 app.get('/client', auth, serveApp)
 
 app.use('/static', express.static(path.resolve(__dirname, '../static')))
