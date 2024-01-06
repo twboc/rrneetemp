@@ -54,7 +54,7 @@ const Tracker: FC = () => {
       <br />
       <input onChange={domainOnChange(setSelectedDomain)} />
       <button title="Add" onClick={() => addDomain(setInvalidDomain, selectedDomain, organisations[0].organisation_id)}>Add</button>
-
+      <br/>
       <div>
         {
           domains.map((domain) => {
