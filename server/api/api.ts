@@ -26,6 +26,8 @@ const addRoutes = (app: Express) => {
     app.post(URL.TRACKER.DOMAIN.CREATE, action.tracker.domain.create)
     app.post(URL.TRACKER.DOMAIN.GET.ALL, action.tracker.domain.get.all)
 
+    app.post(URL.TRACKER.QUERY.CREATE, action.tracker.query.create)
+
     app.get(URL.GOOGLE.OAUTH2.REDIRECT, googleOauthRedirect)
     app.get(URL.DROPBOX.OAUTH2.REDIRECT, dropboxOauthRedirect)
     app.get(URL.FACEBOOK.OAUTH2.REDIRECT, facebookOauthRedirect)

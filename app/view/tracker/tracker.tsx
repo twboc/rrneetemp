@@ -1,51 +1,66 @@
-import React, { FC, useEffect, useState, Dispatch, SetStateAction } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import './tracker.scss'
 import { organisationSelect } from '../../state/organisation/organisation'
 import { useSelector } from '../../module/store/store'
-import { IUserOrganisationByUser } from '../../../shared/type/type'
-import { addDomain } from './tracker.action'
-import resource from '../../resource/resource'
+import { IUserOrganisationByUser, IDomainListed, IQueryCreate } from '../../../shared/type/type'
+import { addDomain, addQueries } from './tracker.action'
+import { getAllDomains, domainOnChange, onChange } from './tracker.util'
 
-const getAllDomains = async (organisation_id: string, setDomains: Dispatch<SetStateAction<IDomainListed[]>>) => {
-  console.log("organisation_id: ", organisation_id)
-  const res = await resource.api.tracker.domain.get.all({ organisation_id })
-
-  console.log("res: ", res, res.data.DomainPermissionWithDomain.DomainPermissionWithDomain)
-  //@ts-ignore
-  if (res) {
-    setDomains(res.data.DomainPermissionWithDomain)
-  } 
-  
-}
-
-interface IDomainListed {
-  id: string //'7c3a9dfa-3e6f-4fb9-8929-dc27b8ab722b',
-  domain_id: string // '210b0a4e-0241-4581-93de-5b0c2d3124ef',
-  organisation_id: string // '967b8ed9-ae1b-43c7-8921-13877150c12c',
-  user_id: string // 'd153f74e-fa2e-41ea-af65-787b5dbdd9b5',
-  access: string // 'OWNER',
-  domain: string // 'adfasdfsdf.pl'
+const getSelectedDomain = (domains: IDomainListed[], selectedDomain: string) => {
+  return (domains && domains.length > 0)
+    ? domains.filter(domain => domain.domain_id == selectedDomain )[0].domain
+    : ''
 }
 
 
-const domainOnChange = (setSelectedDomain: Dispatch<SetStateAction<string>>) => (e: any) => { setSelectedDomain(e.target.value) }
 
 const Tracker: FC = () => {
   const [selectedDomain, setSelectedDomain] = useState<string>('')
   const [invalidDomain, setInvalidDomain] = useState<boolean>(false)
   const [domains, setDomains] = useState<IDomainListed[]>([])
 
+  const [query, setQuery] = useState<string>('')
 
   const organisations: IUserOrganisationByUser[] = useSelector(
     organisationSelect.organisations,
   )
 
-  // console.log("organisations: ", organisations[0].organisation_id, organisations)
-
   useEffect(() => {
     console.log("get user organisations")
-    getAllDomains(organisations[0].organisation_id, setDomains)
+    getAllDomains(organisations[0].organisation_id, setDomains, setSelectedDomain)
   }, [])
+
+  const createDomain = () => addDomain(
+    setInvalidDomain,
+    selectedDomain,
+    organisations[0].organisation_id,
+    domains,
+    setDomains
+    )
+
+
+    const createQuery = () => {
+      console.log("query: ", query)
+
+      const queryCreateDataDesktop: IQueryCreate = {
+        domain_id: selectedDomain,
+        query: query,
+        search_engine: 'google.pl',
+        device: 'desktop'
+      }
+
+      const queryCreateDataMobile: IQueryCreate = {
+        domain_id: selectedDomain,
+        query: query,
+        search_engine: 'google.pl',
+        device: 'mobile'
+      }
+
+      addQueries([queryCreateDataDesktop, queryCreateDataMobile], organisations[0].organisation_id)
+
+
+      setQuery("")
+    }
 
   return (
     <div className="tracker-container">
@@ -53,15 +68,43 @@ const Tracker: FC = () => {
       <span>{invalidDomain ? ' Invalid Domain' : ''}</span>
       <br />
       <input onChange={domainOnChange(setSelectedDomain)} />
-      <button title="Add" onClick={() => addDomain(setInvalidDomain, selectedDomain, organisations[0].organisation_id)}>Add</button>
+      <button title="Add" onClick={createDomain}>Add</button>
+      <br/>
+      <br/>
+      <div><b>Selected Domain: {selectedDomain}</b></div>
       <br/>
       <div>
         {
           domains.map((domain) => {
-            return <>{domain.domain}<br/></>
+            return <div>
+              {domain.domain} - {domain.domain_id} - 
+              <button>Select</button>
+              <br/>
+            </div>
           })
         }
       </div>
+      <br/>
+
+      <div className='tracker-domain-container'>
+
+      <div>Domain: {getSelectedDomain(domains, selectedDomain)}</div>
+
+      <br/>
+
+      <input value={query} onChange={onChange(setQuery)} />
+      
+
+      <br/>
+
+      <button type="submit" onClick={createQuery} className="btn btn-primary btn-block mb-4" >
+        Add Query
+      </button>
+
+
+      </div>
+
+
     </div>
   )
 }

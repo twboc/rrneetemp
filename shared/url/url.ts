@@ -26,6 +26,9 @@ const TRACKER = {
         GET: {
             ALL: '/api/tracker/domain/get/all'
         }
+    },
+    QUERY: {
+        CREATE: '/api/tracker/query/create'
     }
 }
 

@@ -4,7 +4,7 @@ import respond from '../../respond/respond'
 import model from '../../model/model'
 import {v4} from 'uuid'
 
-export const create = async (req: Request<{}, {}, { domain: string, organisation_id: string}>, res: Response) => {
+export const domainCreate = async (req: Request<{}, {}, { domain: string, organisation_id: string}>, res: Response) => {
     console.log("Create: ", req.body.domain)
     const token = await auth.token(req)
     if (!token.success) return respond.user.init.fail.default(res)
@@ -47,12 +47,11 @@ export const getAllDomains = async (req: Request<{}, {}, { organisation_id: stri
         organisation_id: req.body.organisation_id
     }
 
-    console.log("data: ", data)
-
     const result = await model.domain_permission.getDomainsByUserAndOrganisation(data)
 
     //@ts-ignore
     const flat = result.data.DomainPermissionWithDomain.map((el) => {
+        console.log("el: ", el)
         const temp = {...el, domain: el.domain.domain}
         return temp
     })
@@ -68,12 +67,23 @@ export const getAllDomains = async (req: Request<{}, {}, { organisation_id: stri
 
 }
 
+const queryCreate = (req: Request<{}, {}, { domain: string, organisation_id: string}>, res: Response) => {
+
+    console.log("QUERY req: ", req.body)
+
+
+}
+
 class Tracker {
     domain = {
-        create: create,
+        create: domainCreate,
         get: {
             all: getAllDomains
         }
+    }
+
+    query = {
+        create: queryCreate
     }
 }
 

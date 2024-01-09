@@ -31,3 +31,26 @@ export interface ITrackerDomain {
     domain: string
     permissions: ItrackerDomainPermission[]
 }
+
+export interface IDomainListed {
+    id: string //'7c3a9dfa-3e6f-4fb9-8929-dc27b8ab722b',
+    domain_id: string // '210b0a4e-0241-4581-93de-5b0c2d3124ef',
+    organisation_id: string // '967b8ed9-ae1b-43c7-8921-13877150c12c',
+    user_id: string // 'd153f74e-fa2e-41ea-af65-787b5dbdd9b5',
+    access: string // 'OWNER',
+    domain: string // 'adfasdfsdf.pl'
+}
+
+export interface IQueryCreate {
+    domain_id: string
+    query: string
+    search_engine: string
+    device: string //desktop mobile
+}
+
+export interface ITrackerQuery {
+    id: string
+    domain_id: string
+    query: string
+    create_at: string
+}
