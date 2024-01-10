@@ -1,9 +1,6 @@
 
 import CONFIG from './config'
-// const pt = require('puppeteer')
-
 import util from './util/util'
-
 import pt from 'puppeteer'
 
 console.log("START")
@@ -13,7 +10,8 @@ const AD_TEST = 'on'
 const urlParams = {
     query: 'implanty poznań',
     adTest: 'on',
-    hl: 'PL'
+    hl: 'PL',
+    device: 'desktop'
 }
 
 
@@ -26,6 +24,11 @@ pt.launch(CONFIG.PUPPETEER)
         const page = await browser.newPage()
         // await page.setViewport({ width: 2000, height: 500 })
 
+
+        page.on('console', (msg) => {
+            for (let i = 0; i < msg.args().length; ++i)
+              console.log(`${msg.args()[i]}`);
+          });
         
         console.log("URL: ", URL)
 
@@ -43,7 +46,10 @@ pt.launch(CONFIG.PUPPETEER)
             await util.more(page)
 
             //@ts-ignore
-            organicResults = await page.evaluate(
+            // let organicResults
+            
+            
+            let organicResults = await page.evaluate(
                 
                 () => {
                     const extract = true
@@ -55,16 +61,59 @@ pt.launch(CONFIG.PUPPETEER)
                         //@ts-ignore
                     const removeRelatedQuestions = el => !el.closest('.related-question-pair')
 
-                    const result = Array.from(document.querySelectorAll('a cite'))
+                    let result = Array.from(document.querySelectorAll('a cite')) //.MjjYud
                         .filter(removeRelatedQuestions);
-                    return Array.from(result, getTextContent)
+
+                        // .hlcw0c
+
+                    // const result = Array.from(document.querySelectorAll('a cite'))
+                    //     .filter(removeRelatedQuestions);
+
+
+                    let final = result.map((handle) => {
+
+                        const main = handle.closest('.MjjYud')
+                        
+                        const anchor = main.querySelector('a')
+
+                        if (anchor == null) {
+                            return
+                        }
+
+                        //@ts-ignore
+                        const url = anchor?.ping.toString().split('&url=')[1]?.split('&ved')[0]
+                        const title = anchor?.querySelector('h3')?.textContent
+
+                        // console.log()
+                        // console.log("########################################")
+                        // console.log(url)
+                        // console.log(title)
+
+                        return {
+                            url,
+                            title
+                        }
+
+                    })
+
+
+                    return final
+
+
+                    // console.log(result)
+
+                    const test = Array.from(result, getTextContent)
+
+                    return test.map(el => ({
+                        cite: el
+                    }))
 
                 }
                 
             );
 
-            // console.log("res: ", organicResults)
-            // console.log("results: ", organicResults.length)
+            console.log("res: ", organicResults)
+            console.log("results: ", organicResults.length)
             //@ts-ignore
             organicResultsLength = organicResults.length
 
