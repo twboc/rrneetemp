@@ -5,7 +5,7 @@ import { success, fail } from './model.util'
 
 const QueryModel = {
 
-  createMany: async (payload: ITrackerQuery[]): Promise<IInsert<'Query', ITrackerQuery, ITrackerQuery>> => {
+  createMany: async (payload: ITrackerQuery[]): Promise<IInsert<'Query', ITrackerQuery[], ITrackerQuery[]>> => {
 
     const res = await db.query
       .createMany({ data: payload})

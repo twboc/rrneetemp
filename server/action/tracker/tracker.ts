@@ -94,51 +94,28 @@ const queryCreate = async (req: Request<{}, {}, { queries: IQueryCreate[], organ
         
     })
 
-    console.log("queryInsert: ", queryInsert)
-    console.log("queryVariantInsert: ", queryVariantInsert)
-
-
     const queryResult = await model.query.createMany(queryInsert)
     const queryVariantResult = await model.query_variant.createMany(queryVariantInsert)
 
-
-    console.log("queryResult: ", JSON.stringify(queryResult))
-    console.log("queryVariantResult: ", JSON.stringify(queryVariantResult))
-
     //@ts-ignore
     queryResult.payload.Query.forEach(element => {
-        
-        
-
+        //@ts-ignore
         element.variant = []
-
-        console.log("element: ", element)
-
         //@ts-ignore
         queryVariantResult.payload.QueryVariant.forEach((variant) => {
-
             if (variant.query_id == element.id) {
-
+                //@ts-ignore
                 element.variant.push(variant)
-                
             }
-
-
         })
+    })
 
-    });
+    //@ts-ignore
+    return respond.tracker.query.create.success(res, queryResult.payload.Query)
 
+}
 
-    console.log("queryResult AFTER: ", JSON.stringify(queryResult))
-
-    // const result =  await model.query.create({
-    //     id: v4(),
-    //     domain_id: req.body.queries[0].domain_id,
-    //     query: req.body.queries[0].query,
-    //     created_at: new Date()
-    // })
-
-    // console.log("result: ", result)
+const getAllQueryVariants = async (req: Request<{}, {}, { domain_id: string }>, res: Response) => {
 
 }
 
@@ -151,7 +128,10 @@ class Tracker {
     }
 
     query = {
-        create: queryCreate
+        create: queryCreate,
+        get: {
+            all: getAllQueryVariants
+        }
     }
 }
 

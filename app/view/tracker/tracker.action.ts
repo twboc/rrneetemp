@@ -36,7 +36,7 @@ export const addDomain = async (
 }
 
 
-export const addQueries = async (queries: IQueryCreate[], organisation_id: string) => {
+export const addQueries = async (queries: IQueryCreate[], organisation_id: string, setQueryList: any) => {
 
   console.log("queries: ", queries)
 
@@ -45,8 +45,9 @@ export const addQueries = async (queries: IQueryCreate[], organisation_id: strin
     organisation_id
   })
 
-
   console.log("res: ", res)
+
+  setQueryList(res.data)
 
 }
 

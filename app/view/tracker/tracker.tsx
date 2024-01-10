@@ -12,14 +12,14 @@ const getSelectedDomain = (domains: IDomainListed[], selectedDomain: string) => 
     : ''
 }
 
-
-
 const Tracker: FC = () => {
   const [selectedDomain, setSelectedDomain] = useState<string>('')
   const [invalidDomain, setInvalidDomain] = useState<boolean>(false)
   const [domains, setDomains] = useState<IDomainListed[]>([])
 
   const [query, setQuery] = useState<string>('')
+
+  const [queryList, setQueryList] = useState([])
 
   const organisations: IUserOrganisationByUser[] = useSelector(
     organisationSelect.organisations,
@@ -50,15 +50,7 @@ const Tracker: FC = () => {
         device: ['desktop', 'mobile']
       }
 
-      // //@ts-ignore
-      // const queryCreateDataMobile: IQueryCreate = {
-      //   domain_id: selectedDomain,
-      //   query: query,
-      //   search_engine: 'google.pl',
-      //   device: 'mobile'
-      // }
-
-      addQueries([queryCreateDataDesktop], organisations[0].organisation_id)
+      addQueries([queryCreateDataDesktop], organisations[0].organisation_id, setQueryList)
 
       setQuery("")
 
@@ -102,6 +94,16 @@ const Tracker: FC = () => {
       <button type="submit" onClick={createQuery} className="btn btn-primary btn-block mb-4" >
         Add Query
       </button>
+
+      <br/>
+      <br/>
+
+      {
+        queryList.map((query) => {
+          //@ts-ignore
+          return <>{query.query}</>
+        })
+      }
 
 
       </div>

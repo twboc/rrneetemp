@@ -66,3 +66,7 @@ export interface IQueryCreate {
     queries: ITrackerQuery[]
     organisation_id: string
 }
+
+export interface ITrackerQueryWithVariants extends ITrackerQuery {
+    variant: ITrackerQueryVariant[]
+}
