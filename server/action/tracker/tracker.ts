@@ -3,6 +3,7 @@ import auth from '../../module/authorization/authorization'
 import respond from '../../respond/respond'
 import model from '../../model/model'
 import {v4} from 'uuid'
+import { IQueryCreate } from '../../../shared/type/type'
 
 export const domainCreate = async (req: Request<{}, {}, { domain: string, organisation_id: string}>, res: Response) => {
     console.log("Create: ", req.body.domain)
@@ -67,10 +68,77 @@ export const getAllDomains = async (req: Request<{}, {}, { organisation_id: stri
 
 }
 
-const queryCreate = (req: Request<{}, {}, { domain: string, organisation_id: string}>, res: Response) => {
+const queryCreate = async (req: Request<{}, {}, { queries: IQueryCreate[], organisation_id: string}>, res: Response) => {
 
-    console.log("QUERY req: ", req.body)
+    const queryInsert: any = []
+    const queryVariantInsert: any = []
 
+    req.body.queries.forEach(query => {
+        const query_id = v4()
+
+        queryInsert.push({
+            id: query_id,
+            domain_id: req.body.queries[0].domain_id,
+            query: req.body.queries[0].query,
+            created_at: new Date()
+        })
+
+        query.device.forEach(device => {
+            queryVariantInsert.push({
+                id: v4(),
+                query_id: query_id,
+                search_engine: query.search_engine,
+                device: device
+            })
+        })
+        
+    })
+
+    console.log("queryInsert: ", queryInsert)
+    console.log("queryVariantInsert: ", queryVariantInsert)
+
+
+    const queryResult = await model.query.createMany(queryInsert)
+    const queryVariantResult = await model.query_variant.createMany(queryVariantInsert)
+
+
+    console.log("queryResult: ", JSON.stringify(queryResult))
+    console.log("queryVariantResult: ", JSON.stringify(queryVariantResult))
+
+    //@ts-ignore
+    queryResult.payload.Query.forEach(element => {
+        
+        
+
+        element.variant = []
+
+        console.log("element: ", element)
+
+        //@ts-ignore
+        queryVariantResult.payload.QueryVariant.forEach((variant) => {
+
+            if (variant.query_id == element.id) {
+
+                element.variant.push(variant)
+                
+            }
+
+
+        })
+
+    });
+
+
+    console.log("queryResult AFTER: ", JSON.stringify(queryResult))
+
+    // const result =  await model.query.create({
+    //     id: v4(),
+    //     domain_id: req.body.queries[0].domain_id,
+    //     query: req.body.queries[0].query,
+    //     created_at: new Date()
+    // })
+
+    // console.log("result: ", result)
 
 }
 

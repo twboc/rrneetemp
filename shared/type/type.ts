@@ -45,12 +45,24 @@ export interface IQueryCreate {
     domain_id: string
     query: string
     search_engine: string
-    device: string //desktop mobile
+    device: string[] //desktop mobile
 }
 
 export interface ITrackerQuery {
     id: string
     domain_id: string
     query: string
-    create_at: string
+    created_at: Date
+}
+
+export interface ITrackerQueryVariant {
+    id: string
+    query_id: string
+    search_engine: string
+    device: string
+}
+
+export interface IQueryCreate {
+    queries: ITrackerQuery[]
+    organisation_id: string
 }

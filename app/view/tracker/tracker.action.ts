@@ -45,5 +45,8 @@ export const addQueries = async (queries: IQueryCreate[], organisation_id: strin
     organisation_id
   })
 
+
+  console.log("res: ", res)
+
 }
 

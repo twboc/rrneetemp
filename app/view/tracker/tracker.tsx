@@ -42,24 +42,26 @@ const Tracker: FC = () => {
     const createQuery = () => {
       console.log("query: ", query)
 
+      //@ts-ignore
       const queryCreateDataDesktop: IQueryCreate = {
         domain_id: selectedDomain,
         query: query,
         search_engine: 'google.pl',
-        device: 'desktop'
+        device: ['desktop', 'mobile']
       }
 
-      const queryCreateDataMobile: IQueryCreate = {
-        domain_id: selectedDomain,
-        query: query,
-        search_engine: 'google.pl',
-        device: 'mobile'
-      }
+      // //@ts-ignore
+      // const queryCreateDataMobile: IQueryCreate = {
+      //   domain_id: selectedDomain,
+      //   query: query,
+      //   search_engine: 'google.pl',
+      //   device: 'mobile'
+      // }
 
-      addQueries([queryCreateDataDesktop, queryCreateDataMobile], organisations[0].organisation_id)
-
+      addQueries([queryCreateDataDesktop], organisations[0].organisation_id)
 
       setQuery("")
+
     }
 
   return (
