@@ -2,6 +2,10 @@ export interface IWithId {
   id: string
 }
 
+export interface IWithDomainId {
+  domain_id: string
+}
+
 export interface IInsertSuccess<K extends string | number | symbol, Payload, Result>{
     success: true
     payload: {

@@ -1,3 +1,4 @@
+import util from 'util'
 import { Request, Response } from 'express'
 import auth from '../../module/authorization/authorization'
 import respond from '../../respond/respond'
@@ -52,9 +53,7 @@ export const getAllDomains = async (req: Request<{}, {}, { organisation_id: stri
 
     //@ts-ignore
     const flat = result.data.DomainPermissionWithDomain.map((el) => {
-        console.log("el: ", el)
-        const temp = {...el, domain: el.domain.domain}
-        return temp
+        return {...el, domain: el.domain.domain}
     })
 
     //@ts-ignore
@@ -119,11 +118,21 @@ const getAllQueryVariants = async (req: Request<{}, {}, { domain_id: string }>, 
 
 }
 
+const getDomainAllStats = async (req: Request<{}, {}, { domain_id: string }>, res: Response) => {
+    const result = await model.domain.getStats({ domain_id: req.body.domain_id })
+    console.log("result: ", util.inspect(result, false, null, true))
+
+    //@ts-ignore
+    return respond.tracker.domain.get.stats.success(res, result.data.DomainStats)
+
+}
+
 class Tracker {
     domain = {
         create: domainCreate,
         get: {
-            all: getAllDomains
+            all: getAllDomains,
+            stats: getDomainAllStats
         }
     }
 

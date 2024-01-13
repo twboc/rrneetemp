@@ -1,6 +1,7 @@
-import type {IDomain} from '../../shared/type/type'
+import util from 'util'
+import type {IDomain, ITrackerDomainStats} from '../../shared/type/type'
 import db from '../db/db'
-import { IWithId, IInsert} from './model.type'
+import { IWithId, IWithDomainId, IInsert, IInsertSuccess } from './model.type'
 import { success, fail } from './model.util'
 
 const DomainModel = {
@@ -12,9 +13,6 @@ const DomainModel = {
   ,
   getDomain: async (payload: IWithId) => {
     const data = await db.domain.findUnique({
-    //   include: {
-    //     user_organisation: true
-    //   },
       where: {
         id: payload.id
       }
@@ -23,6 +21,30 @@ const DomainModel = {
     console.log("DB QUERY: ", data)
 
     return data
+  },
+  getStats: async (payload: IWithDomainId): Promise<IInsert<'DomainStats', ITrackerDomainStats, ITrackerDomainStats>> => {
+
+    const result = await db.domain
+      .findFirst({
+        where: {
+          id: payload.domain_id
+        },
+        include: {
+          query: {
+            include: {
+              query_variant: true
+            }
+          }
+        }
+      })
+      .then((data) => success('DomainStats', payload, data))
+      .catch((error: Error) => fail('DomainStats', payload, error))
+
+
+      //@ts-ignore
+    return result
+
+
   }
 }
 

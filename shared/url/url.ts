@@ -24,7 +24,8 @@ const TRACKER = {
     DOMAIN: {
         CREATE: '/api/tracker/domain/create',
         GET: {
-            ALL: '/api/tracker/domain/get/all'
+            ALL: '/api/tracker/domain/get/all',
+            STATS: '/api/tracker/domain/get/stats',
         }
     },
     QUERY: {

@@ -25,6 +25,7 @@ const addRoutes = (app: Express) => {
 
     app.post(URL.TRACKER.DOMAIN.CREATE, action.tracker.domain.create)
     app.post(URL.TRACKER.DOMAIN.GET.ALL, action.tracker.domain.get.all)
+    app.post(URL.TRACKER.DOMAIN.GET.STATS, action.tracker.domain.get.stats)
 
     app.post(URL.TRACKER.QUERY.CREATE, action.tracker.query.create)
 

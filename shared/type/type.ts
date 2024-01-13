@@ -32,6 +32,17 @@ export interface ITrackerDomain {
     permissions: ItrackerDomainPermission[]
 }
 
+
+export interface ITrackerDomainStatsQuery extends ITrackerQuery {
+    query_variant: ITrackerQueryVariant[]
+}
+
+export interface ITrackerDomainStats {
+    id: string
+    domain: string
+    query: ITrackerDomainStatsQuery[]
+}
+
 export interface IDomainListed {
     id: string //'7c3a9dfa-3e6f-4fb9-8929-dc27b8ab722b',
     domain_id: string // '210b0a4e-0241-4581-93de-5b0c2d3124ef',
@@ -62,7 +73,7 @@ export interface ITrackerQueryVariant {
     device: string
 }
 
-export interface IQueryCreate {
+export interface IQuery {
     queries: ITrackerQuery[]
     organisation_id: string
 }
