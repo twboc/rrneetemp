@@ -7,11 +7,11 @@ import {v4} from 'uuid'
 import { IQueryCreate } from '../../../shared/type/type'
 
 export const domainCreate = async (req: Request<{}, {}, { domain: string, organisation_id: string}>, res: Response) => {
-    console.log("Create: ", req.body.domain)
     const token = await auth.token(req)
     if (!token.success) return respond.user.init.fail.default(res)
 
     const domain = { id : v4(), domain: req.body.domain }
+    //@ts-ignore
     const domainResult = await model.domain.create(domain)
     
     if (!domainResult.success) { console.log("FIRST ERROR")}
@@ -39,8 +39,6 @@ export const domainCreate = async (req: Request<{}, {}, { domain: string, organi
 }
 
 export const getAllDomains = async (req: Request<{}, {}, { organisation_id: string }>, res:Response) => {
-    console.log('getAllDomains', req.body.organisation_id)
-
     const token = await auth.token(req)
     if (!token.success) return respond.user.init.fail.default(res)
 
@@ -52,15 +50,16 @@ export const getAllDomains = async (req: Request<{}, {}, { organisation_id: stri
     const result = await model.domain_permission.getDomainsByUserAndOrganisation(data)
 
     //@ts-ignore
-    const flat = result.data.DomainPermissionWithDomain.map((el) => {
+    const flat = result.data.DomainPermissionWithDomain
+    //@ts-ignore
+    .filter((el) => !el.domain.tombstone)
+    //@ts-ignore
+    .map((el) => {
         return {...el, domain: el.domain.domain}
     })
 
     //@ts-ignore
     result.data.DomainPermissionWithDomain = flat
-
-    //@ts-ignore
-    console.log("response: ", result.data.DomainPermissionWithDomain)
 
     //@ts-ignore
     return respond.tracker.domain.get.all.success(res, result.data)
@@ -99,12 +98,12 @@ const queryCreate = async (req: Request<{}, {}, { queries: IQueryCreate[], organ
     //@ts-ignore
     queryResult.payload.Query.forEach(element => {
         //@ts-ignore
-        element.variant = []
+        element.query_variant = []
         //@ts-ignore
         queryVariantResult.payload.QueryVariant.forEach((variant) => {
             if (variant.query_id == element.id) {
                 //@ts-ignore
-                element.variant.push(variant)
+                element.query_variant.push(variant)
             }
         })
     })
@@ -120,7 +119,6 @@ const getAllQueryVariants = async (req: Request<{}, {}, { domain_id: string }>, 
 
 const getDomainAllStats = async (req: Request<{}, {}, { domain_id: string }>, res: Response) => {
     const result = await model.domain.getStats({ domain_id: req.body.domain_id })
-    console.log("result: ", util.inspect(result, false, null, true))
 
     //@ts-ignore
     return respond.tracker.domain.get.stats.success(res, result.data.DomainStats)

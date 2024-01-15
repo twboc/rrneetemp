@@ -32,7 +32,6 @@ export interface ITrackerDomain {
     permissions: ItrackerDomainPermission[]
 }
 
-
 export interface ITrackerDomainStatsQuery extends ITrackerQuery {
     query_variant: ITrackerQueryVariant[]
 }
@@ -78,6 +77,3 @@ export interface IQuery {
     organisation_id: string
 }
 
-export interface ITrackerQueryWithVariants extends ITrackerQuery {
-    variant: ITrackerQueryVariant[]
-}

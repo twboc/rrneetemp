@@ -10,33 +10,38 @@ export const getAllDomains = async (
   setQueryStatsLoading: Dispatch<SetStateAction<boolean>>,
   setStats: Dispatch<SetStateAction<ITrackerDomainStats>>
 ) => {
-console.log("organisation_id: ", organisation_id)
-setQueryStatsLoading(true)
-const res = await resource.api.tracker.domain.get.all({ organisation_id })
+  setQueryStatsLoading(true)
+  const res = await resource.api.tracker.domain.get.all({ organisation_id })
 
-console.log("res: ", res, res.data.DomainPermissionWithDomain)
-//@ts-ignore
-if (res) {
+  if (!res) return 
+
   await setDomains(res.data.DomainPermissionWithDomain)
-  if (res.data.DomainPermissionWithDomain.length > 0) {
-      await setSelectedDomain(res.data.DomainPermissionWithDomain[0].domain_id)
-      await getQueryStats(res.data.DomainPermissionWithDomain[0].domain_id, setStats)
 
-  }
+
+  if (res.data.DomainPermissionWithDomain.length <= 0 ) return
+
+  await setSelectedDomain(res.data.DomainPermissionWithDomain[0].domain_id)
+  await getQueryStats(res.data.DomainPermissionWithDomain[0].domain_id, setStats)
+
+  setQueryStatsLoading(false)
+
 }
 
-setQueryStatsLoading(false)
+//@ts-ignore
+export const chageSelectedDomain = (setSelectedDomain, setStats, setQueryStatsLoading, domain_id: string ) => async () => {
 
+  setQueryStatsLoading(true)
+
+  await setSelectedDomain(domain_id)
+  await getQueryStats(domain_id, setStats)
+
+  setQueryStatsLoading(false)
+  
 }
 
 const getQueryStats = async (domain_id: string, setStats: Dispatch<SetStateAction<ITrackerDomainStats>>) => {
-
   const result = await resource.api.tracker.domain.get.stats({ domain_id })
-
-  console.log("STATS resutl: ", result.data)
-
   setStats(result.data)
-
 }
 
 //@ts-ignore
@@ -60,6 +65,7 @@ export const addDomain = async (
 
   const isValid = isValidDomain(domain, {subdomain: true, wildcard: false, allowUnicode: true})
 
+
   if (!isValid) {
       return setInvalidDomain(true)
   }
@@ -81,13 +87,19 @@ export const addDomain = async (
 }
 
 
-export const addQueries = async (queries: IQueryCreate[], organisation_id: string, setQueryList: any) => {
-  console.log("queries: ", queries)
+export const addQueries = async (queries: IQueryCreate[], organisation_id: string, stats:any, setQueryList: any) => {
   const res = await resource.api.tracker.query.create({
     queries,
     organisation_id
   })
-  setQueryList(res.data)
+
+  setQueryList({
+    ...stats,
+    //@ts-ignore
+    query: [...stats.query, ...res.data]
+
+  })
+  // setQueryList([...stats])
 }
 
 export const queryConstructor = (domain_id: string, query: string) => ({
@@ -97,9 +109,8 @@ export const queryConstructor = (domain_id: string, query: string) => ({
   device: ['desktop', 'mobile']
 })
 
-export const createQuery = (query: string, selectedDomain: string, organisations: any, setQueryVariants: any, setQuery: Dispatch<SetStateAction<string>>) => () => {
-  console.log("query: ", query)
+export const createQuery = (query: string, selectedDomain: string, organisations: any, stats: any, setQueryVariants: any, setQuery: Dispatch<SetStateAction<string>>) => () => {
   const queryData: IQueryCreate = queryConstructor(selectedDomain, query)
-  addQueries([queryData], organisations[0].organisation_id, setQueryVariants)
+  addQueries([queryData], organisations[0].organisation_id, stats, setQueryVariants)
   setQuery("")
 }

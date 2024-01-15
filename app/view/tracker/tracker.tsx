@@ -3,10 +3,11 @@ import './tracker.scss'
 import { organisationSelect } from '../../state/organisation/organisation'
 import { useSelector } from '../../module/store/store'
 import { IUserOrganisationByUser, IDomainListed, IQueryCreate, ITrackerDomainStats, ITrackerDomainStatsQuery } from '../../../shared/type/type'
-import { getAllDomains, createDomain, createQuery } from './tracker.action'
+import { getAllDomains, createDomain, createQuery, chageSelectedDomain } from './tracker.action'
 import { domainOnChange, onChange, getSelectedDomain } from './tracker.util'
 
 const Tracker: FC = () => {
+  const [domain, setDomain] = useState<string>('')
   const [selectedDomain, setSelectedDomain] = useState<string>('')
   const [invalidDomain, setInvalidDomain] = useState<boolean>(false)
   const [domains, setDomains] = useState<IDomainListed[]>([])
@@ -24,7 +25,6 @@ const Tracker: FC = () => {
   )
 
   useEffect(() => {
-    console.log("get user organisations")
     getAllDomains(organisations[0].organisation_id, setDomains, setSelectedDomain, setQueryStatsLoading, setStats)
   }, [])
     
@@ -33,8 +33,8 @@ const Tracker: FC = () => {
       Add Property:
       <span>{invalidDomain ? ' Invalid Domain' : ''}</span>
       <br />
-      <input onChange={domainOnChange(setSelectedDomain)} />
-      <button title="Add" onClick={createDomain(setInvalidDomain, selectedDomain, organisations, domains, setDomains)} className="btn btn-primary btn-block mb-4">Add</button>
+      <input onChange={domainOnChange(setDomain)} />
+      <button title="Add" onClick={createDomain(setInvalidDomain, domain, organisations, domains, setDomains)} className="btn btn-primary btn-block mb-4">Add</button>
       <br/>
       <br/>
       <div><b>Selected Domain: {selectedDomain}</b></div>
@@ -44,7 +44,7 @@ const Tracker: FC = () => {
           domains.map((domain) => {
             return <div>
               {domain.domain} - {domain.domain_id} - 
-              <button className="btn btn-primary btn-block mb-4" >Select</button>
+              <button onClick={chageSelectedDomain(setSelectedDomain, setStats, setQueryStatsLoading, domain.domain_id)} className="btn btn-primary btn-block mb-4" >Select</button>
               <br/>
             </div>
           })
@@ -57,7 +57,7 @@ const Tracker: FC = () => {
       <input value={query} onChange={onChange(setQuery)} />
       <br/>
       <br/>
-      <button type="submit" onClick={createQuery(query, selectedDomain, organisations, setStats, setQuery)} className="btn btn-primary btn-block mb-4" >
+      <button type="submit" onClick={createQuery(query, selectedDomain, organisations, stats, setStats, setQuery)} className="btn btn-primary btn-block mb-4" >
         Add Query
       </button>
       <br/>

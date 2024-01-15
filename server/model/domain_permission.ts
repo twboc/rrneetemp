@@ -11,8 +11,6 @@ const DomainPermissionModel = {
       .catch((error: Error) => fail('DomainPermission', payload, error))
   ,
   getDomainsByUserAndOrganisation: async (payload: any) => {
-    console.log("payload", payload)
-
     const result = await db.domain_permission
       .findMany({
         where: payload,
@@ -23,10 +21,7 @@ const DomainPermissionModel = {
       .then((insert) => success('DomainPermissionWithDomain', payload, insert))
       .catch((error: Error) => fail('DomainPermissionWithDomain', payload, error))
 
-    console.log("result: ", result)
-
     return result
-
   },
   getDomain: async (payload: IWithId) => {
     const data = await db.domain_permission.findUnique({

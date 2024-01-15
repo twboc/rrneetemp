@@ -107,6 +107,8 @@ model domain {
   id   String @id @default(uuid()) @db.Uuid
   domain String
 
+  tombstone Boolean @default(false)
+
   query query[]
   domain_permission domain_permission[]
 }

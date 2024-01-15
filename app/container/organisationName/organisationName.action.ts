@@ -8,7 +8,6 @@ export const changeName =
     try {
       if (isChangingName) return
       setIsChangingName(true)
-      console.log('Start')
       setError(false)
       const result = await resource.api.organisation.changeName({
         organisation_id: props.organisation.organisation_id,

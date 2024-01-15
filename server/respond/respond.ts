@@ -10,7 +10,7 @@ import {
     ERROR_ALREADY_OWNER_OR_MEMBER,
     ERROR_USER_NOT_REMOVED_FROM_ORGANISATION
 } from '../../shared/error/error'
-import type { IUser, IUserOrganisation, ITrackerDomain, ITrackerQueryWithVariants, ITrackerDomainStats } from '../../shared/type/type'
+import type { IUser, IUserOrganisation, ITrackerDomain, ITrackerDomainStats, ITrackerDomainStatsQuery } from '../../shared/type/type'
 
 interface ISuccessPartial {
     success: true
@@ -124,7 +124,7 @@ const trackerDomainGetStatsSuccess = (res: Response, data: ITrackerDomainStats) 
     data
 })
 
-const trackerQueryCreateSuccess = (res: Response, data: ITrackerQueryWithVariants[]) => res.json({
+const trackerQueryCreateSuccess = (res: Response, data: ITrackerDomainStatsQuery[]) => res.json({
     ...SUCCESS,
     data
 })

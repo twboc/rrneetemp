@@ -1,6 +1,6 @@
 import { API_POST } from './resource.api.method'
 import { IRes } from './resource.api.type'
-import type {ITrackerDomain, IQueryCreate as IQueryCreateData} from '../../../shared/type/type'
+import type {ITrackerDomain, IQueryCreate as IQueryCreateData, ITrackerDomainStats, ITrackerDomainStatsQuery} from '../../../shared/type/type'
 import URL from '../../../shared/url/url'
 
 interface IDomainidReq {
@@ -28,12 +28,12 @@ class Tracker {
         get: {
             // ITrackerDomain
             all: async (req: IDomainGetAllReq) => await API_POST<IDomainGetAllReq, IRes<any>>(URL.TRACKER.DOMAIN.GET.ALL, req),
-            stats: async (req: IDomainidReq) => await API_POST<IDomainidReq, IRes<any>>(URL.TRACKER.DOMAIN.GET.STATS, req)
+            stats: async (req: IDomainidReq) => await API_POST<IDomainidReq, IRes<ITrackerDomainStats>>(URL.TRACKER.DOMAIN.GET.STATS, req)
         }
     }
 
     query = {
-        create : async (req: IQueryCreate) => await API_POST<IQueryCreate, IRes<any>>(URL.TRACKER.QUERY.CREATE, req),
+        create : async (req: IQueryCreate) => await API_POST<IQueryCreate, IRes<ITrackerDomainStatsQuery>>(URL.TRACKER.QUERY.CREATE, req),
     }
 
 }
