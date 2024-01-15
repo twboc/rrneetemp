@@ -8,6 +8,7 @@
     "build": "webpack --config webpack.config.js",
     "run": "node ./dist/bundle.js",
     "deploy": "npm run build && npm run run",
+    "deamon": "npm run build && nodemon ./dist/bundle.js",
     "clean": "rm -rf dist/*"
   },
   "author": "",
