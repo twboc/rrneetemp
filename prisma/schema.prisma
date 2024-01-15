@@ -104,17 +104,32 @@ model google_id_token {
 ///////////////////////////////////////////////////////////////////////////
 
 model domain {
-  id   String @id @default(uuid()) @db.Uuid
+  id String @id @default(uuid()) @db.Uuid
   domain String
 
   tombstone Boolean @default(false)
 
   query query[]
   domain_permission domain_permission[]
+  domain_order domain_order[]
+}
+
+model domain_order {
+  id String @id @default(uuid()) @db.Uuid
+
+  domain domain @relation(fields: [domain_id], references: [id])
+  domain_id String @db.Uuid
+
+  created_at DateTime @default(now())
+  finished_at DateTime?
+  
+  status String @default("pending") //pending, finished, errored
+  type String @default("automatic") //manual, automatic
+
 }
 
 model domain_permission {
-  id   String @id @default(uuid()) @db.Uuid
+  id String @id @default(uuid()) @db.Uuid
 
   domain domain @relation(fields: [domain_id], references: [id])
   domain_id String @db.Uuid
@@ -130,7 +145,7 @@ model domain_permission {
 }
 
 model query {
-  id   String @id @default(uuid()) @db.Uuid
+  id String @id @default(uuid()) @db.Uuid
 
   domain domain @relation(fields: [domain_id], references: [id])
   domain_id String @db.Uuid

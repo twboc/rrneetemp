@@ -5,58 +5,49 @@ import respond from '../../respond/respond'
 import model from '../../model/model'
 import {v4} from 'uuid'
 import { IQueryCreate } from '../../../shared/type/type'
+import { createDomainPermission, createDomainOrder } from './tracker.util'
 
 export const domainCreate = async (req: Request<{}, {}, { domain: string, organisation_id: string}>, res: Response) => {
     const token = await auth.token(req)
     if (!token.success) return respond.user.init.fail.default(res)
 
-    const domain = { id : v4(), domain: req.body.domain }
-    //@ts-ignore
+    const domain = { id : v4(), domain: req.body.domain, tombstone: false }
     const domainResult = await model.domain.create(domain)
-    
     if (!domainResult.success) { console.log("FIRST ERROR")}
 
-    const domainPermission = {
-        id: v4(),
-        domain_id: domain.id,
-        user_id: token.data.token.id,
-        organisation_id: req.body.organisation_id,
-        access: 'OWNER'
-    }
-
+    const domainPermission = createDomainPermission(domain.id, token.data.token.id, req.body.organisation_id)
     const domainPermissionResult = await model.domain_permission.create(domainPermission)
-
     if (!domainPermissionResult.success) { console.log("SECOND ERROR")}
 
-    
+    const domainOrderInsert = createDomainOrder(domain.id)
+    const domainOrderResult = await model.domain_order.create(domainOrderInsert)
+    if (!domainOrderResult.success) { console.log("THIRD ERROR")}
+
     const response = {
         ...domain,
         permissions: [domainPermission]
     }
 
     return respond.tracker.domain.create.success(res, response)
-
 }
 
 export const getAllDomains = async (req: Request<{}, {}, { organisation_id: string }>, res:Response) => {
     const token = await auth.token(req)
     if (!token.success) return respond.user.init.fail.default(res)
 
-    const data = {
+    const user_organisation = {
         user_id: token.data.token.id,
         organisation_id: req.body.organisation_id
     }
 
-    const result = await model.domain_permission.getDomainsByUserAndOrganisation(data)
+    const result = await model.domain_permission.getDomainsByUserAndOrganisation(user_organisation)
 
     //@ts-ignore
     const flat = result.data.DomainPermissionWithDomain
     //@ts-ignore
     .filter((el) => !el.domain.tombstone)
     //@ts-ignore
-    .map((el) => {
-        return {...el, domain: el.domain.domain}
-    })
+    .map((el) => ({...el, domain: el.domain.domain}))
 
     //@ts-ignore
     result.data.DomainPermissionWithDomain = flat

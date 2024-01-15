@@ -18,7 +18,7 @@ export interface IUserOrganisationByUser extends IUserOrganisation {
     name: string
 }
 
-export interface ItrackerDomainPermission {
+export interface ITrackerDomainPermission {
     id: string
     domain_id: string
     user_id: string
@@ -26,10 +26,20 @@ export interface ItrackerDomainPermission {
     access: string
 }
 
+
 export interface ITrackerDomain {
     id: string
     domain: string
-    permissions: ItrackerDomainPermission[]
+    permissions: ITrackerDomainPermission[]
+}
+
+export interface ITrackerDomainOrder {
+    id: string
+    domain_id: string
+    created_at: Date
+    finished_at: Date|null
+    status: string
+    type: string
 }
 
 export interface ITrackerDomainStatsQuery extends ITrackerQuery {
