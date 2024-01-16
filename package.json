@@ -34,7 +34,8 @@
     "lint": "eslint 'app/**/*.tsx' || true",
     "prettify": "prettier --write 'app/**/*.tsx'",
     "dist:linux": "electron-builder --linux",
-    "clean": "rm -rf dist"
+    "clean": "rm -rf dist",
+    "track": "webpack --config webpack/webpack.track.js && node ./dist/track/bundle.js"
   },
   "keywords": [
     "webpack",

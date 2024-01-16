@@ -2,6 +2,7 @@ import { Dispatch, SetStateAction } from 'react'
 import isValidDomain from 'is-valid-domain'
 import resource from '../../resource/resource'
 import { IQueryCreate, IDomainListed, ITrackerDomainStats } from '../../../shared/type/type'
+import { queryConstructor } from './tracker.util'
 
 export const getAllDomains = async (
   organisation_id: string,
@@ -87,8 +88,9 @@ export const addDomain = async (
 }
 
 
-export const addQueries = async (queries: IQueryCreate[], organisation_id: string, stats:any, setQueryList: any) => {
+export const addQueries = async (domain: string, queries: IQueryCreate[], organisation_id: string, stats:any, setQueryList: any) => {
   const res = await resource.api.tracker.query.create({
+    domain,
     queries,
     organisation_id
   })
@@ -102,15 +104,11 @@ export const addQueries = async (queries: IQueryCreate[], organisation_id: strin
   // setQueryList([...stats])
 }
 
-export const queryConstructor = (domain_id: string, query: string) => ({
-  domain_id: domain_id,
-  query: query,
-  search_engine: 'google.pl',
-  device: ['desktop', 'mobile']
-})
 
-export const createQuery = (query: string, selectedDomain: string, organisations: any, stats: any, setQueryVariants: any, setQuery: Dispatch<SetStateAction<string>>) => () => {
+
+export const createQuery = (domains: IDomainListed[], query: string, selectedDomain: string, organisations: any, stats: any, setQueryVariants: any, setQuery: Dispatch<SetStateAction<string>>) => () => {
+  const domain = domains.filter(el => el.domain_id == selectedDomain)[0].domain
   const queryData: IQueryCreate = queryConstructor(selectedDomain, query)
-  addQueries([queryData], organisations[0].organisation_id, stats, setQueryVariants)
+  addQueries(domain, [queryData], organisations[0].organisation_id, stats, setQueryVariants)
   setQuery("")
 }

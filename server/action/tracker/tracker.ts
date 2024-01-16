@@ -4,8 +4,104 @@ import auth from '../../module/authorization/authorization'
 import respond from '../../respond/respond'
 import model from '../../model/model'
 import {v4} from 'uuid'
-import { IQueryCreate } from '../../../shared/type/type'
+import { IQueryCreate, ITrackerQuery, ITrackerQueryVariant } from '../../../shared/type/type'
 import { createDomainPermission, createDomainOrder } from './tracker.util'
+
+const constructQueryAndVariantInsert = (req: QueryCreateReq) => {
+    const queryInsert: ITrackerQuery[] = []
+    const queryVariantInsert: ITrackerQueryVariant[] = []
+
+    req.body.queries.forEach(query => {
+        const query_id = v4()
+
+        queryInsert.push({
+            id: query_id,
+            domain_id: req.body.queries[0].domain_id,
+            query: req.body.queries[0].query,
+            created_at: new Date()
+        })
+
+        query.device.forEach(device => {
+            queryVariantInsert.push({
+                id: v4(),
+                query_id: query_id,
+                search_engine: query.search_engine,
+                device: device
+            })
+        })
+        
+    })
+
+    return {
+        queryInsert,
+        queryVariantInsert
+    }
+
+}
+
+type QueryCreateReq = Request<{}, {}, { domain: string, queries: IQueryCreate[], organisation_id: string}>
+
+const queryCreate = async (req: QueryCreateReq, res: Response) => {
+
+    const { queryInsert, queryVariantInsert } = constructQueryAndVariantInsert(req)
+
+    const domain_id = req.body.queries[0].domain_id
+
+    const currentDomainOrder = await model.domain_order.getCurrentOrder({ domain_id })
+
+    if (!currentDomainOrder.success) return console.log("!currentDomainOrder.success")
+
+    //@ts-ignore
+    const domain_order_id = currentDomainOrder.data.DomainOrder[0].id
+
+    
+
+    console.log("!!!!!!!!!!!!req.body: ", req.body)
+
+    const queryResult = await model.query.createMany(queryInsert)
+    if (!queryResult.success) return
+
+    const queryVariantResult = await model.query_variant.createMany(queryVariantInsert)
+    if (!queryVariantResult.success) return 
+
+    const query_variant_order = queryVariantInsert.map((el: any) => {
+        return {
+            id: v4(),
+            query_variant_id: el.id,
+            domain: req.body.domain,
+            domain_order_id: domain_order_id,
+            status: 'pending',
+            created_at: new Date(),
+            checked_at: null,
+            type: 'automatic',
+        }
+    })
+
+
+    const queryVariantOrderResult = await model.query_variant_order.createMany(query_variant_order)
+
+    if (!queryVariantOrderResult.success) return console.log("!queryVariantOrderResult.success: ", queryVariantOrderResult)
+
+    console.log("currentDomainOrder: ", util.inspect(queryVariantOrderResult, false, null, true))
+
+    // console.log("queryVariantResultResult: ", queryVariantResultResult)
+
+    queryResult.payload.Query.forEach(element => {
+        //@ts-ignore
+        element.query_variant = []
+        //@ts-ignore
+        queryVariantResult.payload.QueryVariant.forEach((variant) => {
+            if (variant.query_id == element.id) {
+                //@ts-ignore
+                element.query_variant.push(variant)
+            }
+        })
+    })
+
+    //@ts-ignore
+    return respond.tracker.query.create.success(res, queryResult.payload.Query)
+
+}
 
 export const domainCreate = async (req: Request<{}, {}, { domain: string, organisation_id: string}>, res: Response) => {
     const token = await auth.token(req)
@@ -42,65 +138,17 @@ export const getAllDomains = async (req: Request<{}, {}, { organisation_id: stri
 
     const result = await model.domain_permission.getDomainsByUserAndOrganisation(user_organisation)
 
-    //@ts-ignore
+    if (!result.success) return
+
     const flat = result.data.DomainPermissionWithDomain
-    //@ts-ignore
-    .filter((el) => !el.domain.tombstone)
-    //@ts-ignore
-    .map((el) => ({...el, domain: el.domain.domain}))
+        .filter((el) => !el.domain.tombstone)
+        .map((el) => ({...el, domain: el.domain.domain}))
 
     //@ts-ignore
     result.data.DomainPermissionWithDomain = flat
 
     //@ts-ignore
     return respond.tracker.domain.get.all.success(res, result.data)
-
-}
-
-const queryCreate = async (req: Request<{}, {}, { queries: IQueryCreate[], organisation_id: string}>, res: Response) => {
-
-    const queryInsert: any = []
-    const queryVariantInsert: any = []
-
-    req.body.queries.forEach(query => {
-        const query_id = v4()
-
-        queryInsert.push({
-            id: query_id,
-            domain_id: req.body.queries[0].domain_id,
-            query: req.body.queries[0].query,
-            created_at: new Date()
-        })
-
-        query.device.forEach(device => {
-            queryVariantInsert.push({
-                id: v4(),
-                query_id: query_id,
-                search_engine: query.search_engine,
-                device: device
-            })
-        })
-        
-    })
-
-    const queryResult = await model.query.createMany(queryInsert)
-    const queryVariantResult = await model.query_variant.createMany(queryVariantInsert)
-
-    //@ts-ignore
-    queryResult.payload.Query.forEach(element => {
-        //@ts-ignore
-        element.query_variant = []
-        //@ts-ignore
-        queryVariantResult.payload.QueryVariant.forEach((variant) => {
-            if (variant.query_id == element.id) {
-                //@ts-ignore
-                element.query_variant.push(variant)
-            }
-        })
-    })
-
-    //@ts-ignore
-    return respond.tracker.query.create.success(res, queryResult.payload.Query)
 
 }
 

@@ -53,12 +53,12 @@ export interface ITrackerDomainStats {
 }
 
 export interface IDomainListed {
-    id: string //'7c3a9dfa-3e6f-4fb9-8929-dc27b8ab722b',
-    domain_id: string // '210b0a4e-0241-4581-93de-5b0c2d3124ef',
-    organisation_id: string // '967b8ed9-ae1b-43c7-8921-13877150c12c',
-    user_id: string // 'd153f74e-fa2e-41ea-af65-787b5dbdd9b5',
-    access: string // 'OWNER',
-    domain: string // 'adfasdfsdf.pl'
+    id: string
+    domain_id: string
+    organisation_id: string
+    user_id: string
+    access: string
+    domain: string
 }
 
 export interface IQueryCreate {
@@ -67,6 +67,8 @@ export interface IQueryCreate {
     search_engine: string
     device: string[] //desktop mobile
 }
+
+
 
 export interface ITrackerQuery {
     id: string
@@ -81,6 +83,25 @@ export interface ITrackerQueryVariant {
     search_engine: string
     device: string
 }
+
+export interface ITrackerQueryVariantOrder {
+    id: string
+    query_variant_id: string
+    status: string
+    created_at: Date
+    domain: string
+}
+
+export interface ITrackerQueryVariantResult {
+    id: string
+    query_variant_id: string
+    status: string
+    created_at: Date
+    position: number
+    domain: string
+    url: string
+}
+
 
 export interface IQuery {
     queries: ITrackerQuery[]

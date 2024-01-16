@@ -32,7 +32,11 @@ const DomainModel = {
         include: {
           query: {
             include: {
-              query_variant: true
+              query_variant: {
+                include: {
+                  query_variant_result: true
+                }
+              }
             }
           }
         }
@@ -40,12 +44,11 @@ const DomainModel = {
       .then((data) => success('DomainStats', payload, data))
       .catch((error: Error) => fail('DomainStats', payload, error))
 
-
       //@ts-ignore
     return result
-
-
+    
   }
+
 }
 
 export default DomainModel

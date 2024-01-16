@@ -6,26 +6,35 @@ import { success, fail } from './model.util'
 const QueryModel = {
 
   createMany: async (payload: ITrackerQuery[]): Promise<IInsert<'Query', ITrackerQuery[], ITrackerQuery[]>> => {
-
     const res = await db.query
       .createMany({ data: payload})
       .then((insert) => success('Query', payload, insert))
+      .catch((error: Error) => fail('Query', payload, error))
+    //@ts-ignore
+    return res
+  },
+  create: async (payload: ITrackerQuery): Promise<IInsert<'Query', ITrackerQuery, ITrackerQuery>> => {
+    const res = await db.query
+      .create({ data: payload})
+      .then((insert) => success('Query', payload, insert))
+      .catch((error: Error) => fail('Query', payload, error))
+    //@ts-ignore
+    return res
+  },
+  getAllByDomainId: async (payload: { domain_id: string}): Promise<IInsert<'Query', ITrackerQuery[], ITrackerQuery[]>> => {
+    const res = await db.query
+      .findMany({
+        where: payload,
+        include: {
+          query_variant: true
+        }
+      })
+      .then((data) => success('Query', payload, data))
       .catch((error: Error) => fail('Query', payload, error))
 
     //@ts-ignore
     return res
   },
-  create: async (payload: ITrackerQuery): Promise<IInsert<'Query', ITrackerQuery, ITrackerQuery>> => {
-
-
-    const res = await db.query
-      .create({ data: payload})
-      .then((insert) => success('Query', payload, insert))
-      .catch((error: Error) => fail('Query', payload, error))
-
-    //@ts-ignore
-    return res
-  }
 }
 
 export default QueryModel

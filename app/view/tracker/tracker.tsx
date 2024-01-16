@@ -57,7 +57,7 @@ const Tracker: FC = () => {
       <input value={query} onChange={onChange(setQuery)} />
       <br/>
       <br/>
-      <button type="submit" onClick={createQuery(query, selectedDomain, organisations, stats, setStats, setQuery)} className="btn btn-primary btn-block mb-4" >
+      <button type="submit" onClick={createQuery(domains, query, selectedDomain, organisations, stats, setStats, setQuery)} className="btn btn-primary btn-block mb-4" >
         Add Query
       </button>
       <br/>

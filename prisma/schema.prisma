@@ -166,7 +166,28 @@ model query_variant {
   search_engine String
   device String
 
+  query_variant_order query_variant_order[]
   query_variant_result query_variant_result[]
+
+}
+
+model query_variant_order {
+  id String @id @default(uuid()) @db.Uuid
+
+  query_variant query_variant @relation(fields: [query_variant_id], references: [id])
+  query_variant_id String @db.Uuid
+
+  domain String
+  domain_order_id String
+
+  status String
+  created_at DateTime @default(now())
+  checked_at DateTime?
+
+  type String @default("automatic") //manual, automatic
+
+  query_variant_result query_variant_result[]
+
 }
 
 model query_variant_result {
@@ -175,11 +196,19 @@ model query_variant_result {
   query_variant query_variant @relation(fields: [query_variant_id], references: [id])
   query_variant_id String @db.Uuid
 
+  query_variant_order query_variant_order @relation(fields: [query_variant_order_id], references: [id])
+  query_variant_order_id String @db.Uuid
+
+  domain String
+  domain_order_id String
+
   status String
   created_at DateTime @default(now())
+  checked_at DateTime?
   position Int
-  domain String
+  
   url String
+  type String @default("automatic") //manual, automatic
 
 }
 

@@ -9,22 +9,37 @@ const DomainOrderModel = {
     .create({data: payload})
     .then((insert) => success('DomainOrder', payload, insert))
     .catch((error: Error) => fail('DomainOrder', payload, error))
-  }
-    
-//   ,
-//   getDomainsByUserAndOrganisation: async (payload: any) => {
-//     const result = await db.domain_permission
-//       .findMany({
-//         where: payload,
-//         include: {
-//           domain: true
-//         }
-//       })
-//       .then((insert) => success('DomainPermissionWithDomain', payload, insert))
-//       .catch((error: Error) => fail('DomainPermissionWithDomain', payload, error))
+  },
+  getAll: async () => {
+    const result = await db.domain_order
+      .findMany({
+        take: 10,
+        where: {
+          status: 'pending'
+        },
+      })
+      .then((data) => success('DomainOrder', {}, data))
+      .catch((error: Error) => fail('DomainOrder', {}, error))
 
-//     return result
-//   },
+    return result
+  },
+  getCurrentOrder: async (payload: { domain_id: string}): Promise<IInsert<'DomainOrder',ITrackerDomainOrder, ITrackerDomainOrder>> => {
+
+    const result = await db.domain_order
+      .findMany({
+        where: payload,
+        orderBy: {
+          created_at: 'desc'
+        },
+        take: 1
+      })
+      .then((data) => success('DomainOrder', {}, data))
+      .catch((error: Error) => fail('DomainOrder', {}, error))
+
+    //@ts-ignore
+    return result
+
+  }
 //   getDomain: async (payload: IWithId) => {
 //     const data = await db.domain_permission.findUnique({
 //       where: {

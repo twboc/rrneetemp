@@ -17,6 +17,7 @@ interface IDomainGetAllReq {
 }
 
 interface IQueryCreate {
+    domain: string
     queries: IQueryCreateData[]
     organisation_id: string
 }
