@@ -186,8 +186,6 @@ model query_variant_order {
 
   type String @default("automatic") //manual, automatic
 
-  // retry Int
-
   query_variant_result query_variant_result[]
 
 }
