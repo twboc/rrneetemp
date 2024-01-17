@@ -162,6 +162,8 @@ CREATE TABLE "query_variant_result" (
     "domain_order_id" TEXT NOT NULL,
     "checked_at" TIMESTAMP(3) NOT NULL,
     "position" INTEGER NOT NULL,
+    "domain" TEXT NOT NULL,
+    "with_subdomain" TEXT NOT NULL,
     "url" TEXT NOT NULL,
     "title" TEXT NOT NULL,
     "description" TEXT NOT NULL,

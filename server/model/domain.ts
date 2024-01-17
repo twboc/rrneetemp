@@ -22,7 +22,7 @@ const DomainModel = {
 
     return data
   },
-  getStats: async (payload: IWithDomainId): Promise<IInsert<'DomainStats', ITrackerDomainStats, ITrackerDomainStats>> => {
+  getStats: async (payload: { domain: string, domain_id: string} ): Promise<IInsert<'DomainStats', ITrackerDomainStats, ITrackerDomainStats>> => {
 
     const result = await db.domain
       .findFirst({
@@ -34,7 +34,26 @@ const DomainModel = {
             include: {
               query_variant: {
                 include: {
-                  query_variant_result: true
+                  query_variant_result: {
+                    where: {
+                      OR: [
+                        {
+                          domain_full: payload.domain,
+                        },
+                        {
+                          domain_secondary: payload.domain,
+                        }
+                      ]
+                    },
+                    orderBy: [
+                      {
+                        checked_at: 'desc',
+                        // position: 'desc'
+                      }
+                    ],
+                    take: 5
+
+                  }
                 }
               }
             }

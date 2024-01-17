@@ -22,7 +22,7 @@ export const getAllDomains = async (
   if (res.data.DomainPermissionWithDomain.length <= 0 ) return
 
   await setSelectedDomain(res.data.DomainPermissionWithDomain[0].domain_id)
-  await getQueryStats(res.data.DomainPermissionWithDomain[0].domain_id, setStats)
+  await getQueryStats(res.data.DomainPermissionWithDomain[0].domain, res.data.DomainPermissionWithDomain[0].domain_id, setStats)
 
   setQueryStatsLoading(false)
 
@@ -34,14 +34,15 @@ export const chageSelectedDomain = (setSelectedDomain, setStats, setQueryStatsLo
   setQueryStatsLoading(true)
 
   await setSelectedDomain(domain_id)
-  await getQueryStats(domain_id, setStats)
+  await getQueryStats('', domain_id, setStats)
 
   setQueryStatsLoading(false)
   
 }
 
-const getQueryStats = async (domain_id: string, setStats: Dispatch<SetStateAction<ITrackerDomainStats>>) => {
-  const result = await resource.api.tracker.domain.get.stats({ domain_id })
+const getQueryStats = async (domain: string, domain_id: string, setStats: Dispatch<SetStateAction<ITrackerDomainStats>>) => {
+  const result = await resource.api.tracker.domain.get.stats({ domain, domain_id })
+  console.log("stats result: ", result)
   setStats(result.data)
 }
 

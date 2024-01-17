@@ -58,35 +58,59 @@ async function accept(page: Page) {
     });
 }
 
-async function more(page: Page) {
+async function more(page: Page, order:IOrder) {
     let selector = 'div'
-    await page.$$eval(selector, els => {
-        els.map(el => {
-            if (el.textContent == 'Więcej wyników') {
+
+    if (order.params.device == 'mobile') {
+
+        await page.evaluate(
+            () => {
+                console.log("here")
+                const next = document.querySelector('div')
+                // frGj1b
+                console.log("next: ", next)
                 //@ts-ignore
-                el.click()
-                return
-            }
+                next.click()
+
+            })
+
+    } else {
+        await page.$$eval(selector, els => {
+            els.map(el => {
+                if (el.textContent == 'Więcej wyników') {
+                    //@ts-ignore
+                    el.click()
+                    return
+                }
+            })
         })
-    })
+    }
+    
 }
 
-export const createURL = (order: IOrder) => `https://www.google.pl/search?q=${encodeURIComponent(order.params.query)}&adtest=${order.params.adTest || AD_TEST}&hl=${order.params.hl}`
+export const createURL = (order: IOrder) => {
+    const mobile = order.params.device == 'mobile'
+        ? '&adtest-useragent=Mozilla/5.0%20(iPhone;%20CPU%20iPhone%20OS%205_0%20like%20Mac%20OS%20X)%20AppleWebKit/534.46%20(KHTML,%20like%20Gecko)%20Version/5.1%20Mobile/9A334%20Safari/7534.48.3'
+        : ''
 
+    return `https://www.google.pl/search?q=${encodeURIComponent(order.params.query)}&adtest=${order.params.adTest || AD_TEST}&hl=${order.params.hl}${mobile}`
+
+}
 
 export const initPage = async (order: IOrder, browser: Browser): Promise<Page> => {
     const URL = createURL(order)
+    console.log("URL: ", URL)
     const page = await createPage(browser)
     await page.goto(URL)
     return page
 }
 
-export const scrollMore = async (page: Page) => {
+export const scrollMore = async (page: Page, order:IOrder) => {
     await autoScroll(page)
     await autoScroll(page)
     await autoScroll(page)
-    await more(page)
-    await more(page)
+    await more(page, order)
+    await more(page, order)
     // await more(page)
 }
 

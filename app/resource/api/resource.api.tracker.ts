@@ -4,6 +4,7 @@ import type {ITrackerDomain, IQueryCreate as IQueryCreateData, ITrackerDomainSta
 import URL from '../../../shared/url/url'
 
 interface IDomainidReq {
+    domain: string
     domain_id: string
 }
 

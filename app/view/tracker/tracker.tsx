@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from 'react'
 import './tracker.scss'
 import { organisationSelect } from '../../state/organisation/organisation'
 import { useSelector } from '../../module/store/store'
-import { IUserOrganisationByUser, IDomainListed, IQueryCreate, ITrackerDomainStats, ITrackerDomainStatsQuery } from '../../../shared/type/type'
+import { IUserOrganisationByUser, IDomainListed, IQueryCreate, ITrackerDomainStats, ITrackerDomainStatsQuery, ITrackerQueryVariantWithResult } from '../../../shared/type/type'
 import { getAllDomains, createDomain, createQuery, chageSelectedDomain } from './tracker.action'
 import { domainOnChange, onChange, getSelectedDomain } from './tracker.util'
 
@@ -72,10 +72,22 @@ const Tracker: FC = () => {
           {
             !queryStatsLoading && stats.query.length > 0 && stats.query.map((query: ITrackerDomainStatsQuery) => {
               return <div className="tracker-domain-query-container" >
-                <div>{query.query}</div>
+                <>{query.query} - </>
                 {
                   query.query_variant.map((query_variant) => {
-                    return <><>{query_variant.search_engine} Device: {query_variant.device}</><br/></>
+                    return <>
+                      {/* <>{query_variant.search_engine} Device: {query_variant.device}</>
+                      <br/>
+                       */}
+                      {
+                        query_variant && 
+                        (query_variant as ITrackerQueryVariantWithResult).query_variant_result &&
+                        //@ts-ignore
+                        (query_variant as ITrackerQueryVariantWithResult).query_variant_result[0] && 
+                        //@ts-ignore
+                        query_variant.query_variant_result[0].position + 1
+                      }
+                    </>
                   })
                 }
               </div>

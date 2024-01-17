@@ -203,6 +203,9 @@ model query_variant_result {
 
   checked_at DateTime
   position Int
+
+  domain_full String //with subdomain
+  domain_secondary String //WITHOUT SUBDOMAIN
   
   url String
   title String

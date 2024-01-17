@@ -22,12 +22,16 @@ const constructQueryAndVariantInsert = (req: QueryCreateReq) => {
         })
 
         query.device.forEach(device => {
-            queryVariantInsert.push({
-                id: v4(),
-                query_id: query_id,
-                search_engine: query.search_engine,
-                device: device
-            })
+
+            if (device == 'desktop') {
+                queryVariantInsert.push({
+                    id: v4(),
+                    query_id: query_id,
+                    search_engine: query.search_engine,
+                    device: device
+                })
+            }
+            
         })
         
     })
@@ -156,8 +160,8 @@ const getAllQueryVariants = async (req: Request<{}, {}, { domain_id: string }>, 
 
 }
 
-const getDomainAllStats = async (req: Request<{}, {}, { domain_id: string }>, res: Response) => {
-    const result = await model.domain.getStats({ domain_id: req.body.domain_id })
+const getDomainAllStats = async (req: Request<{}, {}, { domain: string, domain_id: string }>, res: Response) => {
+    const result = await model.domain.getStats({ domain: req.body.domain, domain_id: req.body.domain_id })
 
     //@ts-ignore
     return respond.tracker.domain.get.stats.success(res, result.data.DomainStats)

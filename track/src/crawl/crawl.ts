@@ -26,7 +26,7 @@ export const crawl = (order: IOrder): Promise<ICrawlResult> => {
     
                 while(organicResultsLength < MAX_RESULTS){
                     
-                    await scrollMore(page)
+                    await scrollMore(page, order)
     
                     organicResults = await page.evaluate(
                         () => {

@@ -84,6 +84,14 @@ export interface ITrackerQueryVariant {
     device: string
 }
 
+export interface ITrackerQueryVariantWithResult {
+    id: string
+    query_id: string
+    search_engine: string
+    device: string
+    query_variant_result?: ITrackerQueryVariantResult[]
+}
+
 export interface ITrackerQueryVariantOrder {
     id: string
     query_variant_id: string
@@ -99,6 +107,10 @@ export interface ITrackerQueryVariantResult {
     domain_order_id: string
     checked_at: Date
     position: number
+
+    domain_full: string
+    domain_secondary: string
+
     url: string
     title: string
     description: string

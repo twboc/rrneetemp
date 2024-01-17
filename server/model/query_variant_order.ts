@@ -17,6 +17,23 @@ const QueryVariantModel = {
     return res
   },
 
+  update: async (payload: {
+    where: { id: string},
+    data: any
+  }): Promise<IInsert<'QueryVariantOrder', ITrackerQueryVariantOrder, ITrackerQueryVariantOrder>> => {
+
+    const res = await db.query_variant_order
+      .update({
+        where: payload.where,
+        data: payload.data
+      })
+      .then((insert) => success('QueryVariantOrder', payload, insert))
+      .catch((error: Error) => fail('QueryVariantOrder', payload, error))
+
+    //@ts-ignore
+    return res
+  },
+
   getAllPendingByDomainOrderId: async (payload: { domain_order_id: string}) => {
     const result = await db.query_variant_order
     .findMany({
