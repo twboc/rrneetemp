@@ -108,8 +108,11 @@ export const addQueries = async (domain: string, queries: IQueryCreate[], organi
 
 
 export const createQuery = (domains: IDomainListed[], query: string, selectedDomain: string, organisations: any, stats: any, setQueryVariants: any, setQuery: Dispatch<SetStateAction<string>>) => () => {
+  
+  console.log("domains: ", domains)
   const domain = domains.filter(el => el.domain_id == selectedDomain)[0].domain
   const queryData: IQueryCreate = queryConstructor(selectedDomain, query)
+  console.log("Domain, queryData: ", domain, queryData)
   addQueries(domain, [queryData], organisations[0].organisation_id, stats, setQueryVariants)
   setQuery("")
 }

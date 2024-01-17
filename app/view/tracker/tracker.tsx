@@ -25,6 +25,20 @@ const Tracker: FC = () => {
   )
 
   useEffect(() => {
+    const keyDownHandler = (event: any) => {
+      if (event.key.toString().trim() == 'Enter') {
+        createQuery(domains, event.srcElement.value, selectedDomain, organisations, stats, setStats, setQuery)()
+        event.preventDefault();
+      }
+    }
+    document.addEventListener('keydown', keyDownHandler)
+    return () => {
+      document.removeEventListener('keydown', keyDownHandler)
+    }
+
+  }, [domains, query, selectedDomain, organisations, stats])
+
+  useEffect(() => {
     getAllDomains(organisations[0].organisation_id, setDomains, setSelectedDomain, setQueryStatsLoading, setStats)
   }, [])
     
