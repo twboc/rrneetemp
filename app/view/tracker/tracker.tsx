@@ -4,7 +4,8 @@ import { organisationSelect } from '../../state/organisation/organisation'
 import { useSelector } from '../../module/store/store'
 import { IUserOrganisationByUser, IDomainListed, IQueryCreate, ITrackerDomainStats, ITrackerDomainStatsQuery, ITrackerQueryVariantWithResult } from '../../../shared/type/type'
 import { getAllDomains, createDomain, createQuery, chageSelectedDomain } from './tracker.action'
-import { domainOnChange, onChange, getSelectedDomain } from './tracker.util'
+import { domainOnChange, onChange, getSelectedDomain, statsDefault } from './tracker.util'
+
 
 const Tracker: FC = () => {
   const [domain, setDomain] = useState<string>('')
@@ -12,13 +13,10 @@ const Tracker: FC = () => {
   const [invalidDomain, setInvalidDomain] = useState<boolean>(false)
   const [domains, setDomains] = useState<IDomainListed[]>([])
   const [query, setQuery] = useState<string>('')
-  const [stats, setStats] = useState<ITrackerDomainStats>({
-    id: '',
-    domain: '',
-    query: []
-  })
-
+  const [stats, setStats] = useState<ITrackerDomainStats>(statsDefault)
   const [queryStatsLoading, setQueryStatsLoading] = useState<boolean>(true)
+
+  const queryInput = React.useRef(null)
 
   const organisations: IUserOrganisationByUser[] = useSelector(
     organisationSelect.organisations,
@@ -27,7 +25,11 @@ const Tracker: FC = () => {
   useEffect(() => {
     const keyDownHandler = (event: any) => {
       if (event.key.toString().trim() == 'Enter') {
-        createQuery(domains, event.srcElement.value, selectedDomain, organisations, stats, setStats, setQuery)()
+
+        if (document.activeElement === queryInput.current) {
+          createQuery(domains, event.srcElement.value, selectedDomain, organisations, stats, setStats, setQuery)()
+        }
+
         event.preventDefault();
       }
     }
@@ -68,7 +70,13 @@ const Tracker: FC = () => {
       <div className='tracker-domain-container'>
       <div>Domain: {getSelectedDomain(domains, selectedDomain)}</div>
       <br/>
-      <input value={query} onChange={onChange(setQuery)} />
+      <input id="tracker-domain-query-input" value={query} ref={queryInput} onChange={onChange(setQuery)} />
+      <br/>
+      <br/>
+      <div>
+        Locations:<br/>
+        
+      </div>
       <br/>
       <br/>
       <button type="submit" onClick={createQuery(domains, query, selectedDomain, organisations, stats, setStats, setQuery)} className="btn btn-primary btn-block mb-4" >
@@ -76,13 +84,8 @@ const Tracker: FC = () => {
       </button>
       <br/>
       <br/>
-
         <div>
-
-          {
-            queryStatsLoading && <div>Loading</div>
-          }
-
+          { queryStatsLoading && <div>Loading</div> }
           {
             !queryStatsLoading && stats.query.length > 0 && stats.query.map((query: ITrackerDomainStatsQuery) => {
               return <div className="tracker-domain-query-container" >

@@ -41,9 +41,13 @@ const run = async () => {
 
             if (crawlResult.success) {
                 const checked_at = new Date()
-                const queryVariantResultInsert: ITrackerQueryVariantResult[] = crawlResult.serp.map((res, index) => {
+                let queryVariantResultInsert: ITrackerQueryVariantResult[] = crawlResult.serp.map((res, index) => {
 
-                    let domain = new URL(res.url)
+                    let domain;
+                    if (!res.url) {
+                        return null
+                    }
+                        domain = new URL(res.url)
                 
                     return {
                         id: v4(),
@@ -62,6 +66,8 @@ const run = async () => {
                         type: order.type
                     }
                 })
+
+                queryVariantResultInsert = queryVariantResultInsert.filter(el => !el)
                 
                 const result = await model.query_variant_result.createMany(queryVariantResultInsert)
 

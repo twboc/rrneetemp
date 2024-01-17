@@ -5,10 +5,10 @@ import { AD_TEST } from './../const/const'
 
 
 export const decoratePage = (page: Page) => {
-    page.on('console', (msg: ConsoleMessage) => {
-        for (let i = 0; i < msg.args().length; ++i)
-        console.log(`${msg.args()[i]}`);
-    });
+    // page.on('console', (msg: ConsoleMessage) => {
+    //     for (let i = 0; i < msg.args().length; ++i)
+    //     console.log(`${msg.args()[i]}`);
+    // });
 }
 
 export const createPage = async (browser: Browser): Promise<Page> => {
@@ -93,7 +93,11 @@ export const createURL = (order: IOrder) => {
         ? '&adtest-useragent=Mozilla/5.0%20(iPhone;%20CPU%20iPhone%20OS%205_0%20like%20Mac%20OS%20X)%20AppleWebKit/534.46%20(KHTML,%20like%20Gecko)%20Version/5.1%20Mobile/9A334%20Safari/7534.48.3'
         : ''
 
-    return `https://www.google.pl/search?q=${encodeURIComponent(order.params.query)}&adtest=${order.params.adTest || AD_TEST}&hl=${order.params.hl}${mobile}`
+    const getQuery = (query: string) => encodeURIComponent(query)
+    const getAdTest = (adTest: string) => adTest || AD_TEST
+    const getSafe = () => '&safe=images&safe=high'
+
+    return `https://www.google.pl/search?q=${getQuery(order.params.query)}&adtest=${getAdTest(order.params.adTest)}${getSafe()}&hl=${order.params.hl}${mobile}`
 
 }
 
@@ -111,7 +115,6 @@ export const scrollMore = async (page: Page, order:IOrder) => {
     await autoScroll(page)
     await more(page, order)
     await more(page, order)
-    // await more(page)
 }
 
 export const setTimeoutError = (reject: (reason : ICrawlResult) => void, organicResults: ISerpPage[], browser: Browser) => {
@@ -124,7 +127,7 @@ export const setTimeoutError = (reject: (reason : ICrawlResult) => void, organic
             },
             serp: organicResults
         });
-      }, 60000);
+      }, 100000);
 }
 
 export default {

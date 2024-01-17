@@ -18,3 +18,9 @@ export const getSelectedDomain = (domains: IDomainListed[], selectedDomain: stri
     ? domains.filter(domain => domain.domain_id == selectedDomain )[0].domain
     : ''
 }
+
+export const statsDefault = {
+  id: '',
+  domain: '',
+  query: []
+}

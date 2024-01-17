@@ -1,6 +1,6 @@
 import CONFIG from './../config'
 import util, { initPage, scrollMore, setTimeoutError } from './../util/util'
-import pt, { Browser, Page } from 'puppeteer'
+import pt, { Browser, ConsoleMessage } from 'puppeteer'
 import { MAX_RESULTS, MAX_LINKS } from './../const/const'
 import { IOrder, ICrawlResult, ISerpPage } from './../type/type'
 
@@ -10,17 +10,21 @@ export const crawl = (order: IOrder): Promise<ICrawlResult> => {
 
     const crawlResult = new Promise<ICrawlResult>((resolve, reject) => {
 
-        let organicResultsLength = 0
-        let organicResults: ISerpPage[] = []
-
+        
         pt
         .launch(CONFIG.PUPPETEER)
         .then(async (browser: Browser) => {
 
-            // try {
+            let organicResultsLength = 0
+            let organicResults: ISerpPage[] = []
 
                 const page = await initPage(order, browser)
                 await util.accept(page)
+
+                page.on('console', (msg: ConsoleMessage) => {
+                    for (let i = 0; i < msg.args().length; ++i)
+                    console.log(`${msg.args()[i]}`);
+                });
     
                 setTimeoutError(reject, organicResults, browser)
     
@@ -54,12 +58,14 @@ export const crawl = (order: IOrder): Promise<ICrawlResult> => {
                                 const url = anchor?.ping.toString().split('&url=')[1]?.split('&ved')[0]
                                 const title = anchor?.querySelector('h3')?.textContent
                                 const description = meta?.innerHTML || ''
-    
-                                return {
+
+                                const result = {
                                     url,
                                     title,
                                     description,
                                 }
+
+                                return result
     
                             })
     
@@ -83,12 +89,6 @@ export const crawl = (order: IOrder): Promise<ICrawlResult> => {
                     success: true,
                     serp: organicResults
                 })
-                
-            // }catch(e){
-            //     console.log("TRY CATCH ERROR: ", e)
-            // }
-
-            
 
         })
 
