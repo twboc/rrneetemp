@@ -165,6 +165,7 @@ model query_variant {
 
   search_engine String
   device String
+  location String
 
   query_variant_order query_variant_order[]
   query_variant_result query_variant_result[]

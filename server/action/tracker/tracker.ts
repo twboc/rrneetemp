@@ -14,24 +14,25 @@ const constructQueryAndVariantInsert = (req: QueryCreateReq) => {
     req.body.queries.forEach(query => {
         const query_id = v4()
 
-        queryInsert.push({
+        queryInsert.push({ 
             id: query_id,
             domain_id: req.body.queries[0].domain_id,
-            query: req.body.queries[0].query,
+            query: query.query,
             created_at: new Date()
         })
 
         query.device.forEach(device => {
-
-            if (device == 'desktop') {
-                queryVariantInsert.push({
-                    id: v4(),
-                    query_id: query_id,
-                    search_engine: query.search_engine,
-                    device: device
-                })
-            }
-            
+            query.location.forEach(location => {
+                if (device == 'desktop') {
+                    queryVariantInsert.push({
+                        id: v4(),
+                        query_id: query_id,
+                        search_engine: query.search_engine,
+                        device: device,
+                        location: location
+                    })
+                }
+            })
         })
         
     })
@@ -46,6 +47,8 @@ const constructQueryAndVariantInsert = (req: QueryCreateReq) => {
 type QueryCreateReq = Request<{}, {}, { domain: string, queries: IQueryCreate[], organisation_id: string}>
 
 const queryCreate = async (req: QueryCreateReq, res: Response) => {
+
+    console.log("req.body: ", req.body)
 
     const { queryInsert, queryVariantInsert } = constructQueryAndVariantInsert(req)
 

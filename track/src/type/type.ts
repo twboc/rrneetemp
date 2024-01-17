@@ -4,6 +4,7 @@ export interface IOrderParams {
     adTest: string
     hl: string
     device: string
+    location: string
 }
 
 export interface IOrder {
@@ -23,4 +24,8 @@ export interface ISerpPage {
     url: string
     title: string
     description: string
+}
+
+export interface ILocations {
+    [key: string]: string
 }

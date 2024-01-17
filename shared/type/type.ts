@@ -66,6 +66,7 @@ export interface IQueryCreate {
     query: string
     search_engine: string
     device: string[] //desktop mobile
+    location: string[]
 }
 
 
@@ -82,6 +83,7 @@ export interface ITrackerQueryVariant {
     query_id: string
     search_engine: string
     device: string
+    location: string
 }
 
 export interface ITrackerQueryVariantWithResult {

@@ -2,12 +2,15 @@ import { Dispatch, SetStateAction } from 'react'
 import { IDomainListed } from '../../../shared/type/type'
 import resource from '../../resource/resource'
 
-export const queryConstructor = (domain_id: string, query: string) => ({
-  domain_id: domain_id,
-  query: query,
-  search_engine: 'google.pl',
-  device: ['desktop', 'mobile']
-})
+export const queryConstructor = (domain_id: string, queries: string[], location: string[]) => {
+  return queries.map((query) => ({
+    domain_id: domain_id,
+    query: query,
+    search_engine: 'google.pl',
+    device: ['desktop', 'mobile'],
+    location: location
+  }))
+}
 
 export const domainOnChange = (setSelectedDomain: Dispatch<SetStateAction<string>>) => (e: any) => { setSelectedDomain(e.target.value) }
 

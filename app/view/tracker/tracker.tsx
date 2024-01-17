@@ -2,10 +2,9 @@ import React, { FC, useEffect, useState } from 'react'
 import './tracker.scss'
 import { organisationSelect } from '../../state/organisation/organisation'
 import { useSelector } from '../../module/store/store'
-import { IUserOrganisationByUser, IDomainListed, IQueryCreate, ITrackerDomainStats, ITrackerDomainStatsQuery, ITrackerQueryVariantWithResult } from '../../../shared/type/type'
+import { IUserOrganisationByUser, IDomainListed, ITrackerDomainStats, ITrackerDomainStatsQuery, ITrackerQueryVariantWithResult } from '../../../shared/type/type'
 import { getAllDomains, createDomain, createQuery, chageSelectedDomain } from './tracker.action'
 import { domainOnChange, onChange, getSelectedDomain, statsDefault } from './tracker.util'
-
 
 const Tracker: FC = () => {
   const [domain, setDomain] = useState<string>('')
@@ -15,7 +14,10 @@ const Tracker: FC = () => {
   const [query, setQuery] = useState<string>('')
   const [stats, setStats] = useState<ITrackerDomainStats>(statsDefault)
   const [queryStatsLoading, setQueryStatsLoading] = useState<boolean>(true)
-  const [locations, setLocations] = useState<string[]>([])
+  const [locations, setLocations] = useState<string[]>(['no_location'])
+
+  const [showBulk, setShowBulk] = useState<boolean>(false)
+  const [bulkText, setBulkText] = useState<string>('')
 
   const queryInput = React.useRef(null)
 
@@ -24,14 +26,17 @@ const Tracker: FC = () => {
   )
 
   const checkbox = (location: string) => () => {
-    console.log("Location: ", location)
-
     locations.indexOf(location) < 0
       ? setLocations([...locations, location])
       : setLocations(locations.filter(loc => loc != location))
+  }
 
-    
+  const addBulk = () => {
+    const queries = bulkText
+      .split(/\r?\n/)
+      .filter(el => el != '')
 
+    createQuery(domains, queries, selectedDomain, locations, organisations, stats, setStats, setQuery)()
   }
 
   useEffect(() => {
@@ -39,7 +44,7 @@ const Tracker: FC = () => {
       if (event.key.toString().trim() == 'Enter') {
 
         if (document.activeElement === queryInput.current) {
-          createQuery(domains, event.srcElement.value, selectedDomain, organisations, stats, setStats, setQuery)()
+          createQuery(domains, event.srcElement.value, selectedDomain, locations, organisations, stats, setStats, setQuery)()
         }
 
         event.preventDefault();
@@ -87,28 +92,45 @@ const Tracker: FC = () => {
       <br/>
       <div>
         Locations:<br/>
-        {locations}
+        {locations.join(', ')}
         <br/>
         <br/>
-        <div>Poznań <input type="checkbox" value={locations.indexOf('Poznań')} onChange={checkbox('Poznań')} /></div>
-        <div>Szczecin <input type="checkbox" value={locations.indexOf('Szczecin')} onChange={checkbox('Szczecin')} /></div>
-        <div>Katowice <input type="checkbox" value={locations.indexOf('Katowice')} onChange={checkbox('Katowice')} /></div>
-        <div>Bydgoszcz <input type="checkbox" value={locations.indexOf('Bydgoszcz')} onChange={checkbox('Bydgoszcz')} /></div>
-        <div>Ruda Śląska <input type="checkbox" value={locations.indexOf('Ruda Śląska')} onChange={checkbox('Ruda Śląska')} /></div>
-        <div>Tychy <input type="checkbox" value={locations.indexOf('Tychy')} onChange={checkbox('Tychy')} /></div>
-        <div>Gliwice <input type="checkbox" value={locations.indexOf('Gliwice')} onChange={checkbox('Gliwice')} /></div>
-        <div>Rybnik <input type="checkbox" value={locations.indexOf('Rybnik')} onChange={checkbox('Rybnik')} /></div>
-        <div>Bytom <input type="checkbox" value={locations.indexOf('Bytom')} onChange={checkbox('Bytom')} /></div>
-        <div>Dąbrowa Górnicza <input type="checkbox" value={locations.indexOf('Dąbrowa Górnicza')} onChange={checkbox('Dąbrowa Górnicza')} /></div>
-        <div>Mikołów <input type="checkbox" value={locations.indexOf('Mikołów')} onChange={checkbox('Mikołów')} /></div>
-        <div>Zabrze <input type="checkbox" value={locations.indexOf('Zabrze')} onChange={checkbox('Zabrze')} /></div>
-        <div>Chorzów <input type="checkbox" value={locations.indexOf('Chorzów')} onChange={checkbox('Chorzów')} /></div>
-        <div>Tarnowskie Góry <input type="checkbox" value={locations.indexOf('Tarnowskie Góry')} onChange={checkbox('Tarnowskie Góry')} /></div>
+        <div>No Location <input type="checkbox" checked={locations.indexOf('no_location') >= 0} onChange={checkbox('no_location')} /></div>
+        <div>Poznań <input type="checkbox" checked={locations.indexOf('Poznań') >= 0} onChange={checkbox('Poznań')} /></div>
+        <div>Szczecin <input type="checkbox" checked={locations.indexOf('Szczecin') >= 0} onChange={checkbox('Szczecin')} /></div>
+        <div>Katowice <input type="checkbox" checked={locations.indexOf('Katowice') >= 0} onChange={checkbox('Katowice')} /></div>
+        <div>Bydgoszcz <input type="checkbox" checked={locations.indexOf('Bydgoszcz') >= 0} onChange={checkbox('Bydgoszcz')} /></div>
+        <div>Ruda Śląska <input type="checkbox" checked={locations.indexOf('Ruda Śląska') >= 0} onChange={checkbox('Ruda Śląska')} /></div>
+        <div>Tychy <input type="checkbox" checked={locations.indexOf('Tychy') >= 0} onChange={checkbox('Tychy')} /></div>
+        <div>Gliwice <input type="checkbox" checked={locations.indexOf('Gliwice') >= 0} onChange={checkbox('Gliwice')} /></div>
+        <div>Rybnik <input type="checkbox" checked={locations.indexOf('Rybnik') >= 0} onChange={checkbox('Rybnik')} /></div>
+        <div>Bytom <input type="checkbox" checked={locations.indexOf('Bytom') >= 0} onChange={checkbox('Bytom')} /></div>
+        <div>Dąbrowa Górnicza <input type="checkbox" checked={locations.indexOf('Dąbrowa Górnicza') >= 0} onChange={checkbox('Dąbrowa Górnicza')} /></div>
+        <div>Mikołów <input type="checkbox" checked={locations.indexOf('Mikołów') >= 0} onChange={checkbox('Mikołów')} /></div>
+        <div>Zabrze <input type="checkbox" checked={locations.indexOf('Zabrze') >= 0} onChange={checkbox('Zabrze')} /></div>
+        <div>Chorzów <input type="checkbox" checked={locations.indexOf('Chorzów') >= 0} onChange={checkbox('Chorzów')} /></div>
+        <div>Tarnowskie Góry <input type="checkbox" checked={locations.indexOf('Tarnowskie Góry') >= 0} onChange={checkbox('Tarnowskie Góry')} /></div>
         
       </div>
       <br/>
       <br/>
-      <button type="submit" onClick={createQuery(domains, query, selectedDomain, organisations, stats, setStats, setQuery)} className="btn btn-primary btn-block mb-4" >
+      <button type="submit" onClick={() => { setShowBulk(!showBulk) }} className="btn btn-primary btn-block mb-4" >
+        Show Bulk
+      </button>
+      {
+        showBulk && <div>
+          Bulk Text:<br/>
+          <textarea onChange={onChange(setBulkText)} className='tracker-domain-query-bulk-textarea'></textarea>
+
+          <button type="submit" onClick={addBulk} className="btn btn-primary btn-block mb-4" >
+            Add Bulk
+          </button>
+        </div>
+      }
+      
+      <br/>
+      <br/>
+      <button type="submit" onClick={createQuery(domains, [query], selectedDomain, locations, organisations, stats, setStats, setQuery)} className="btn btn-primary btn-block mb-4" >
         Add Query
       </button>
       <br/>
@@ -121,7 +143,8 @@ const Tracker: FC = () => {
                 <>{query.query} - </>
                 {
                   query.query_variant.map((query_variant) => {
-                    return <>
+                    return <div>
+                      {query_variant.location}:
                       {/* <>{query_variant.search_engine} Device: {query_variant.device}</>
                       <br/>
                        */}
@@ -140,7 +163,8 @@ const Tracker: FC = () => {
                         : '> 100'
                         
                       }
-                    </>
+                      <br/>
+                    </div>
                   })
                 }
               </div>

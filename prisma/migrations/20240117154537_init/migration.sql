@@ -136,6 +136,7 @@ CREATE TABLE "query_variant" (
     "query_id" UUID NOT NULL,
     "search_engine" TEXT NOT NULL,
     "device" TEXT NOT NULL,
+    "location" TEXT NOT NULL,
 
     CONSTRAINT "query_variant_pkey" PRIMARY KEY ("id")
 );
@@ -162,8 +163,8 @@ CREATE TABLE "query_variant_result" (
     "domain_order_id" TEXT NOT NULL,
     "checked_at" TIMESTAMP(3) NOT NULL,
     "position" INTEGER NOT NULL,
-    "domain" TEXT NOT NULL,
-    "with_subdomain" TEXT NOT NULL,
+    "domain_full" TEXT NOT NULL,
+    "domain_secondary" TEXT NOT NULL,
     "url" TEXT NOT NULL,
     "title" TEXT NOT NULL,
     "description" TEXT NOT NULL,

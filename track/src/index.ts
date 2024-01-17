@@ -29,10 +29,12 @@ const run = async () => {
         const query_variant_orders = await model.query_variant_order.getAllPendingByDomainOrderId({ domain_order_id })
 
         //@ts-ignore
+        console.log("queries: ", utils.inspect(query_variant_orders, false, null, true))
+
+        //@ts-ignore
         const queries = query_variant_orders.data.QueryVariantOrder.filter((el) => { return el.query_variant.device == 'desktop'})
 
-         //@ts-ignore
-         console.log("queries: ", utils.inspect(queries, false, null, true))
+         
 
         for (const order of queries) {
 
@@ -41,7 +43,8 @@ const run = async () => {
                     adTest: 'on',
                     hl: 'PL',
                     query: order.query_variant.query.query,
-                    device: order.query_variant.device
+                    device: order.query_variant.device,
+                    location: order.query_variant.location
                 }
             })
 
@@ -71,7 +74,9 @@ const run = async () => {
                         domain_secondary: removeSubdomain(domain.host),
 
                         url: res.url,
-                        title: res.title,
+                        // this handles the case of youtube video
+                        //@ts-ignore
+                        title: (typeof res.title === 'string' || res.title instanceof String) ? res.title : '',
                         description: res.description,
                         type: order.type
                     }
@@ -106,7 +111,7 @@ const run = async () => {
                 
                 const result = await model.query_variant_result.createMany(queryVariantResultInsert)
 
-                if (!result.success) { console.log("error - query variant result insert") }
+                if (!result.success) { return console.log("error - query variant result insert, result: ", result) }
 
                 await model.query_variant_order.update({
                     where: { id: order.id },
@@ -114,7 +119,7 @@ const run = async () => {
                 })
 
 
-                console.log("crawlResult: ", crawlResult)
+                // console.log("crawlResult: ", crawlResult)
 
             }
 

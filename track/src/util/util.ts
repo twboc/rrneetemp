@@ -1,7 +1,7 @@
 import { Page, ConsoleMessage, Browser } from 'puppeteer'
 import { IOrder, ICrawlResult, ISerpPage } from '../type/type'
 import { AD_TEST } from './../const/const'
-
+import { locations } from './locations'
 
 
 export const decoratePage = (page: Page) => {
@@ -88,6 +88,15 @@ async function more(page: Page, order:IOrder) {
     
 }
 
+const getLocation = (location: string) => {
+
+    return location == 'no_location'
+        ? ''
+        : locations[location]
+            ? locations[location]
+            : ''
+}
+
 export const createURL = (order: IOrder) => {
     const mobile = order.params.device == 'mobile'
         ? '&adtest-useragent=Mozilla/5.0%20(iPhone;%20CPU%20iPhone%20OS%205_0%20like%20Mac%20OS%20X)%20AppleWebKit/534.46%20(KHTML,%20like%20Gecko)%20Version/5.1%20Mobile/9A334%20Safari/7534.48.3'
@@ -97,7 +106,7 @@ export const createURL = (order: IOrder) => {
     const getAdTest = (adTest: string) => adTest || AD_TEST
     const getSafe = () => '&safe=images&safe=high'
 
-    return `https://www.google.pl/search?q=${getQuery(order.params.query)}&adtest=${getAdTest(order.params.adTest)}${getSafe()}&hl=${order.params.hl}${mobile}`
+    return `https://www.google.pl/search?q=${getQuery(order.params.query)}&adtest=${getAdTest(order.params.adTest)}&hl=${order.params.hl}${mobile}${getSafe()}${getLocation(order.params.location)}`
 
 }
 
