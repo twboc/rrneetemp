@@ -10,7 +10,6 @@ export const crawl = (order: IOrder): Promise<ICrawlResult> => {
 
     const crawlResult = new Promise<ICrawlResult>((resolve, reject) => {
 
-        
         pt
         .launch(CONFIG.PUPPETEER)
         .then(async (browser: Browser) => {
@@ -75,11 +74,11 @@ export const crawl = (order: IOrder): Promise<ICrawlResult> => {
                     )
     
                     organicResultsLength = organicResults.length
-                    organicResults = organicResults.slice(0, MAX_LINKS)
+                    // organicResults = organicResults.slice(0, MAX_LINKS)
     
                 }
     
-                organicResults = organicResults.slice(0, MAX_LINKS)
+                // organicResults = organicResults.slice(0, MAX_LINKS)
     
                 await browser.close()
     
@@ -92,7 +91,7 @@ export const crawl = (order: IOrder): Promise<ICrawlResult> => {
 
         })
 
-    });
+    })
 
     return crawlResult
 

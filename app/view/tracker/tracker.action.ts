@@ -42,6 +42,7 @@ export const chageSelectedDomain = (setSelectedDomain, setStats, setQueryStatsLo
 
 const getQueryStats = async (domain: string, domain_id: string, setStats: Dispatch<SetStateAction<ITrackerDomainStats>>) => {
   const result = await resource.api.tracker.domain.get.stats({ domain, domain_id })
+  console.log("result: ", result)
   setStats(result.data)
 }
 

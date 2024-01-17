@@ -1,6 +1,7 @@
 import { v4 } from 'uuid'
 import utils from 'util'
 import model from '../../server/model/model'
+import { MAX_LINKS } from './const/const'
 import { crawl } from './crawl/crawl'
 import { ITrackerQueryVariantResult } from '../../shared/type/type'
 import { removeSubdomain } from './util/domain'
@@ -18,8 +19,13 @@ const run = async () => {
     //@ts-ignore
     for (const domain_order of domain_orders.data.DomainOrder) {
 
-        const domain_order_id = domain_order.id
+        console.log("DOMAIN: ", domain_order.domain.domain)
 
+        if (domain_order.domain.tombstone) {
+            continue
+        }
+
+        const domain_order_id = domain_order.id
         const query_variant_orders = await model.query_variant_order.getAllPendingByDomainOrderId({ domain_order_id })
 
         //@ts-ignore
@@ -44,6 +50,10 @@ const run = async () => {
                 let queryVariantResultInsert: ITrackerQueryVariantResult[] = crawlResult.serp.map((res, index) => {
 
                     let domain;
+
+                    // TASK::ID Query:
+                    // For query "data" there was an issue with results from google books
+
                     if (!res.url) {
                         return null
                     }
@@ -67,7 +77,32 @@ const run = async () => {
                     }
                 })
 
-                queryVariantResultInsert = queryVariantResultInsert.filter(el => !el)
+                queryVariantResultInsert = queryVariantResultInsert.filter(el => el)
+
+                queryVariantResultInsert.slice(0, MAX_LINKS)
+
+                const outsideResults = queryVariantResultInsert.filter(el => el?.domain_secondary == domain_order.domain.domain).length <= 0
+
+                if (outsideResults) {
+                    queryVariantResultInsert.push({
+                        id: v4(),
+                        query_variant_id: order.query_variant.id,
+                        query_variant_order_id: order.id,
+                        domain_order_id: domain_order_id,
+                        checked_at: checked_at,
+                        position: -1,
+
+                        domain_full: domain_order.domain.domain,
+                        domain_secondary: removeSubdomain(domain_order.domain.domain),
+
+                        url: '',
+                        title: '',
+                        description: '',
+                        type: order.type
+                    })
+                }
+
+
                 
                 const result = await model.query_variant_result.createMany(queryVariantResultInsert)
 

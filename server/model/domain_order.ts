@@ -17,6 +17,9 @@ const DomainOrderModel = {
         where: {
           status: 'pending'
         },
+        include: {
+          domain: true
+        }
       })
       .then((data) => success('DomainOrder', {}, data))
       .catch((error: Error) => fail('DomainOrder', {}, error))

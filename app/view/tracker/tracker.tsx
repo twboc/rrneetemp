@@ -15,12 +15,24 @@ const Tracker: FC = () => {
   const [query, setQuery] = useState<string>('')
   const [stats, setStats] = useState<ITrackerDomainStats>(statsDefault)
   const [queryStatsLoading, setQueryStatsLoading] = useState<boolean>(true)
+  const [locations, setLocations] = useState<string[]>([])
 
   const queryInput = React.useRef(null)
 
   const organisations: IUserOrganisationByUser[] = useSelector(
     organisationSelect.organisations,
   )
+
+  const checkbox = (location: string) => () => {
+    console.log("Location: ", location)
+
+    locations.indexOf(location) < 0
+      ? setLocations([...locations, location])
+      : setLocations(locations.filter(loc => loc != location))
+
+    
+
+  }
 
   useEffect(() => {
     const keyDownHandler = (event: any) => {
@@ -75,6 +87,23 @@ const Tracker: FC = () => {
       <br/>
       <div>
         Locations:<br/>
+        {locations}
+        <br/>
+        <br/>
+        <div>Poznań <input type="checkbox" value={locations.indexOf('Poznań')} onChange={checkbox('Poznań')} /></div>
+        <div>Szczecin <input type="checkbox" value={locations.indexOf('Szczecin')} onChange={checkbox('Szczecin')} /></div>
+        <div>Katowice <input type="checkbox" value={locations.indexOf('Katowice')} onChange={checkbox('Katowice')} /></div>
+        <div>Bydgoszcz <input type="checkbox" value={locations.indexOf('Bydgoszcz')} onChange={checkbox('Bydgoszcz')} /></div>
+        <div>Ruda Śląska <input type="checkbox" value={locations.indexOf('Ruda Śląska')} onChange={checkbox('Ruda Śląska')} /></div>
+        <div>Tychy <input type="checkbox" value={locations.indexOf('Tychy')} onChange={checkbox('Tychy')} /></div>
+        <div>Gliwice <input type="checkbox" value={locations.indexOf('Gliwice')} onChange={checkbox('Gliwice')} /></div>
+        <div>Rybnik <input type="checkbox" value={locations.indexOf('Rybnik')} onChange={checkbox('Rybnik')} /></div>
+        <div>Bytom <input type="checkbox" value={locations.indexOf('Bytom')} onChange={checkbox('Bytom')} /></div>
+        <div>Dąbrowa Górnicza <input type="checkbox" value={locations.indexOf('Dąbrowa Górnicza')} onChange={checkbox('Dąbrowa Górnicza')} /></div>
+        <div>Mikołów <input type="checkbox" value={locations.indexOf('Mikołów')} onChange={checkbox('Mikołów')} /></div>
+        <div>Zabrze <input type="checkbox" value={locations.indexOf('Zabrze')} onChange={checkbox('Zabrze')} /></div>
+        <div>Chorzów <input type="checkbox" value={locations.indexOf('Chorzów')} onChange={checkbox('Chorzów')} /></div>
+        <div>Tarnowskie Góry <input type="checkbox" value={locations.indexOf('Tarnowskie Góry')} onChange={checkbox('Tarnowskie Góry')} /></div>
         
       </div>
       <br/>
@@ -100,9 +129,16 @@ const Tracker: FC = () => {
                         query_variant && 
                         (query_variant as ITrackerQueryVariantWithResult).query_variant_result &&
                         //@ts-ignore
+                        (query_variant as ITrackerQueryVariantWithResult).query_variant_result?.length > 0
+                        ? //@ts-ignore
                         (query_variant as ITrackerQueryVariantWithResult).query_variant_result[0] && 
                         //@ts-ignore
-                        query_variant.query_variant_result[0].position + 1
+                        (query_variant.query_variant_result[0].position == -1)
+                        ? '> 100'
+                        //@ts-ignore
+                        : query_variant.query_variant_result[0]?.position + 1
+                        : '> 100'
+                        
                       }
                     </>
                   })
