@@ -1,13 +1,9 @@
+import { v4 } from 'uuid'
 import utils from 'util'
-import { IOrder } from './type/type'
 import model from '../../server/model/model'
 import { crawl } from './crawl/crawl'
+import { ITrackerQueryVariantResult } from '../../shared/type/type'
 
-import {v4} from 'uuid'
-import CONFIG from './config'
-import util from './util/util'
-import pt from 'puppeteer'
-import { MAX_RESULTS } from './const/const'
 
 console.log("START")
 
@@ -32,7 +28,12 @@ const run = async () => {
 
         for (const order of queries) {
 
-            const serp = await crawl({
+
+            console.log("order: ", order)
+
+            // return
+
+            const crawlResult = await crawl({
                 params: {
                     adTest: 'on',
                     hl: 'PL',
@@ -41,7 +42,34 @@ const run = async () => {
                 }
             })
 
-            console.log("SERP: ", serp)
+            
+
+            if (crawlResult.success) {
+                const queryVariantResultInsert: ITrackerQueryVariantResult[] = crawlResult.serp.map((res, index) => {
+                    return {
+                        id: v4(),
+                        query_variant_id: order.query_variant.id,
+                        query_variant_order_id: order.id,
+                        domain_order_id: domain_order_id,
+                        checked_at: new Date(),
+                        position: index +1,
+                        url: res.url,
+                        title: res.title,
+                        description: res.description,
+                        type: order.type
+                    }
+                })
+                
+                const result = await model.query_variant_result.createMany(queryVariantResultInsert)
+
+                if (!result.success) { console.log("error - query variant result insert") }
+
+
+                console.log("crawlResult: ", crawlResult)
+
+            }
+
+            
             
         }
 

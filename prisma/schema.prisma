@@ -186,6 +186,8 @@ model query_variant_order {
 
   type String @default("automatic") //manual, automatic
 
+  // retry Int
+
   query_variant_result query_variant_result[]
 
 }
@@ -199,15 +201,15 @@ model query_variant_result {
   query_variant_order query_variant_order @relation(fields: [query_variant_order_id], references: [id])
   query_variant_order_id String @db.Uuid
 
-  domain String
   domain_order_id String
 
-  status String
-  created_at DateTime @default(now())
-  checked_at DateTime?
+  checked_at DateTime
   position Int
   
   url String
+  title String
+  description String
+
   type String @default("automatic") //manual, automatic
 
 }

@@ -95,11 +95,14 @@ export interface ITrackerQueryVariantOrder {
 export interface ITrackerQueryVariantResult {
     id: string
     query_variant_id: string
-    status: string
-    created_at: Date
+    query_variant_order_id: string
+    domain_order_id: string
+    checked_at: Date
     position: number
-    domain: string
     url: string
+    title: string
+    description: string
+    type: string
 }
 
 

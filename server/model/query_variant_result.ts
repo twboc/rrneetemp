@@ -5,30 +5,30 @@ import { success, fail } from './model.util'
 
 const QueryVariantModel = {
 
-  createMany: async (payload: ITrackerQueryVariantResult[]): Promise<IInsert<'QueryVariant', ITrackerQueryVariantResult, ITrackerQueryVariantResult>> => {
+  createMany: async (payload: ITrackerQueryVariantResult[]): Promise<IInsert<'QueryVariantResult', ITrackerQueryVariantResult, ITrackerQueryVariantResult>> => {
 
     const res = await db.query_variant_result
     //@ts-ignore
         .createMany({ data: payload})
-        .then((insert) => success('QueryVariant', payload, insert))
-        .catch((error: Error) => fail('QueryVariant', payload, error))
+        .then((insert) => success('QueryVariantResult', payload, insert))
+        .catch((error: Error) => fail('QueryVariantResult', payload, error))
 
     //@ts-ignore
     return res
   },
 
-  getAllByDomainOrderId: async () => {
-    const result = await db.query_variant_result
-    .findMany({
-      where: {
-        status: 'pending'
-      },
-    })
-    .then((data) => success('DomainOrder', {}, data))
-    .catch((error: Error) => fail('DomainOrder', {}, error))
+  // getAllByDomainOrderId: async () => {
+  //   const result = await db.query_variant_result
+  //   .findMany({
+  //     where: {
+  //       status: 'pending'
+  //     },
+  //   })
+  //   .then((data) => success('DomainOrder', {}, data))
+  //   .catch((error: Error) => fail('DomainOrder', {}, error))
 
-  return result
-  },
+  // return result
+  // },
 
   getByQueryVariantIds: async (payload: { ids: string[] }) => {
     const result = await db.query_variant_result
@@ -44,19 +44,19 @@ const QueryVariantModel = {
 
   },
 
-  getPortion: async () => {
-    const result = await db.query_variant_result
-      .findMany({
-        take: 20,
-        where: {
-          status: 'pending'
-        },
-      })
-      .then((data) => success('DomainOrder', {}, data))
-      .catch((error: Error) => fail('DomainOrder', {}, error))
+  // getPortion: async () => {
+  //   const result = await db.query_variant_result
+  //     .findMany({
+  //       take: 20,
+  //       where: {
+  //         status: 'pending'
+  //       },
+  //     })
+  //     .then((data) => success('DomainOrder', {}, data))
+  //     .catch((error: Error) => fail('DomainOrder', {}, error))
 
-    return result
-  },
+  //   return result
+  // },
 
 
   // create: async (payload: ITrackerQueryVariantResult): Promise<IInsert<'QueryVariant', ITrackerQueryVariantResult, ITrackerQueryVariantResult>> => {
