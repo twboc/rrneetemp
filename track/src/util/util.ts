@@ -112,9 +112,10 @@ export const createURL = (order: IOrder) => {
 
 export const initPage = async (order: IOrder, browser: Browser): Promise<Page> => {
     const URL = createURL(order)
-    console.log("URL: ", URL)
+    // console.log("URL: ", URL)
     const page = await createPage(browser)
-    await page.goto(URL)
+    const res = await page.goto(URL)
+    console.log("page.goto(URL): ", res)
     return page
 }
 
@@ -126,10 +127,10 @@ export const scrollMore = async (page: Page, order:IOrder) => {
     await more(page, order)
 }
 
-export const setTimeoutError = (reject: (reason : ICrawlResult) => void, organicResults: ISerpPage[], browser: Browser) => {
-    setTimeout(() => {
-        browser.close()
-        reject({
+export const setTimeoutError = (resolve: (reason : ICrawlResult) => void, reject: (reason : ICrawlResult) => void, organicResults: ISerpPage[], page: Page, browser: Browser) => {
+    setTimeout(async () => {
+        await browser.close()
+        resolve({
             success: false,
             error: {
                 type: 'timeout'

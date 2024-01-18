@@ -5,6 +5,9 @@ import { useSelector } from '../../module/store/store'
 import { IUserOrganisationByUser, IDomainListed, ITrackerDomainStats, ITrackerDomainStatsQuery, ITrackerQueryVariantWithResult } from '../../../shared/type/type'
 import { getAllDomains, createDomain, createQuery, chageSelectedDomain } from './tracker.action'
 import { domainOnChange, onChange, getSelectedDomain, statsDefault } from './tracker.util'
+import TrackerLocation from './tracker.location'
+import TrackerBulk from './tracker.bulk'
+import TrackerDomainSelect from './tracker.domain.select'
 
 const Tracker: FC = () => {
   const [domain, setDomain] = useState<string>('')
@@ -15,6 +18,7 @@ const Tracker: FC = () => {
   const [stats, setStats] = useState<ITrackerDomainStats>(statsDefault)
   const [queryStatsLoading, setQueryStatsLoading] = useState<boolean>(true)
   const [locations, setLocations] = useState<string[]>(['no_location'])
+  const [selectedQueries, setSelectedQueries] = useState<string[]>([])
 
   const [showBulk, setShowBulk] = useState<boolean>(false)
   const [bulkText, setBulkText] = useState<string>('')
@@ -24,6 +28,25 @@ const Tracker: FC = () => {
   const organisations: IUserOrganisationByUser[] = useSelector(
     organisationSelect.organisations,
   )
+
+  const selectQuery = (query: ITrackerDomainStatsQuery) => () => {
+    selectedQueries.indexOf(query.id) < 0
+      ? setSelectedQueries([...selectedQueries, query.id])
+      : setSelectedQueries(selectedQueries.filter((query_id: string) => query_id != query.id  ))
+  }
+
+  const selectAll = () => {
+    selectedQueries.length > 0
+      ? setSelectedQueries([])
+      : setSelectedQueries([...stats.query.map(el => el.id)])
+  }
+
+  const addVariants = () => {
+
+    const queries = stats.query.filter((query) => selectedQueries.indexOf(query.id) )
+    console.log("queries: ", selectedQueries.length, queries)
+
+  }
 
   const checkbox = (location: string) => () => {
     locations.indexOf(location) < 0
@@ -70,19 +93,14 @@ const Tracker: FC = () => {
       <button title="Add" onClick={createDomain(setInvalidDomain, domain, organisations, domains, setDomains)} className="btn btn-primary btn-block mb-4">Add</button>
       <br/>
       <br/>
-      <div><b>Selected Domain: {selectedDomain}</b></div>
-      <br/>
-      <div>
-        {
-          domains.map((domain) => {
-            return <div>
-              {domain.domain} - {domain.domain_id} - 
-              <button onClick={chageSelectedDomain(setSelectedDomain, setStats, setQueryStatsLoading, domain.domain_id)} className="btn btn-primary btn-block mb-4" >Select</button>
-              <br/>
-            </div>
-          })
-        }
-      </div>
+      <TrackerDomainSelect
+        selectedDomain={selectedDomain}
+        domains={domains}
+        setSelectedDomain={setSelectedDomain}
+        setStats={setStats}
+        setQueryStatsLoading={setQueryStatsLoading}
+        chageSelectedDomain={chageSelectedDomain}
+      />
       <br/>
       <div className='tracker-domain-container'>
       <div>Domain: {getSelectedDomain(domains, selectedDomain)}</div>
@@ -90,44 +108,10 @@ const Tracker: FC = () => {
       <input id="tracker-domain-query-input" value={query} ref={queryInput} onChange={onChange(setQuery)} />
       <br/>
       <br/>
-      <div>
-        Locations:<br/>
-        {locations.join(', ')}
-        <br/>
-        <br/>
-        <div>No Location <input type="checkbox" checked={locations.indexOf('no_location') >= 0} onChange={checkbox('no_location')} /></div>
-        <div>Poznań <input type="checkbox" checked={locations.indexOf('Poznań') >= 0} onChange={checkbox('Poznań')} /></div>
-        <div>Szczecin <input type="checkbox" checked={locations.indexOf('Szczecin') >= 0} onChange={checkbox('Szczecin')} /></div>
-        <div>Katowice <input type="checkbox" checked={locations.indexOf('Katowice') >= 0} onChange={checkbox('Katowice')} /></div>
-        <div>Bydgoszcz <input type="checkbox" checked={locations.indexOf('Bydgoszcz') >= 0} onChange={checkbox('Bydgoszcz')} /></div>
-        <div>Ruda Śląska <input type="checkbox" checked={locations.indexOf('Ruda Śląska') >= 0} onChange={checkbox('Ruda Śląska')} /></div>
-        <div>Tychy <input type="checkbox" checked={locations.indexOf('Tychy') >= 0} onChange={checkbox('Tychy')} /></div>
-        <div>Gliwice <input type="checkbox" checked={locations.indexOf('Gliwice') >= 0} onChange={checkbox('Gliwice')} /></div>
-        <div>Rybnik <input type="checkbox" checked={locations.indexOf('Rybnik') >= 0} onChange={checkbox('Rybnik')} /></div>
-        <div>Bytom <input type="checkbox" checked={locations.indexOf('Bytom') >= 0} onChange={checkbox('Bytom')} /></div>
-        <div>Dąbrowa Górnicza <input type="checkbox" checked={locations.indexOf('Dąbrowa Górnicza') >= 0} onChange={checkbox('Dąbrowa Górnicza')} /></div>
-        <div>Mikołów <input type="checkbox" checked={locations.indexOf('Mikołów') >= 0} onChange={checkbox('Mikołów')} /></div>
-        <div>Zabrze <input type="checkbox" checked={locations.indexOf('Zabrze') >= 0} onChange={checkbox('Zabrze')} /></div>
-        <div>Chorzów <input type="checkbox" checked={locations.indexOf('Chorzów') >= 0} onChange={checkbox('Chorzów')} /></div>
-        <div>Tarnowskie Góry <input type="checkbox" checked={locations.indexOf('Tarnowskie Góry') >= 0} onChange={checkbox('Tarnowskie Góry')} /></div>
-        
-      </div>
+      <TrackerLocation locations={locations} checkbox={checkbox} />
       <br/>
       <br/>
-      <button type="submit" onClick={() => { setShowBulk(!showBulk) }} className="btn btn-primary btn-block mb-4" >
-        Show Bulk
-      </button>
-      {
-        showBulk && <div>
-          Bulk Text:<br/>
-          <textarea onChange={onChange(setBulkText)} className='tracker-domain-query-bulk-textarea'></textarea>
-
-          <button type="submit" onClick={addBulk} className="btn btn-primary btn-block mb-4" >
-            Add Bulk
-          </button>
-        </div>
-      }
-      
+      <TrackerBulk showBulk={showBulk} setShowBulk={setShowBulk} setBulkText={setBulkText} addBulk={addBulk} />
       <br/>
       <br/>
       <button type="submit" onClick={createQuery(domains, [query], selectedDomain, locations, organisations, stats, setStats, setQuery)} className="btn btn-primary btn-block mb-4" >
@@ -137,9 +121,22 @@ const Tracker: FC = () => {
       <br/>
         <div>
           { queryStatsLoading && <div>Loading</div> }
+          { selectedQueries.length > 0
+            ? "Deselect"
+            : "Select"
+          }
+          <input type="checkbox" checked={selectedQueries.length > 0} onChange={selectAll} />
+          <button type="submit" onClick={addVariants} className="btn btn-primary btn-block mb-4" >
+            Add Variants
+          </button>
+          <br/>
+          <br/>
           {
             !queryStatsLoading && stats.query.length > 0 && stats.query.map((query: ITrackerDomainStatsQuery) => {
               return <div className="tracker-domain-query-container" >
+                <div className='tracker-domain-query-checkbox-container'>
+                  <input type="checkbox" checked={selectedQueries.indexOf(query.id) >= 0} onChange={selectQuery(query)} />
+                </div>
                 <>{query.query} - </>
                 {
                   query.query_variant.map((query_variant) => {
@@ -157,7 +154,7 @@ const Tracker: FC = () => {
                         (query_variant as ITrackerQueryVariantWithResult).query_variant_result[0] && 
                         //@ts-ignore
                         (query_variant.query_variant_result[0].position == -1)
-                        ? '> 100'
+                        ? 'FINISHED: > 100'
                         //@ts-ignore
                         : query_variant.query_variant_result[0]?.position + 1
                         : '> 100'

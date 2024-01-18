@@ -35,7 +35,8 @@
     "prettify": "prettier --write 'app/**/*.tsx'",
     "dist:linux": "electron-builder --linux",
     "clean": "rm -rf dist",
-    "track": "webpack --config webpack/webpack.track.js && node ./dist/track/bundle.js"
+    "track": "webpack --config webpack/webpack.track.js && nodemon ./dist/track/bundle.js",
+    "tracker": "webpack --config webpack/webpack.track.js && pm2 start ./dist/track/bundle.js"
   },
   "keywords": [
     "webpack",
