@@ -4,8 +4,6 @@ import pt, { Browser, ConsoleMessage } from 'puppeteer'
 import { MAX_RESULTS, MAX_LINKS } from './../const/const'
 import { IOrder, ICrawlResult, ISerpPage } from './../type/type'
 
-
-
 export const crawl = (order: IOrder): Promise<ICrawlResult> => {
 
     const crawlResult = new Promise<ICrawlResult>((resolve, reject) => {
@@ -34,8 +32,6 @@ export const crawl = (order: IOrder): Promise<ICrawlResult> => {
                     let overlookedResults: any = null
                     
                     await scrollMore(page, order)
-
-                    // organicResults = 
 
                     const evaluate = await page.evaluate(
                         () => {
@@ -78,13 +74,6 @@ export const crawl = (order: IOrder): Promise<ICrawlResult> => {
                             })
 
                             overlookedResults = document.querySelector('.ClPXac') //.Pqkn2e
-                            console.log("overlookedResults: ", overlookedResults)
-
-
-                            
-
-                            
-                            
     
                             return {
                                 links,
@@ -97,19 +86,12 @@ export const crawl = (order: IOrder): Promise<ICrawlResult> => {
                     organicResultsLength = evaluate.links.length
                     organicResults = evaluate.links.slice(0, MAX_LINKS)
 
-                    console.log("OUTSIDE overlookedResults: ", evaluate.overlookedResults)
-
                     if (!(evaluate.overlookedResults == null)) {
-                        console.log("STOP!!!")
                         break
                     }
-
-                    // organicResults = organicResults.slice(0, MAX_LINKS)
     
                 }
-    
-                // organicResults = organicResults.slice(0, MAX_LINKS)
-    
+
                 await browser.close()
     
                 console.log("FINISHED")

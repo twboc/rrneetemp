@@ -3,18 +3,8 @@ import { IOrder, ICrawlResult, ISerpPage } from '../type/type'
 import { AD_TEST } from './../const/const'
 import { locations } from './locations'
 
-
-export const decoratePage = (page: Page) => {
-    // page.on('console', (msg: ConsoleMessage) => {
-    //     for (let i = 0; i < msg.args().length; ++i)
-    //     console.log(`${msg.args()[i]}`);
-    // });
-}
-
 export const createPage = async (browser: Browser): Promise<Page> => {
-    const page: Page = await browser.newPage()
-    decoratePage(page)
-    return page
+    return await browser.newPage()
 }
 
 
@@ -112,10 +102,8 @@ export const createURL = (order: IOrder) => {
 
 export const initPage = async (order: IOrder, browser: Browser): Promise<Page> => {
     const URL = createURL(order)
-    // console.log("URL: ", URL)
     const page = await createPage(browser)
     const res = await page.goto(URL)
-    console.log("page.goto(URL): ", res)
     return page
 }
 
