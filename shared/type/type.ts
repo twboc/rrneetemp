@@ -62,6 +62,7 @@ export interface IDomainListed {
 }
 
 export interface IQueryCreate {
+    id: string
     domain_id: string
     query: string
     search_engine: string

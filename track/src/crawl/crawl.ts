@@ -6,6 +6,8 @@ import { IOrder, ICrawlResult, ISerpPage } from './../type/type'
 
 export const crawl = (order: IOrder): Promise<ICrawlResult> => {
 
+    console.log("Processing: ", order.params.query)
+
     const crawlResult = new Promise<ICrawlResult>((resolve, reject) => {
 
         pt

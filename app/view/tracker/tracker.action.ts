@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from 'react'
 import isValidDomain from 'is-valid-domain'
 import resource from '../../resource/resource'
-import { IQueryCreate, IDomainListed, ITrackerDomainStats } from '../../../shared/type/type'
+import { IQueryCreate, IDomainListed, ITrackerDomainStats, IUserOrganisationByUser } from '../../../shared/type/type'
 import { queryConstructor } from './tracker.util'
 
 export const getAllDomains = async (
@@ -102,6 +102,22 @@ export const addDomain = async (
 
 }
 
+export const addOnEnter = (queryInput: React.MutableRefObject<null>, domains:IDomainListed[], selectedDomain: string, locations: string[], organisations: IUserOrganisationByUser[], stats: ITrackerDomainStats, setStats: React.Dispatch<React.SetStateAction<ITrackerDomainStats>>, setQuery: React.Dispatch<React.SetStateAction<string>>) =>
+  () => {
+    const keyDownHandler = (event: any) => {
+      if (event.key.toString().trim() == 'Enter') {
+        if (document.activeElement === queryInput.current) {
+          event.preventDefault();
+          createQuery(domains, [event.srcElement.value], selectedDomain, locations, organisations, stats, setStats, setQuery)()
+        }
+      }
+    }
+    document.addEventListener('keydown', keyDownHandler)
+    return () => {
+      document.removeEventListener('keydown', keyDownHandler)
+    }
+  }
+
 
 export const addQueries = async (domain: string, queries: IQueryCreate[], organisation_id: string, stats:any, setQueryList: any) => {
 
@@ -110,8 +126,6 @@ export const addQueries = async (domain: string, queries: IQueryCreate[], organi
     queries,
     organisation_id
   }
-
-  console.log("payload: ", payload) 
 
   const res = await resource.api.tracker.query.create(payload)
 
@@ -124,11 +138,37 @@ export const addQueries = async (domain: string, queries: IQueryCreate[], organi
   // setQueryList([...stats])
 }
 
+export const getAddBulk = (
+  domains: IDomainListed[],
+  bulkText: string,
+  selectedDomain: string,
+  locations: string[],
+  organisations: IUserOrganisationByUser[],
+  stats: any,
+  setStats: React.Dispatch<React.SetStateAction<ITrackerDomainStats>>,
+  setQuery: React.Dispatch<React.SetStateAction<string>>
+) =>
+  () => {
+    const queries = bulkText
+      .split(/\r?\n/)
+      .filter(el => el != '')
 
+    createQuery(domains, queries, selectedDomain, locations, organisations, stats, setStats, setQuery)()
+  }
 
-export const createQuery = (domains: IDomainListed[], query: string[], selectedDomain: string, locations: string[], organisations: any, stats: any, setQueryVariants: any, setQuery: Dispatch<SetStateAction<string>>) => () => {
-  const domain = domains.filter(el => el.domain_id == selectedDomain)[0].domain
-  const queryData: IQueryCreate[] = queryConstructor(selectedDomain, query, locations)
-  addQueries(domain, queryData, organisations[0].organisation_id, stats, setQueryVariants)
-  setQuery("")
-}
+export const createQuery = (
+  domains: IDomainListed[],
+  query: string[],
+  selectedDomain: string,
+  locations: string[],
+  organisations: IUserOrganisationByUser[],
+  stats: any,
+  setQueryVariants: any,
+  setQuery: Dispatch<SetStateAction<string>>
+) => 
+  () => {
+    const domain = domains.filter(el => el.domain_id == selectedDomain)[0].domain
+    const queryData: IQueryCreate[] = queryConstructor(selectedDomain, query, locations)
+    addQueries(domain, queryData, organisations[0].organisation_id, stats, setQueryVariants)
+    setQuery("")
+  }

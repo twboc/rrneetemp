@@ -9,6 +9,18 @@ import { removeSubdomain } from './util/domain'
 
 console.log("START")
 
+Object.defineProperty(Array.prototype, 'chunk_inefficient', {
+    value: function(chunkSize: number) {
+      var array = this;
+      return [].concat.apply([],
+        //@ts-ignore
+        array.map(function(elem, i) {
+          return i % chunkSize ? [] : [array.slice(i, i + chunkSize)];
+        })
+      );
+    }
+  });
+
 interface ITrackerDomainOrderWithDomain extends ITrackerDomainOrder {
     domain: ITrackerDomain
 }
@@ -96,9 +108,6 @@ const processOrder = async (domain_order_id: string, domain_order: ITrackerDomai
             data: { status: 'finished', checked_at }
         })
 
-
-        // console.log("crawlResult: ", crawlResult)
-
     }
 
 
@@ -106,22 +115,28 @@ const processOrder = async (domain_order_id: string, domain_order: ITrackerDomai
 
 
 //@ts-ignore
-const processChunk = async (domain_order_id: string, domain_order: ITrackerDomainOrderWithDomain, queries: any[]) => {
-    // console.log("queries: ", queries)
+const processChunk = async (domain_order_id: string, domain_order: ITrackerDomainOrderWithDomain, queries: any[], chunk_id: string|number) => {
 
-           for (const order of queries) {
-            console.log("next query: ")
-                //@ts-ignore
-                await processOrder(domain_order_id, domain_order, order)
+    if (queries) {
+        let index = 0;
+        for (const order of queries) {
+            index++;
+
+            console.log(`Chunk: ${chunk_id}`, `${index}/${queries.length}`)
+            //@ts-ignore
+            await processOrder(domain_order_id, domain_order, order)
                 
-            }
+                
+        }
+
+    }          
 
 }
 
 const run = async () => {
 
     const domain_orders = await model.domain_order.getAll()
-    if (!domain_orders.success) return console.log("ERROR fetching domain_order")
+    if (!domain_orders.success) return console.log("ERROR fetching domain_order: ", domain_orders)
     //@ts-ignore
     console.log("orders: ", utils.inspect(domain_orders.data.DomainOrder, false, null, true))
 
@@ -138,37 +153,13 @@ const run = async () => {
         const query_variant_orders = await model.query_variant_order.getAllPendingByDomainOrderId({ domain_order_id })
 
         //@ts-ignore
-        console.log("queries: ", utils.inspect(query_variant_orders, false, null, true))
-
-        //@ts-ignore
         const queries = query_variant_orders.data.QueryVariantOrder.filter((el) => { return el.query_variant.device == 'desktop'})
 
         
         console.log("queries: ", queries.length)
 
-        // const chunk = { }
 
-        // const chunkSize = 5;
-        // for (let i = 0; i < queries.length; i += chunkSize) {
-        //     // const chunk = queries.slice(i, i + chunkSize)
-        //     //@ts-ignore
-        //     chunk[i] = queries.slice(i, i + chunkSize)
-
-        // }
-
-        Object.defineProperty(Array.prototype, 'chunk_inefficient', {
-            value: function(chunkSize: number) {
-              var array = this;
-              return [].concat.apply([],
-                //@ts-ignore
-                array.map(function(elem, i) {
-                  return i % chunkSize ? [] : [array.slice(i, i + chunkSize)];
-                })
-              );
-            }
-          });
-
-          function shuffle(array: any) {
+        function shuffle(array: any) {
             let currentIndex = array.length,  randomIndex;
           
             // While there remain elements to shuffle.
@@ -184,24 +175,24 @@ const run = async () => {
             }
           
             return array;
-          }
+        }
 
-          shuffle(queries)
+        shuffle(queries)
 
-          const chunk = queries.chunk_inefficient(Math.floor(queries.length/3))
+        const chunk = queries.chunk_inefficient(Math.floor(queries.length/3))
 
-          console.log("chunk ", chunk[0].length)
+        console.log("chunk ", chunk[0]?.length)
 
         // console.log("chunk: ", queries.chunk_inefficient(5))
 
         //@ts-ignore
-        processChunk(domain_order_id, domain_order, chunk[0])
+        processChunk(domain_order_id, domain_order, chunk[0], 0)
 
         //@ts-ignore
-        processChunk(domain_order_id, domain_order, chunk[1])
+        processChunk(domain_order_id, domain_order, chunk[1], 1)
 
         //@ts-ignore
-        processChunk(domain_order_id, domain_order, chunk[2])
+        processChunk(domain_order_id, domain_order, chunk[2], 2)
 
         // //@ts-ignore
         // processChunk(domain_order_id, domain_order, chunk[3])

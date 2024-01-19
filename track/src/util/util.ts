@@ -2,6 +2,7 @@ import { Page, ConsoleMessage, Browser } from 'puppeteer'
 import { IOrder, ICrawlResult, ISerpPage } from '../type/type'
 import { AD_TEST } from './../const/const'
 import { locations } from './locations'
+import  UserAgents from 'user-agents'
 
 export const createPage = async (browser: Browser): Promise<Page> => {
     return await browser.newPage()
@@ -103,6 +104,8 @@ export const createURL = (order: IOrder) => {
 export const initPage = async (order: IOrder, browser: Browser): Promise<Page> => {
     const URL = createURL(order)
     const page = await createPage(browser)
+    //@ts-ignore
+    await page.setUserAgent(UserAgents.random().toString())
     const res = await page.goto(URL)
     return page
 }
@@ -111,7 +114,6 @@ export const scrollMore = async (page: Page, order:IOrder) => {
     await autoScroll(page)
     await autoScroll(page)
     await autoScroll(page)
-    await more(page, order)
     await more(page, order)
 }
 
