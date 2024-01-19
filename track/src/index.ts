@@ -5,7 +5,7 @@ import { MAX_LINKS } from './const/const'
 import { crawl } from './crawl/crawl'
 import { ITrackerQueryVariantResult, ITrackerDomainOrder, ITrackerDomain } from '../../shared/type/type'
 import { removeSubdomain } from './util/domain'
-
+import { delay, randomRange } from './util/util'
 
 console.log("START")
 
@@ -126,6 +126,7 @@ const processChunk = async (domain_order_id: string, domain_order: ITrackerDomai
             //@ts-ignore
             await processOrder(domain_order_id, domain_order, order)
                 
+            await delay(randomRange(1000, 4500))
                 
         }
 
@@ -188,11 +189,11 @@ const run = async () => {
         //@ts-ignore
         processChunk(domain_order_id, domain_order, chunk[0], 0)
 
-        //@ts-ignore
-        processChunk(domain_order_id, domain_order, chunk[1], 1)
+        // //@ts-ignore
+        // processChunk(domain_order_id, domain_order, chunk[1], 1)
 
-        //@ts-ignore
-        processChunk(domain_order_id, domain_order, chunk[2], 2)
+        // //@ts-ignore
+        // processChunk(domain_order_id, domain_order, chunk[2], 2)
 
         // //@ts-ignore
         // processChunk(domain_order_id, domain_order, chunk[3])
