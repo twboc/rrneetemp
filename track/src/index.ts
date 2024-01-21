@@ -180,14 +180,14 @@ const run = async () => {
 
         shuffle(queries)
 
-        const chunk = queries.chunk_inefficient(Math.floor(queries.length/3))
+        // const chunk = queries.chunk_inefficient(Math.floor(queries.length/3))
 
-        console.log("chunk ", chunk[0]?.length)
+        // console.log("chunk ", chunk[0]?.length)
 
         // console.log("chunk: ", queries.chunk_inefficient(5))
 
         //@ts-ignore
-        processChunk(domain_order_id, domain_order, chunk[0], 0)
+        processChunk(domain_order_id, domain_order, queries, 0)
 
         // //@ts-ignore
         // processChunk(domain_order_id, domain_order, chunk[1], 1)

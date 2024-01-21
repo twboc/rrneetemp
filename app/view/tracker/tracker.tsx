@@ -108,8 +108,8 @@ const Tracker: FC = () => {
                 <>{query.query} - </>
                 {
                   query.query_variant.map((query_variant) => {
-                    return <div>
-                      {query_variant.location}:
+                    return <>
+                      {/* {query_variant.location}: */}
                       {/* {query_variant.search_engine} {query_variant.device} */}
                       {
                         query_variant && 
@@ -127,7 +127,7 @@ const Tracker: FC = () => {
                         
                       }
                       <br/>
-                    </div>
+                    </>
                   })
                 }
               </div>
