@@ -1,31 +1,16 @@
 import CONFIG from './../config'
-import { initPage, setTimeoutError, onConsole, createURL } from './../util/util'
-import puppeteer, { Browser, HTTPResponse } from 'puppeteer'
+import { initPage, setTimeoutError, createURL } from './../util/util'
+import puppeteer, { Browser, Page, HTTPResponse } from 'puppeteer'
 import { MAX_RESULTS, MAX_LINKS } from './../const/const'
 import { IOrder, ICrawlResult, ISerpPage, INoContentBlock } from './../type/type'
 import { scan } from './crawl.scan'
 import { noContentBlockError } from '../error/error'
+
 import zyte from 'zyte-smartproxy-puppeteer'
+import { exposeFunctions, addListeners } from '../page/page'
 
 const engine = false ? puppeteer : zyte
 
-const checkNoContentError = (res: HTTPResponse, noContentBlock: INoContentBlock ) => {
-    if (res.status() == 204 && res.url().indexOf('https://consent.google.pl/save?continue=') > -1) {
-        noContentBlock.counter = noContentBlock.counter + 1;
-
-        if (noContentBlock.counter  >= 4) {
-            noContentBlock.counter = 0;
-            noContentBlock.scanStop = true
-            noContentBlock.timers.forEach(clearTimeout)
-        }
-
-        const timer: NodeJS.Timeout = setTimeout(() => {
-            noContentBlock.counter = 0;
-        }, 3000)
-
-        noContentBlock.timers.push(timer)
-    }
-}
 
 export const crawl = (order: IOrder): Promise<ICrawlResult> => {
 
@@ -47,23 +32,18 @@ export const crawl = (order: IOrder): Promise<ICrawlResult> => {
             const URL = createURL(order)
             const res = await page.goto(URL)
 
-            page.on('console', onConsole);
-
             const noContentBlock: INoContentBlock = {
                 scanStop: false,
                 counter: 0,
                 timers: []
             }
 
-            page.on('response', (res: HTTPResponse) => {
+            await exposeFunctions(page)
+            await addListeners(page, noContentBlock)
 
-                console.log("Status: ", res.url())
-                console.log("Status: ", res.status())
+            
 
-                checkNoContentError(res, noContentBlock)
-
-            })
-
+            
             setTimeoutError(resolve, reject, organicResults, page, browser)
     
             while(organicResultsLength < MAX_RESULTS){
@@ -87,7 +67,7 @@ export const crawl = (order: IOrder): Promise<ICrawlResult> => {
 
             await browser.close()
 
-            if (noContentScanBreak) { return resolve(noContentBlockError(organicResults)) }
+            if (noContentBlock.scanStop) { return resolve(noContentBlockError(organicResults)) }
     
             console.log("FINISHED")
             resolve({

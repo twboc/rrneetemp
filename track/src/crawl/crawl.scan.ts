@@ -37,7 +37,6 @@ export const scan = async () => {
 
     console.log("Scanning...")
 
-
     // puppeteer evaluate context does not pass
     // document object and does not allow for querySelector
 
@@ -72,12 +71,17 @@ export const scan = async () => {
             accept.click()
         }
 
+        //@ts-ignore
+        await delay(randomRange(123,789))
+
         
         const process = async () => {
 
-
             await scrollDown(document)
             await more()
+
+            //@ts-ignore
+            await delay(randomRange(123,789))
 
 
             const removeRelatedQuestions = (el: Element) => !el?.closest('.related-question-pair')

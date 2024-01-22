@@ -3,12 +3,9 @@ import { IOrder, ICrawlResult, ISerpPage } from '../type/type'
 import { AD_TEST } from './../const/const'
 import { locations } from './locations'
 import UserAgents from 'user-agents'
+import { parse } from 'useragent'
 import { UserAgentConfig } from './util.type'
  
-export const onConsole = (msg: ConsoleMessage) => {
-    for (let i = 0; i < msg.args().length; ++i)
-    console.log(`${msg.args()[i]}`);
-}
 
 
 export function randomRange(min: number, max: number) {
@@ -53,7 +50,14 @@ const platoform = ["MacIntel", "Win32", "Linux x86_64", "Linux armv81"]
 
 const getDesktopUserAgent = (data?: UserAgentConfig) => {
     //@ts-ignore
-    const userAgent = UserAgents.random()
+    // const userAgent = UserAgents.random()
+
+    const userAgent = new UserAgents({ deviceCategory: 'desktop', platform: 'Win32' })
+    
+    // new UserAgents((data) => {
+    //     const os = parse(data.userAgent).os;
+    //     return os.family === 'iOS' && parseInt(os.major, 10) > 11;
+    //   });
 
     //@ts-ignore
     userAgent.data = {
@@ -68,8 +72,6 @@ const getDesktopUserAgent = (data?: UserAgentConfig) => {
         },
         ...data
     }
-
-    console.log("userAgent: ", userAgent)
 
     return userAgent
 }
