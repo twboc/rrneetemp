@@ -3,7 +3,8 @@ import { IOrder, ICrawlResult, ISerpPage } from '../type/type'
 import { AD_TEST } from './../const/const'
 import { locations } from './locations'
 import UserAgents from 'user-agents'
-
+import { UserAgentConfig } from './util.type'
+ 
 export const onConsole = (msg: ConsoleMessage) => {
     for (let i = 0; i < msg.args().length; ++i)
     console.log(`${msg.args()[i]}`);
@@ -48,12 +49,35 @@ export const createURL = (order: IOrder) => {
 
 }
 
-export const initPage = async (order: IOrder, browser: Browser): Promise<Page> => {
-    const URL = createURL(order)
-    const page = await createPage(browser)
+const platoform = ["MacIntel", "Win32", "Linux x86_64", "Linux armv81"]
+
+const getDesktopUserAgent = (data?: UserAgentConfig) => {
     //@ts-ignore
-    // await page.setUserAgent(UserAgents.random().toString())
-    const res = await page.goto(URL)
+    const userAgent = UserAgents.random()
+
+    //@ts-ignore
+    userAgent.data = {
+        ...userAgent.data,
+        ...{
+            deviceCategory: 'desktop',
+            screenHeight: 1080,
+            screenWidth: 1920,
+            viewportHeight: 953,
+            viewportWidth: 1920,
+            platform: platoform[Math.floor(Math.random()*platoform.length)]
+        },
+        ...data
+    }
+
+    console.log("userAgent: ", userAgent)
+
+    return userAgent
+}
+
+export const initPage = async (order: IOrder, browser: Browser): Promise<Page> => {
+    
+    const page = await createPage(browser)
+    await page.setUserAgent(getDesktopUserAgent().toString())
     return page
 }
 

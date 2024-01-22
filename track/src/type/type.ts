@@ -16,6 +16,7 @@ export interface ICrawlResult {
     serp: ISerpPage[]
     error?: {
         type?: string
+        message?: string
         e?: Error
     }
 }
@@ -28,4 +29,10 @@ export interface ISerpPage {
 
 export interface ILocations {
     [key: string]: string
+}
+
+export interface INoContentBlock {
+    scanStop: boolean
+    counter: number
+    timers: NodeJS.Timeout[]
 }

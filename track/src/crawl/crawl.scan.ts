@@ -29,6 +29,8 @@ import { IOrder, ICrawlResult, ISerpPage } from './../type/type'
 
 
 
+//MOBILE
+// cz3goc BmP5tf q
 
     
 export const scan = async () => {
@@ -82,7 +84,7 @@ export const scan = async () => {
         
             const getOrganicLinks = (): Element[] => {
                 const links = Array
-                    .from(document && document.querySelectorAll('a cite'))
+                    .from(document && document.querySelectorAll('a cite, .cz3goc.BmP5tf.q')) // first is for desktop and second for mobile
                     .filter(removeRelatedQuestions)
                     .map((el: Element) => el?.closest('.MjjYud') )
         
@@ -97,9 +99,11 @@ export const scan = async () => {
         
                 const anchor = main.querySelector('a')
                 const meta = main.querySelector('.VwiC3b')
+
+                
         
-                if (anchor == null) { return { url: '', title: '', description: '' }}
-                if (meta == null) { return { url: '', title: '', description: '' }}
+                if (anchor == null) { console.log('no anchor'); return { url: '', title: '', description: '' }}
+                if (meta == null) { console.log('no meta'); return { url: '', title: '', description: '' }}
         
                 const url = anchor?.ping.toString().split('&url=')[1]?.split('&ved')[0]
                 const title = anchor?.querySelector('h3')?.textContent
