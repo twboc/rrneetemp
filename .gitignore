@@ -65,3 +65,5 @@ yarn-error.log
 /config/googleOAuth2.json
 /config/facebookOAuth2.json
 dist/
+
+/track/src/smp_config.ts
