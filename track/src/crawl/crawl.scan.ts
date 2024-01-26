@@ -79,9 +79,13 @@ export const scan = async () => {
 
             await scrollDown(document)
             await more()
+            await scrollDown(document)
 
             //@ts-ignore
             await delay(randomRange(123,789))
+
+            await scrollDown(document)
+            await scrollDown(document)
 
 
             const removeRelatedQuestions = (el: Element) => !el?.closest('.related-question-pair')

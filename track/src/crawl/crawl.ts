@@ -1,5 +1,5 @@
 import CONFIG from './../config'
-import { initPage, setTimeoutError, createURL } from './../util/util'
+import { initPage, setTimeoutError, createURL, delay } from './../util/util'
 import puppeteer, { Browser, Page, HTTPResponse } from 'puppeteer'
 import { MAX_RESULTS, MAX_LINKS } from './../const/const'
 import { IOrder, ICrawlResult, ISerpPage, INoContentBlock } from './../type/type'
@@ -9,7 +9,7 @@ import { noContentBlockError } from '../error/error'
 import zyte from 'zyte-smartproxy-puppeteer'
 import { exposeFunctions, addListeners } from '../page/page'
 
-const engine = false ? puppeteer : zyte
+const engine = true ? puppeteer : zyte
 
 
 export const crawl = (order: IOrder): Promise<ICrawlResult> => {
@@ -64,6 +64,8 @@ export const crawl = (order: IOrder): Promise<ICrawlResult> => {
                 }
 
             }
+
+            await delay(3000)
 
             await browser.close()
 
