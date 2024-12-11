@@ -42,6 +42,8 @@ export const crawl = (order: IOrder): Promise<ICrawlResult> => {
         while (organicResultsLength < MAX_RESULTS) {
           const evaluate = await page.evaluate(scan)
 
+          await page.waitForNavigation()
+
           organicResultsLength = evaluate.links.length
           organicResults = evaluate.links.slice(0, MAX_LINKS)
 

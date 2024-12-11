@@ -1,5 +1,5 @@
-import { MAX_RESULTS, MAX_LINKS } from "../const/const";
-import { IOrder, ICrawlResult, ISerpPage } from "../type/type";
+import {MAX_RESULTS, MAX_LINKS} from '../const/const'
+import {IOrder, ICrawlResult, ISerpPage} from '../type/type'
 
 // import StealthPlugin from 'puppeteer-extra-plugin-stealth'
 // puppeteer.use(StealthPlugin())
@@ -31,104 +31,115 @@ import { IOrder, ICrawlResult, ISerpPage } from "../type/type";
 // cz3goc BmP5tf q
 
 export const scan = async () => {
-  console.log("Scanning...");
+  console.log('Scanning...')
 
   // puppeteer evaluate context does not pass
   // document object and does not allow for querySelector
 
   const scrollDown = async (document: Document) => {
-    await new Promise<void>((resolve) => {
-      var totalHeight = 0;
-      var distance = 100;
+    await new Promise<void>(resolve => {
+      var totalHeight = 0
+      var distance = 100
       var timer = setInterval(() => {
-        var scrollHeight = document.body.scrollHeight;
-        window.scrollBy(0, distance);
-        totalHeight += distance;
+        var scrollHeight = document.body.scrollHeight
+        window.scrollBy(0, distance)
+        totalHeight += distance
 
         if (totalHeight >= scrollHeight - window.innerHeight) {
-          clearInterval(timer);
-          resolve();
+          clearInterval(timer)
+          resolve()
         }
-      }, 10);
-    });
-  };
+      }, 10)
+    })
+  }
 
   const more = async () => {
-    const more: Element = document.querySelector(".T7sFge.sW9g3e.VknLRd");
+    const more: Element = document.querySelector('.T7sFge.sW9g3e.VknLRd')
     if (more instanceof HTMLElement) {
-      more.click();
+      more.click()
     }
-  };
+  }
 
-  const accept = document.querySelector("#L2AGLb");
+  const next = async (document: Document) => {
+    // const more: Element = document.querySelector('.T7sFge.sW9g3e.VknLRd')
+    const next: Element = document.querySelector('.YyVfkd.NKTSme ~ .NKTSme a')
+    if (next instanceof HTMLElement) {
+      console.log('next; next: ', next)
+      next.click()
+    }
+  }
+
+  const accept = document.querySelector('#L2AGLb')
   if (accept instanceof HTMLElement) {
-    accept.click();
+    accept.click()
   }
 
   //@ts-ignore
-  await delay(randomRange(123, 789));
+  await delay(randomRange(123, 789))
 
   const process = async () => {
-    await scrollDown(document);
-    await more();
-    await scrollDown(document);
+    await scrollDown(document)
+    await more()
+    await scrollDown(document)
 
     //@ts-ignore
-    await delay(randomRange(123, 789));
+    await delay(randomRange(123, 789))
 
-    await scrollDown(document);
-    await scrollDown(document);
+    await scrollDown(document)
+    await scrollDown(document)
 
     const removeRelatedQuestions = (el: Element) =>
-      !el?.closest(".related-question-pair");
+      !el?.closest('.related-question-pair')
 
     const getOrganicLinks = (): Element[] => {
       const links = Array.from(
-        document && document.querySelectorAll("a cite, .cz3goc.BmP5tf.q")
+        document && document.querySelectorAll('a cite, .cz3goc.BmP5tf.q'),
       ) // first is for desktop and second for mobile
         .filter(removeRelatedQuestions)
-        .map((el: Element) => el?.closest(".MjjYud"));
+        .map((el: Element) => el?.closest('.MjjYud'))
 
-      return links;
-    };
+      return links
+    }
 
     const links = getOrganicLinks().map((main: Element) => {
       if (main == null) {
-        return { url: "", title: "", description: "" };
+        return {url: '', title: '', description: ''}
       }
 
-      const anchor = main.querySelector("a");
-      const meta = main.querySelector(".VwiC3b");
+      const anchor = main.querySelector('a')
+      const meta = main.querySelector('.VwiC3b')
 
       if (anchor == null) {
-        console.log("no anchor");
-        return { url: "", title: "", description: "" };
+        console.log('no anchor')
+        return {url: '', title: '', description: ''}
       }
       if (meta == null) {
-        console.log("no meta");
-        return { url: "", title: "", description: "" };
+        console.log('no meta')
+        return {url: '', title: '', description: ''}
       }
 
-      const url = anchor?.ping.toString().split("&url=")[1]?.split("&ved")[0];
-      const title = anchor?.querySelector("h3")?.textContent;
-      const description = meta?.innerHTML || "";
+      const url = anchor?.ping.toString().split('&url=')[1]?.split('&ved')[0]
+      const title = anchor?.querySelector('h3')?.textContent
+      const description = meta?.innerHTML || ''
 
       const result = {
         url,
         title,
         description,
-      };
+      }
 
-      return result;
-    });
+      return result
+    })
 
-    const overlookedResults = document.querySelector(".ClPXac"); //.Pqkn2e
+    const overlookedResults = document.querySelector('.ClPXac') //.Pqkn2e
+
+    await next(document)
 
     return {
       links,
       overlookedResults,
-    };
-  };
+    }
+  }
 
   // let organicResults: ISerpPage[] = []
   // let organicResultsLength = 0;
@@ -146,5 +157,5 @@ export const scan = async () => {
 
   // }
 
-  return await process();
-};
+  return await process()
+}
