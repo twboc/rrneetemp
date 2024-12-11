@@ -8,21 +8,23 @@
     "build": "webpack --config webpack.track.js",
     "run": "node ./dist/bundle.js",
     "deploy": "npm run build && npm run run",
-    "deamon": "npm run build && nodemon ./dist/bundle.js",
+    "deamon": "npm run build && nodemon ../dist/bundle.js",
     "clean": "rm -rf dist/*",
-    "track": "webpack --config webpack.track.js && nodemon ./dist/track/bundle.js"
+    "track": "webpack --config webpack.track.js && nodemon ../dist/bundle.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "fs": "^0.0.1-security",
     "path": "^0.12.7",
-    "puppeteer": "21.7.0",
+    "puppeteer": "^23.10.3",
+    "puppeteer-core": "^23.10.3",
     "puppeteer-extra": "^3.3.6",
     "puppeteer-extra-plugin-stealth": "^2.11.2",
     "url": "^0.11.3",
     "user-agents": "^1.1.89",
     "useragent": "^2.3.0",
+    "webpack-node-externals": "^3.0.0",
     "zyte-smartproxy-puppeteer": "^1.0.18"
   },
   "devDependencies": {
