@@ -46,6 +46,8 @@ const processOrder = async (
     },
   })
 
+  console.log('crawlResult: ', crawlResult)
+
   if (crawlResult.success) {
     const checked_at = new Date()
     let queryVariantResultInsert: ITrackerQueryVariantResult[] =

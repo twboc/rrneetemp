@@ -64,7 +64,6 @@ export const scan = async () => {
     // const more: Element = document.querySelector('.T7sFge.sW9g3e.VknLRd')
     const next: Element = document.querySelector('.YyVfkd.NKTSme ~ .NKTSme a')
     if (next instanceof HTMLElement) {
-      console.log('next; next: ', next)
       next.click()
     }
   }

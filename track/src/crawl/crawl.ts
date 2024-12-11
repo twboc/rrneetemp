@@ -39,13 +39,20 @@ export const crawl = (order: IOrder): Promise<ICrawlResult> => {
 
         setTimeoutError(resolve, reject, organicResults, page, browser)
 
+        const aggreagate = {
+          links: [] as any,
+          overlookedResults: [] as any,
+        }
+
         while (organicResultsLength < MAX_RESULTS) {
           const evaluate = await page.evaluate(scan)
 
+          aggreagate.links = [...aggreagate.links, ...evaluate.links]
+
           await page.waitForNavigation()
 
-          organicResultsLength = evaluate.links.length
-          organicResults = evaluate.links.slice(0, MAX_LINKS)
+          organicResultsLength = aggreagate.links.length
+          organicResults = aggreagate.links.slice(0, MAX_LINKS)
 
           console.log('organicResultsLength: ', organicResultsLength)
 
