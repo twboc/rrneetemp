@@ -17,8 +17,10 @@ function removeParam(key: string, sourceURL: string) {
     params_arr = [],
     queryString = sourceURL.indexOf('?') !== -1 ? sourceURL.split('?')[1] : ''
   if (queryString !== '') {
+    //@ts-ignore
     params_arr = queryString.split('&')
     for (var i = params_arr.length - 1; i >= 0; i -= 1) {
+      //@ts-ignore
       param = params_arr[i].split('=')[0]
       if (param === key) {
         params_arr.splice(i, 1)
